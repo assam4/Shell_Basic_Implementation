@@ -12,7 +12,8 @@ static void	print_token(t_token *token)
 		else if (token->o_type == OP_OR) printf("OR\n");
 		else if (token->o_type == OP_PIPE) printf("PIPE\n");
 		else if (token->o_type == OP_END) printf("END\n");
-		else if (token->o_type == OP_SUBSHELL) printf("SUBSHELL\n");
+		else if (token->o_type == OP_SUBSHELL_OPEN) printf("SUBSHELL_OPEN\n");
+		else if (token->o_type == OP_SUBSHELL_CLOSE) printf("SUBSHELL_CLOSE\n");
 		else printf("UNKNOWN\n");
 	}
 	else if (token->t_type == REDIRECTION)

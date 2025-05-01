@@ -18,7 +18,8 @@ typedef enum e_operator_type
 	OP_AND,
 	OP_OR,
 	OP_END,
-	OP_SUBSHELL
+	OP_SUBSHELL_OPEN,
+	OP_SUBSHELL_CLOSE
 }	t_operator_type;
 
 typedef enum e_redirection_type

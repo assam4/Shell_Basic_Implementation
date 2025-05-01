@@ -9,8 +9,10 @@ void	set_op_token(const char **line, t_token *token)
 		token->o_type = OP_OR;
 	else if (**line == '|')
 		token->o_type = OP_PIPE;
-	else if (**line == '(' || **line == ')')
-		token->o_type = OP_SUBSHELL;
+	else if (**line == '(')
+		token->o_type = OP_SUBSHELL_OPEN;
+	else if (**line == ')')
+		token->o_type = OP_SUBSHELL_CLOSE;
 	else if (**line == ';')
 		token->o_type = OP_END;
 	if (token->o_type == OP_AND || token->o_type == OP_OR)
