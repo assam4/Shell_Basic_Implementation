@@ -39,18 +39,37 @@ void	set_rd_token(const char **line, t_token *token)
 		++(*line);
 }
 
+static	int	word_len(const char *line)
+{
+	int		i;
+	bool	single_quotes;
+	bool	double_quotes;
+
+	i = 0;
+	single_quotes = false;
+	double_quotes = true;
+	while (line[i] && (single_quotes
+			|| double_quotes
+			|| (!ft_isspace(line + i)
+				&& !is_operation(line + i)
+				&& !is_redirection(line + i))))
+	{
+		if (line[i] == '\'' && !double_quotes)
+			single_quotes = !single_quotes;
+		else if (line[i] == '\"' && !single_quotes)
+			double_quotes = !double_quotes;
+		++i;
+	}
+	return (i);
+}
+
 void	set_wd_token(const char **line, t_token *token)
 {
 	int			i;
 	const char	*str;
 
-	i = 0;
 	str = *line;
-	while (str[i]
-		&& !ft_isspace(str + i)
-		&& !is_operation(str + i)
-		&& !is_redirection(str + i))
-		++i;
+	i = word_len(str);
 	token->t_type = WORD;
 	token->word = ft_calloc(i + 1, sizeof(char));
 	if (!token->word)
