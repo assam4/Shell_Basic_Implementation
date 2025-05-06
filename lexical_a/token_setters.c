@@ -47,7 +47,7 @@ static	int	word_len(const char *line)
 
 	i = 0;
 	single_quotes = false;
-	double_quotes = true;
+	double_quotes = false;
 	while (line[i] && (single_quotes
 			|| double_quotes
 			|| (!ft_isspace(line + i)

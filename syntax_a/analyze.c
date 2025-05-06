@@ -31,7 +31,11 @@ static void	error_message(const t_list *tokens)
 	current = (t_token *)tokens->content;
 	ft_putstr_fd("minishell: syntax error near unexpected token `",
 		STDERR_FILENO);
-	if (current->t_type == OPERATION)
+	if (current->t_type == OPERATION
+		&& tokens->next
+		&& ((t_token *)tokens->next->content)->t_type == OPERATION)
+		print_token_str((t_token *)tokens->next->content);
+	else if (current->t_type == OPERATION)
 		print_token_str(current);
 	else if (current->t_type == REDIRECTION)
 	{
@@ -61,7 +65,8 @@ static bool	check_operations(const t_list *prev_l, const t_list *tokens)
 	current = (t_token *)tokens->content;
 	if (tokens->next)
 		next = (t_token *)tokens->next->content;
-	if (((!prev && current->o_type != OP_SUBSHELL_OPEN) || !next)
+	if ((!prev && current->o_type != OP_SUBSHELL_OPEN)
+		|| (next && next->o_type == OP_SUBSHELL_CLOSE)
 		|| (prev && prev->t_type == OPERATION
 			&& prev->o_type != OP_SUBSHELL_CLOSE
 			&& prev->o_type != OP_SUBSHELL_OPEN)
@@ -107,7 +112,6 @@ bool	syntax_analyse(const t_list *tokens)
 		if (token->o_type == OP_SUBSHELL_OPEN)
 			++sub_count;
 		prev = tokens;
-		ft_putnbr_fd(sub_count, 1);
 		tokens = tokens->next;
 	}
 	return (true);
