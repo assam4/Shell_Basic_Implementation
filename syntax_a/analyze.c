@@ -62,10 +62,10 @@ static bool	check_operations(const t_list *prev_l, const t_list *tokens)
 	if (tokens->next)
 		next = (t_token *)tokens->next->content;
 	if (((!prev && current->o_type != OP_SUBSHELL_OPEN) || !next)
-		|| (prev
-			&& ((prev->t_type == OPERATION
-					&& prev->o_type != OP_SUBSHELL_CLOSE)
-				|| prev->t_type != WORD))
+		|| (prev && prev->t_type == OPERATION
+			&& prev->o_type != OP_SUBSHELL_CLOSE
+			&& prev->o_type != OP_SUBSHELL_OPEN)
+		|| (prev && prev->t_type == REDIRECTION)
 		|| (next
 			&& (next->t_type == OPERATION
 				&& next->o_type != OP_SUBSHELL_OPEN)))
@@ -81,7 +81,8 @@ static bool	check_redirections(const t_list *tokens)
 	if (!tokens->next)
 		return (false);
 	next = (t_token *)tokens->next->content;
-	if (next->t_type != WORD)
+	if (next->t_type != WORD
+		|| (!next->word || (*(next->word) == '\0' || *(next->word) == '\n')))
 		return (false);
 	else
 		return (true);
@@ -106,6 +107,7 @@ bool	syntax_analyse(const t_list *tokens)
 		if (token->o_type == OP_SUBSHELL_OPEN)
 			++sub_count;
 		prev = tokens;
+		ft_putnbr_fd(sub_count, 1);
 		tokens = tokens->next;
 	}
 	return (true);
