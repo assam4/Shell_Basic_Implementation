@@ -82,7 +82,6 @@ bool	get_operator(t_ast_node *tree
 		return (false);
 	else
 	{
-		write(1, "FIND OP\n", 9);
 		tree->token = (t_token *)prev->next->content;
 		if (!create_node(&(tree->right), prev->next->next))
 			return (false);
