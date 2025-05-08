@@ -38,9 +38,10 @@ void	get_logic(t_list **prev, t_list *tokens)
 	{
 		if (((t_token *)tokens->content)->o_type == OP_SUBSHELL_OPEN)
 			jump_subshells(&tokens);
-		if (tokens
-			&& (((t_token *)tokens->next->content)->o_type == OP_AND
-				|| ((t_token *)tokens->next->content)->o_type == OP_OR))
+		if (!tokens)
+			return ;
+		if ((((t_token *)tokens->next->content)->o_type == OP_AND
+			|| ((t_token *)tokens->next->content)->o_type == OP_OR))
 			*prev = tokens;
 		tokens = tokens->next;
 	}
@@ -52,8 +53,9 @@ void	get_pipe(t_list **prev, t_list *tokens)
 	{
 		if (((t_token *)tokens->content)->o_type == OP_SUBSHELL_OPEN)
 			jump_subshells(&tokens);
-		if (tokens
-			&& (((t_token *)tokens->next->content)->o_type == OP_PIPE))
+		if (!tokens)
+			return ;
+		if (((t_token *)tokens->next->content)->o_type == OP_PIPE)
 			*prev = tokens;
 		tokens = tokens->next;
 	}
