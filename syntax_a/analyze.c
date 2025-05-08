@@ -36,14 +36,14 @@ static void	print_token_str(t_token *current)
 		ft_putstr_fd("<<'\n", STDERR_FILENO);
 }
 
-static void	error_message(const t_list *tokens)
+static void	error_message(const t_list *prev, const t_list *tokens)
 {
 	t_token	*current;
 
 	current = (t_token *)tokens->content;
 	ft_putstr_fd("minishell: syntax error near unexpected token `",
 		STDERR_FILENO);
-	if (current->t_type == OPERATION
+	if (prev && current->t_type == OPERATION
 		&& tokens->next
 		&& ((t_token *)tokens->next->content)->t_type == OPERATION)
 		print_token_str((t_token *)tokens->next->content);
@@ -117,13 +117,13 @@ bool	syntax_analyse(const t_list *tokens)
 		else if (t->o_type == OP_SUBSHELL_CLOSE)
 		{
 			if (((t_token *)prev->content)->o_type == OP_SUBSHELL_OPEN)
-				return (error_message(prev), false);
+				return (error_message(prev, prev), false);
 			if (--sub_count < 0)
-				return (error_message(tokens), false);
+				return (error_message(prev, tokens), false);
 		}
 		else if ((t->t_type == OPERATION && !(check_operations(prev, tokens)))
 			|| (t->t_type == REDIRECTION && !check_redirections(tokens)))
-			return (error_message(tokens), false);
+			return (error_message(prev, tokens), false);
 		prev = tokens;
 		tokens = tokens->next;
 	}
