@@ -29,22 +29,26 @@ t_list *add_token(t_list *lst, t_token_type t_type, t_operator_type o_type, cons
 }
 
 // ------------------------- ФУНКЦИЯ ПЕЧАТИ ДЕРЕВА AST -------------------------
-/*
+
 void	print_ast(t_ast_node *node, int depth)
 {
 	if (!node)
-		return ;
-	for (int i = 0; i < depth; ++i)
-		printf("  ");
+		return;
 
+	// Print tree structure with branches
+	for (int i = 0; i < depth; ++i)
+		printf("│   ");
+	printf("├── ");
+
+	// Display node content based on type
 	if (node->token->t_type == OPERATION)
 	{
 		if (node->token->o_type == OP_AND)
-			printf("&&\n");
+			printf("AND (&&)\n");
 		else if (node->token->o_type == OP_OR)
-			printf("||\n");
+			printf("OR (||)\n");
 		else if (node->token->o_type == OP_PIPE)
-			printf("|\n");
+			printf("PIPE (|)\n");
 		else if (node->token->o_type == OP_SUBSHELL_OPEN)
 			printf("SUBSHELL\n");
 		else
@@ -52,6 +56,7 @@ void	print_ast(t_ast_node *node, int depth)
 	}
 	else if (node->token->t_type == WORD)
 	{
+		printf("COMMAND: ");
 		t_list *cmd = node->cmd;
 		while (cmd)
 		{
@@ -62,60 +67,14 @@ void	print_ast(t_ast_node *node, int depth)
 		printf("\n");
 	}
 
-	print_ast(node->left, depth + 1);
-	print_ast(node->right, depth + 1);
-}
-*/
- // assuming definitions for t_ast_node, t_token, etc.
-
-static void print_indent(int depth)
-{
-    for (int i = 0; i < depth; ++i)
-        printf("│   ");
+	// Recurse into left and right children
+	if (node->left || node->right)
+	{
+		print_ast(node->left, depth + 1);
+		print_ast(node->right, depth + 1);
+	}
 }
 
-static void print_operator(t_ast_node *node)
-{
-    if (node->token->o_type == OP_AND)
-        printf("└── &&\n");
-    else if (node->token->o_type == OP_OR)
-        printf("└── ||\n");
-    else if (node->token->o_type == OP_PIPE)
-        printf("└── |\n");
-    else if (node->token->o_type == OP_SUBSHELL_OPEN)
-        printf("└── (SUBSHELL)\n");
-    else
-        printf("└── OPERATION\n");
-}
-
-static void print_command(t_ast_node *node)
-{
-    printf("└── CMD: ");
-    t_list *cmd = node->cmd;
-    while (cmd)
-    {
-        t_token *tok = (t_token *)cmd->content;
-        printf("%s ", tok->word);
-        cmd = cmd->next;
-    }
-    printf("\n");
-}
-
-void print_ast(t_ast_node *node, int depth)
-{
-    if (!node)
-        return;
-
-    print_indent(depth);
-
-    if (node->token->t_type == OPERATION)
-        print_operator(node);
-    else if (node->token->t_type == WORD)
-        print_command(node);
-
-    print_ast(node->left, depth + 1);
-    print_ast(node->right, depth + 1);
-}
 
 // ------------------------------ ТЕСТ ------------------------------
 
