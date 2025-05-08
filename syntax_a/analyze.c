@@ -67,27 +67,20 @@ static void	error_message(const t_list *tokens)
 static bool	check_operations(const t_list *prev_l, const t_list *tokens)
 {
 	t_token	*prev;
-	t_token	*current;
 	t_token	*next;
 
 	prev = NULL;
 	next = NULL;
 	if (prev_l)
 		prev = (t_token *)prev_l->content;
-	current = (t_token *)tokens->content;
 	if (tokens->next)
 		next = (t_token *)tokens->next->content;
-	if (!next)
-		return (false);
-	if ((!prev && current->o_type != OP_SUBSHELL_OPEN)
+	if ((!prev || !next)
 		|| (next && next->t_type == OPERATION
-			&& next->o_type == OP_SUBSHELL_CLOSE)
+			&& next->o_type != OP_SUBSHELL_OPEN)
 		|| (prev && prev->t_type == OPERATION
 			&& prev->o_type != OP_SUBSHELL_CLOSE)
-		|| (prev && prev->t_type == REDIRECTION)
-		|| (next
-			&& (next->t_type == OPERATION
-				&& next->o_type != OP_SUBSHELL_OPEN)))
+		|| (prev && prev->t_type == REDIRECTION))
 		return (false);
 	else
 		return (true);
@@ -111,25 +104,25 @@ static bool	check_redirections(const t_list *tokens)
 bool	syntax_analyse(const t_list *tokens)
 {
 	const t_list	*prev;
-	t_token			*token;
+	t_token			*t;
 	int				sub_count;
 
 	prev = NULL;
 	sub_count = 0;
 	while (tokens)
 	{
-		token = (t_token *)tokens->content;
-		if (token->o_type == OP_SUBSHELL_OPEN)
+		t = (t_token *)tokens->content;
+		if (t->o_type == OP_SUBSHELL_OPEN)
 			++sub_count;
-		else if (token->o_type == OP_SUBSHELL_CLOSE)
+		else if (t->o_type == OP_SUBSHELL_CLOSE)
 		{
 			if (((t_token *)prev->content)->o_type == OP_SUBSHELL_OPEN)
 				return (error_message(prev), false);
 			if (--sub_count < 0)
 				return (error_message(tokens), false);
 		}
-		else if ((token->t_type == OPERATION && !(check_operations(prev, tokens)))
-			|| (token->t_type == REDIRECTION && !check_redirections(tokens)))
+		else if ((t->t_type == OPERATION && !(check_operations(prev, tokens)))
+			|| (t->t_type == REDIRECTION && !check_redirections(tokens)))
 			return (error_message(tokens), false);
 		prev = tokens;
 		tokens = tokens->next;
