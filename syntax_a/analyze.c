@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   analyze.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/19 12:28:41 by saslanya          #+#    #+#             */
+/*   Updated: 2025/04/19 12:28:43 by saslanya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "syntax.h"
 
 static void	print_token_str(t_token *current)
@@ -65,11 +77,13 @@ static bool	check_operations(const t_list *prev_l, const t_list *tokens)
 	current = (t_token *)tokens->content;
 	if (tokens->next)
 		next = (t_token *)tokens->next->content;
+	if (!next)
+		return (false);
 	if ((!prev && current->o_type != OP_SUBSHELL_OPEN)
-		|| (next && next->o_type == OP_SUBSHELL_CLOSE)
+		|| (next && next->t_type == OPERATION
+			&& next->o_type == OP_SUBSHELL_CLOSE)
 		|| (prev && prev->t_type == OPERATION
-			&& prev->o_type != OP_SUBSHELL_CLOSE
-			&& prev->o_type != OP_SUBSHELL_OPEN)
+			&& prev->o_type != OP_SUBSHELL_CLOSE)
 		|| (prev && prev->t_type == REDIRECTION)
 		|| (next
 			&& (next->t_type == OPERATION
@@ -105,12 +119,18 @@ bool	syntax_analyse(const t_list *tokens)
 	while (tokens)
 	{
 		token = (t_token *)tokens->content;
-		if ((token->t_type == OPERATION && !(check_operations(prev, tokens)))
-			|| (token->o_type == OP_SUBSHELL_CLOSE && --sub_count < 0)
-			|| (token->t_type == REDIRECTION && !check_redirections(tokens)))
-			return (error_message(tokens), false);
 		if (token->o_type == OP_SUBSHELL_OPEN)
 			++sub_count;
+		else if (token->o_type == OP_SUBSHELL_CLOSE)
+		{
+			if (((t_token *)prev->content)->o_type == OP_SUBSHELL_OPEN)
+				return (error_message(prev), false);
+			if (--sub_count < 0)
+				return (error_message(tokens), false);
+		}
+		else if ((token->t_type == OPERATION && !(check_operations(prev, tokens)))
+			|| (token->t_type == REDIRECTION && !check_redirections(tokens)))
+			return (error_message(tokens), false);
 		prev = tokens;
 		tokens = tokens->next;
 	}
