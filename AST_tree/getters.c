@@ -19,15 +19,15 @@ static void	jump_subshells(t_list **tokens)
 
 	counter = 0;
 	iter = *tokens;
-	if (((t_token *)iter->content)->o_type == OP_SUBSHELL_OPEN)
-		++counter;
-	while (iter && counter)
+	while (iter)
 	{
 		if (((t_token *)iter->content)->o_type == OP_SUBSHELL_OPEN)
 			++counter;
 		else if (((t_token *)iter->content)->o_type == OP_SUBSHELL_CLOSE)
 			--counter;
 		iter = iter->next;
+		if (!counter)
+			break ;
 	}
 	*tokens = iter;
 }
@@ -38,7 +38,7 @@ void	get_logic(t_list **prev, t_list *tokens)
 	{
 		if (((t_token *)tokens->content)->o_type == OP_SUBSHELL_OPEN)
 			jump_subshells(&tokens);
-		if (!tokens)
+		if (!tokens || !tokens->next)
 			return ;
 		if ((((t_token *)tokens->next->content)->o_type == OP_AND
 			|| ((t_token *)tokens->next->content)->o_type == OP_OR))
@@ -61,7 +61,7 @@ void	get_pipe(t_list **prev, t_list *tokens)
 	}
 }
 
-static bool	create_node(t_ast_node **node, t_list *tokens)
+bool	create_node(t_ast_node **node, t_list *tokens)
 {
 	if (!node || *node)
 		return (false);
