@@ -1,9 +1,6 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include "tree.h"
-#include "token.h"
-#include "libft.h" // Для ft_calloc, ft_strdup, ft_lstnew, ft_lstadd_back
 
 // ------------------------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ -------------------------
 
@@ -73,8 +70,31 @@ void	print_ast(t_ast_node *node, int depth)
 
 int	main(void)
 {
-	t_list *tokens = NULL;
+	 char input[1024];
+    t_list *tokens = NULL;
 
+    // Read command from stdin
+    printf("Enter a command: ");
+    if (!fgets(input, sizeof(input), stdin))
+        return (1);
+
+    // Remove the newline character from the end of the string
+    input[strcspn(input, "\n")] = '\0';
+
+    // Tokenization
+    if (!get_tokens(input, &tokens)) {
+        ft_putstr_fd("❌ Tokenization error\n", STDERR_FILENO);
+        return (1);
+    }
+
+    // Syntax analysis
+    if (!syntax_analyse(tokens)) {
+        ft_putstr_fd("❌ Syntax error\n", STDERR_FILENO);
+    } else {
+        ft_putstr_fd("✅ Syntax is correct\n", STDOUT_FILENO);
+    }
+
+/*
 	// Пример: echo hello && ls | wc
 	tokens = add_token(tokens, WORD, OP_NONE, "echo");
 	tokens = add_token(tokens, WORD, OP_NONE, "hello");
@@ -82,7 +102,7 @@ int	main(void)
 	tokens = add_token(tokens, WORD, OP_NONE, "ls");
 	tokens = add_token(tokens, OPERATION, OP_PIPE, NULL);
 	tokens = add_token(tokens, WORD, OP_NONE, "wc");
-
+*/
 	t_ast_node *tree = ft_calloc(1, sizeof(t_ast_node));
 	tree_blossom(tree, tokens);
 
