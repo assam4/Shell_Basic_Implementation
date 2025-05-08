@@ -29,7 +29,7 @@ t_list *add_token(t_list *lst, t_token_type t_type, t_operator_type o_type, cons
 }
 
 // ------------------------- ФУНКЦИЯ ПЕЧАТИ ДЕРЕВА AST -------------------------
-
+/*
 void	print_ast(t_ast_node *node, int depth)
 {
 	if (!node)
@@ -65,24 +65,67 @@ void	print_ast(t_ast_node *node, int depth)
 	print_ast(node->left, depth + 1);
 	print_ast(node->right, depth + 1);
 }
+*/
+ // assuming definitions for t_ast_node, t_token, etc.
+
+static void print_indent(int depth)
+{
+    for (int i = 0; i < depth; ++i)
+        printf("│   ");
+}
+
+static void print_operator(t_ast_node *node)
+{
+    if (node->token->o_type == OP_AND)
+        printf("└── &&\n");
+    else if (node->token->o_type == OP_OR)
+        printf("└── ||\n");
+    else if (node->token->o_type == OP_PIPE)
+        printf("└── |\n");
+    else if (node->token->o_type == OP_SUBSHELL_OPEN)
+        printf("└── (SUBSHELL)\n");
+    else
+        printf("└── OPERATION\n");
+}
+
+static void print_command(t_ast_node *node)
+{
+    printf("└── CMD: ");
+    t_list *cmd = node->cmd;
+    while (cmd)
+    {
+        t_token *tok = (t_token *)cmd->content;
+        printf("%s ", tok->word);
+        cmd = cmd->next;
+    }
+    printf("\n");
+}
+
+void print_ast(t_ast_node *node, int depth)
+{
+    if (!node)
+        return;
+
+    print_indent(depth);
+
+    if (node->token->t_type == OPERATION)
+        print_operator(node);
+    else if (node->token->t_type == WORD)
+        print_command(node);
+
+    print_ast(node->left, depth + 1);
+    print_ast(node->right, depth + 1);
+}
 
 // ------------------------------ ТЕСТ ------------------------------
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	 char input[1024];
-    t_list *tokens = NULL;
-
-    // Read command from stdin
-    printf("Enter a command: ");
-    if (!fgets(input, sizeof(input), stdin))
-        return (1);
-
-    // Remove the newline character from the end of the string
-    input[strcspn(input, "\n")] = '\0';
-
-    // Tokenization
-    if (!get_tokens(input, &tokens)) {
+    t_list *tokens;
+    tokens = NULL;
+	
+    (void)argc;
+    if (!get_tokens(argv[1], &tokens)) {
         ft_putstr_fd("❌ Tokenization error\n", STDERR_FILENO);
         return (1);
     }

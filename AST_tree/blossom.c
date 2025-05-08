@@ -15,6 +15,7 @@
 static bool	get_subshell(t_ast_node *tree, t_list *tokens)
 {
 	t_list	*temp;
+	t_list	*temp2;
 	int	counter;
 
 	temp = NULL;
@@ -39,8 +40,11 @@ static bool	get_subshell(t_ast_node *tree, t_list *tokens)
 			else
 				tokens = tokens->next;
 		}
-		ft_lstclear(&(tokens->next), token_free);
-		tokens->next = NULL;
+		temp2 = tokens->next;
+		tokens->next = tokens->next->next;
+		temp2->next = NULL;
+		ft_lstclear(&temp2, token_free);
+		//tokens->next = NULL;
 		if (!create_node(&(tree->left), temp))
 			return (false);
 		return (true);

@@ -25,9 +25,9 @@ static void	jump_subshells(t_list **tokens)
 			++counter;
 		else if (((t_token *)iter->content)->o_type == OP_SUBSHELL_CLOSE)
 			--counter;
-		iter = iter->next;
 		if (!counter)
 			break ;
+		iter = iter->next;
 	}
 	*tokens = iter;
 }
@@ -53,7 +53,7 @@ void	get_pipe(t_list **prev, t_list *tokens)
 	{
 		if (((t_token *)tokens->content)->o_type == OP_SUBSHELL_OPEN)
 			jump_subshells(&tokens);
-		if (!tokens)
+		if (!tokens || !tokens->next)
 			return ;
 		if (((t_token *)tokens->next->content)->o_type == OP_PIPE)
 			*prev = tokens;
