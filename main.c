@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:08:23 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/09 16:56:36 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/10 00:31:17 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,19 @@ void	print_ast(t_ast_node *node, int depth)
 			printf("%s ", tok->word);
 			cmd = cmd->next;
 		}
+		if (node->redir)
+			printf("Redirs: ");
+		t_list *tmp = node->redir;
+		while (tmp)
+		{
+			if (((t_token *)tmp->content)->r_type == REDIR_IN) printf("<%s", ((t_token *)tmp->content)->word);
+			else if (((t_token *)tmp->content)->r_type == REDIR_OUT) printf(">%s", ((t_token *)tmp->content)->word);
+			else if (((t_token *)tmp->content)->r_type == REDIR_APPEND) printf(">>%s", ((t_token *)tmp->content)->word);
+			else if (((t_token *)tmp->content)->r_type == REDIR_HERE_DOC) printf("<<%s", ((t_token *)tmp->content)->word);
+			printf(" ");
+			tmp = tmp->next;
+		}
+
 		printf("\n");
 	}
 
@@ -125,7 +138,6 @@ int	main(int argc, char **argv)
 	printf("===== AST Tree =====\n");
 	print_ast(tree, 0);
 	tree_felling(&tree);
-//	free(tokens);
 
 	return (0);
 }

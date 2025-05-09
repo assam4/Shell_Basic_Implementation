@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:12:16 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/09 17:34:03 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/10 00:36:53 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	tree_felling(t_ast_node **tree)
 {
+	t_list		*tmp;
+
 	token_free((*tree)->token);
 	if ((*tree)->left)
 		tree_felling(&(*tree)->left);
@@ -24,6 +26,17 @@ void	tree_felling(t_ast_node **tree)
 	if ((*tree)->cmd)
 		ft_lstclear(&(*tree)->cmd, token_free);
 	(*tree)->cmd = NULL;
+	if ((*tree)->redir)
+	{
+		tmp = (*tree)->redir;
+		while (tmp)
+		{
+			free(((t_token *)tmp->content)->word);
+			tmp = tmp->next;
+		}
+		ft_lstclear(&(*tree)->redir, token_free);
+		(*tree)->redir = NULL;
+	}
 	free(*tree);
 	*tree = NULL;
 }
@@ -69,6 +82,35 @@ static int	get_subshell(t_ast_node *tree, t_list *tokens)
 		return (false);
 }
 
+void	token_spliter(t_ast_node *tree, t_list *tokens)
+{
+	t_list	*tmp;
+
+	while (tokens)
+	{
+		if (((t_token *)tokens->content)->t_type == WORD)
+		{
+			tmp = tokens;
+			tokens = tokens->next;
+			tmp->next = NULL;
+			ft_lstadd_back(&tree->cmd, tmp);
+		}
+		else if (((t_token *)tokens->content)->t_type == REDIRECTION)
+		{
+			tmp = tokens;
+			tokens = tokens->next;
+			tmp->next = NULL;
+			ft_lstadd_back(&tree->redir, tmp);
+			((t_token *)tmp->content)->word
+				= ((t_token *)tokens->content)->word;
+			tmp = tokens;
+			tokens = tokens->next;
+			free(tmp->content);
+			free(tmp);
+		}
+	}
+}
+
 int	tree_blossom(t_ast_node *tree, t_list *tokens)
 {
 	int	status;
@@ -88,7 +130,7 @@ int	tree_blossom(t_ast_node *tree, t_list *tokens)
 		if (!tree->token)
 			return (ENOMEM);
 		tree->token->t_type = WORD;
-		tree->cmd = tokens;
+		token_spliter(tree, tokens);
 	}
 	return (true);
 }
