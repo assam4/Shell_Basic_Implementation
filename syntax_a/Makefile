@@ -18,7 +18,7 @@ $(NAME): $(LIBFT) $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
-	$(MAKE) -C ../libft bonus
+	$(MAKE) -C ../libft
 
 fclean:
 	rm -f $(OBJS)

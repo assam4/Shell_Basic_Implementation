@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:12:16 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/07 21:27:44 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/09 17:34:03 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ static int	get_subshell(t_ast_node *tree, t_list *tokens)
 		sub_content = get_sub_content(tree, &tokens);
 		if (!create_node(&(tree->left), sub_content))
 			return (ENOMEM);
-		return (FINDED);
+		return (true);
 	}
 	else
-		return (UNFIND);
+		return (false);
 }
 
 int	tree_blossom(t_ast_node *tree, t_list *tokens)
@@ -90,5 +90,5 @@ int	tree_blossom(t_ast_node *tree, t_list *tokens)
 		tree->token->t_type = WORD;
 		tree->cmd = tokens;
 	}
-	return (FINDED);
+	return (true);
 }

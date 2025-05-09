@@ -73,9 +73,9 @@ bool	create_node(t_ast_node **node, t_list *tokens)
 	return (true);
 }
 
-int	get_operator(t_ast_node *tree
-			, t_list *tokens
-			, void getter(t_list **, t_list *))
+int	get_operator(t_ast_node *tree,
+			t_list *tokens,
+			void getter(t_list **, t_list *))
 {
 	t_list	*prev;
 	t_list	*oper;
@@ -83,7 +83,7 @@ int	get_operator(t_ast_node *tree
 	prev = NULL;
 	getter(&prev, tokens);
 	if (!prev)
-		return (UNFIND);
+		return (false);
 	else
 	{
 		tree->token = (t_token *)prev->next->content;
@@ -96,5 +96,5 @@ int	get_operator(t_ast_node *tree
 		if (!create_node(&(tree->left), tokens))
 			return (ft_lstclear(&tokens, token_free), ENOMEM);
 	}
-	return (FINDED);
+	return (true);
 }

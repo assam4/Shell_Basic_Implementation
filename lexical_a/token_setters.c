@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_setters.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 12:30:06 by saslanya          #+#    #+#             */
-/*   Updated: 2025/04/19 12:30:08 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/09 17:34:39 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ void	set_wd_token(const char **line, t_token *token)
 	(*line) += i;
 }
 
-bool	get_token(const char **line, t_list **tokens
-		, void (*setter)(const char **line, t_token *))
+bool	get_token(const char **line, t_list **tokens,
+		void (*setter)(const char **line, t_token *))
 {
 	t_list	*new_item;
 	t_token	*token;

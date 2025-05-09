@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:46:33 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/07 20:49:03 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/09 17:35:09 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 
 # include <errno.h>
 # include "syntax.h"
-
-# define FINDED 1
-# define UNFIND 0
 
 typedef struct s_ast_node
 {
