@@ -19,7 +19,7 @@ bool	ft_isspace(const char *line)
 
 bool	is_operation(const char *line)
 {
-	if (*line == '&' && *(line + 1) == '&')
+	if (*line == '&')
 		return (true);
 	if (*line == '(' || *line == ')')
 		return (true);

@@ -15,6 +15,9 @@
 
 # include "token.h"
 
+# define ERR_MESSAGE "minishell: syntax error near unexpected token `"
+
+void	error_message(const t_list *prev, const t_list *tokens);
 bool	syntax_analyse(const t_list *tokens);
 
 #endif

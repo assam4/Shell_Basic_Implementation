@@ -3,38 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/11 17:29:09 by aadyan            #+#    #+#             */
-/*   Updated: 2024/10/11 17:43:13 by aadyan           ###   ########.fr       */
+/*   Created: 2025/01/19 15:51:10 by saslanya          #+#    #+#             */
+/*   Updated: 2025/01/21 23:22:17 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putnbr_fd(int nb, int fd)
+static void	recursive_output(unsigned int nbr, int fd)
 {
-	int		n;
-	char	c;
+	char	letter;
 
-	if (nb == -2147483648)
+	if (nbr <= 9)
 	{
-		ft_putstr_fd("-2147483648", fd);
+		letter = nbr + '0';
+		write(fd, &letter, 1);
 		return ;
 	}
-	if (nb < 0)
+	else
 	{
-		ft_putchar_fd('-', fd);
-		nb = -nb;
+		recursive_output(nbr / 10, fd);
+		letter = nbr % 10 + '0';
+		write(fd, &letter, 1);
 	}
-	n = 1;
-	while (nb / n >= 10)
-		n *= 10;
-	while (n > 0)
+}
+
+void	ft_putnbr_fd(int n, int fd)
+{
+	unsigned int	nb;
+
+	if (fd <= 0)
+		return ;
+	if (n < 0)
 	{
-		c = (nb / n) + '0';
-		ft_putchar_fd(c, fd);
-		nb = nb % n;
-		n /= 10;
+		write(fd, "-", 1);
+		nb = -n;
 	}
+	else
+		nb = n;
+	recursive_output(nb, fd);
+	return ;
 }

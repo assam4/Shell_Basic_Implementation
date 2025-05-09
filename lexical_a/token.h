@@ -30,6 +30,7 @@ typedef enum e_operator_type
 	OP_AND,
 	OP_OR,
 	OP_END,
+	OP_BACKGROUND,
 	OP_SUBSHELL_OPEN,
 	OP_SUBSHELL_CLOSE
 }	t_operator_type;

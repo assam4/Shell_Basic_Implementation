@@ -3,102 +3,96 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/09 18:11:25 by aadyan            #+#    #+#             */
-/*   Updated: 2025/03/22 11:49:21 by aadyan           ###   ########.fr       */
+/*   Created: 2025/01/19 15:51:38 by saslanya          #+#    #+#             */
+/*   Updated: 2025/01/19 15:51:40 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	words_count(char const *str, char c)
+static size_t	words_calc(const char *s, char c)
 {
-	int	i;
-	int	count;
+	size_t	count;
+	size_t	is_new;
 
-	i = 0;
 	count = 0;
-	while (str[i])
+	is_new = 1;
+	while (*s)
 	{
-		while (str[i] && str[i] == c)
-			++i;
-		++count;
-		while (str[i] && str[i] != c)
-			++i;
+		if (*s != c && is_new)
+		{
+			is_new = 0;
+			++count;
+		}
+		else if (*s == c && !is_new)
+			is_new = 1;
+		++s;
 	}
-	if (str[i - 1] == c)
-		--count;
 	return (count);
 }
 
-static char	**allocate_matrix(char **matrix, char const *str, char c, int i)
+char	*new_word(const char **s, char c)
 {
-	int	count;
-	int	row;
+	char	*end;
+	size_t	word_len;
+	char	*new_word;
 
-	row = 0;
-	while (str[i])
-	{
-		count = 0;
-		while (str[i] && str[i] == c)
-			++i;
-		while (str[i] && str[i++] != c)
-			++count;
-		if (count)
-		{
-			matrix[row] = (char *)malloc((count + 1) * sizeof(char));
-			if (!matrix[row])
-			{
-				while (row >= 0)
-					free(matrix[row--]);
-				return (NULL);
-			}
-			row++;
-		}
-	}
-	return (matrix);
+	while (**s == c)
+		++*s;
+	end = ft_strchr(*s, c);
+	if (end)
+		word_len = end - *s;
+	else
+		word_len = ft_strlen(*s);
+	new_word = (char *)malloc((word_len + 1) * sizeof(char));
+	if (!new_word)
+		return (NULL);
+	ft_strlcpy(new_word, *s, word_len + 1);
+	if (end)
+		*s = end;
+	return (new_word);
 }
 
-static char	**fill_matrix(char **arr, char const *s, char c)
+static void	free_split(char ***s, size_t count)
 {
-	int	i;
-	int	row;
-	int	index;
+	size_t	i;
 
 	i = 0;
-	row = 0;
-	while (s[i])
+	while (i < count)
 	{
-		while (s[i] && s[i] == c)
-			++i;
-		index = 0;
-		while (s[i] && s[i] != c)
-		{
-			arr[row][index] = s[i];
-			++index;
-			++i;
-		}
-		if (s[i - 1] != c)
-		{
-			arr[row][index] = '\0';
-			++row;
-		}
+		free((*s)[i]);
+		++i;
 	}
-	arr[row] = NULL;
-	return (arr);
+	free(*s);
+	*s = NULL;
+	return ;
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**arr;
+	size_t	count;
+	char	**words_ptr;
+	size_t	index;
 
 	if (!s)
 		return (NULL);
-	arr = (char **)malloc((words_count(s, c) + 1) * sizeof(char *));
-	if (!arr)
+	count = words_calc(s, c) + 1;
+	words_ptr = (char **)malloc(count * sizeof(void *));
+	if (!words_ptr)
 		return (NULL);
-	arr = allocate_matrix(arr, s, c, 0);
-	arr = fill_matrix(arr, s, c);
-	return (arr);
+	index = 0;
+	while (index < count - 1)
+	{
+		words_ptr[index] = new_word(&s, c);
+		if (!words_ptr[index])
+		{
+			free_split(&words_ptr, index);
+			return (NULL);
+		}
+		++index;
+	}
+	words_ptr[index] = NULL;
+	return (words_ptr);
 }

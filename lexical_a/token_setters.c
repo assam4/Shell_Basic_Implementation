@@ -17,6 +17,8 @@ void	set_op_token(const char **line, t_token *token)
 	token->t_type = OPERATION;
 	if (**line == '&' && *(*line + 1) == '&')
 		token->o_type = OP_AND;
+	else if (**line == '&')
+		token->o_type = OP_BACKGROUND;
 	else if (**line == '|' && *(*line + 1) == '|')
 		token->o_type = OP_OR;
 	else if (**line == '|')

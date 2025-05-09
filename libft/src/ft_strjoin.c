@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/10 09:59:45 by aadyan            #+#    #+#             */
-/*   Updated: 2024/10/09 17:53:34 by aadyan           ###   ########.fr       */
+/*   Created: 2025/01/19 15:52:43 by saslanya          #+#    #+#             */
+/*   Updated: 2025/01/19 15:52:45 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,23 @@
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*str;
-	int		i;
-	int		index;
+	char	*ptr;
+	size_t	s1_len;
+	size_t	s2_len;
 
-	if (!s1 || !s2)
+	if (!s1 && !s2)
 		return (NULL);
-	str = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	if (!str)
-		return (NULL);
-	i = -1;
-	index = -1;
-	while (s1[++i])
-		str[++index] = s1[i];
-	i = -1;
-	while (s2[++i])
-		str[++index] = s2[i];
-	str[++index] = '\0';
-	return (str);
+	if (!s1)
+		return (ft_strdup(s2));
+	if (!s2)
+		return (ft_strdup(s1));
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	ptr = (char *)malloc((s1_len + s2_len + 1) * sizeof(char));
+	if (ptr)
+	{
+		ft_strlcpy(ptr, s1, s1_len + 1);
+		ft_strlcpy(ptr + s1_len, s2, s2_len + 1);
+	}
+	return (ptr);
 }

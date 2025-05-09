@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
+/*   ft_lstadd_front_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/14 16:52:36 by aadyan            #+#    #+#             */
-/*   Updated: 2024/10/29 11:38:05 by aadyan           ###   ########.fr       */
+/*   Created: 2025/01/19 15:47:48 by saslanya          #+#    #+#             */
+/*   Updated: 2025/01/19 15:47:50 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 void	ft_lstadd_front(t_list **lst, t_list *new)
 {
-	if (!new || !lst)
-		return ;
-	new->next = *lst;
-	*lst = new;
+	if (new)
+	{
+		new->next = *lst;
+		*lst = new;
+	}
+	return ;
 }

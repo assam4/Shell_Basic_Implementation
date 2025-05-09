@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -Werror -I./../libft -I./../lexical_a/  -I./ -g -fsanitiz
 LIBFT = ../libft/libft.a
 LEX_DIR = ../lexical_a/
 
-SRC = $(LEX_DIR)token_mgmt.c $(LEX_DIR)token_setters.c analyze.c test.c
+SRC = $(LEX_DIR)token_mgmt.c $(LEX_DIR)token_setters.c analyze.c utils.c test.c
 OBJS = $(SRC:.c=.o)
 
 all: $(NAME)
