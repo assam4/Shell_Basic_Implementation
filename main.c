@@ -138,7 +138,6 @@ int	main(int argc, char **argv)
 	printf("===== AST Tree =====\n");
 	print_ast(tree, 0);
 	tree_felling(&tree);
-
+//	free(tokens);
 	return (0);
 }
-

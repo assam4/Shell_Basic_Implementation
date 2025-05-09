@@ -35,6 +35,7 @@ typedef struct s_ast_node
 void	tree_felling(t_ast_node **tree);
 void	get_logic(t_list **prev, t_list *tokens);
 void	get_pipe(t_list **prev, t_list *tokens);
+void	token_spliter(t_ast_node *tree, t_list *tokens);
 bool	create_node(t_ast_node **node, t_list *tokens);
 int		get_operator(t_ast_node *tree, t_list *tokens,
 			void getter(t_list **, t_list *));

@@ -82,35 +82,6 @@ static int	get_subshell(t_ast_node *tree, t_list *tokens)
 		return (false);
 }
 
-void	token_spliter(t_ast_node *tree, t_list *tokens)
-{
-	t_list	*tmp;
-
-	while (tokens)
-	{
-		if (((t_token *)tokens->content)->t_type == WORD)
-		{
-			tmp = tokens;
-			tokens = tokens->next;
-			tmp->next = NULL;
-			ft_lstadd_back(&tree->cmd, tmp);
-		}
-		else if (((t_token *)tokens->content)->t_type == REDIRECTION)
-		{
-			tmp = tokens;
-			tokens = tokens->next;
-			tmp->next = NULL;
-			ft_lstadd_back(&tree->redir, tmp);
-			((t_token *)tmp->content)->word
-				= ((t_token *)tokens->content)->word;
-			tmp = tokens;
-			tokens = tokens->next;
-			free(tmp->content);
-			free(tmp);
-		}
-	}
-}
-
 int	tree_blossom(t_ast_node *tree, t_list *tokens)
 {
 	int	status;
