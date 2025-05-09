@@ -4,7 +4,7 @@ CC = cc
 
 INC = -I./../libft -I../syntax_a -I../lexical_a -I.
 
-CFLAGS = -Wall -Wextra -Werror  $(INC) 
+CFLAGS = -Wall -Wextra -Werror  $(INC) -g3 -fsanitize=address
 
 LIBFT = ../libft/libft.a
 

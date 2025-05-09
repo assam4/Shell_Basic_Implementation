@@ -13,7 +13,11 @@
 #ifndef TREE_H
 # define TREE_H
 
+# include <errno.h>
 # include "syntax.h"
+
+# define FINDED 1
+# define UNFIND 0
 
 typedef struct s_ast_node
 {
@@ -24,11 +28,12 @@ typedef struct s_ast_node
 	struct s_ast_node	*left;
 }	t_ast_node;
 
+void	tree_felling(t_ast_node **tree);
 void	get_logic(t_list **prev, t_list *tokens);
 void	get_pipe(t_list **prev, t_list *tokens);
 bool	create_node(t_ast_node **node, t_list *tokens);
-bool	get_operator(t_ast_node *tree, t_list *tokens,
+int		get_operator(t_ast_node *tree, t_list *tokens,
 			void getter(t_list **, t_list *));
-void	tree_blossom(t_ast_node *tree, t_list *tokens);
+int		tree_blossom(t_ast_node *tree, t_list *tokens);
 
 #endif	

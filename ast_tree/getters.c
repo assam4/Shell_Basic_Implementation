@@ -41,7 +41,7 @@ void	get_logic(t_list **prev, t_list *tokens)
 		if (!tokens || !tokens->next)
 			return ;
 		if ((((t_token *)tokens->next->content)->o_type == OP_AND
-			|| ((t_token *)tokens->next->content)->o_type == OP_OR))
+				|| ((t_token *)tokens->next->content)->o_type == OP_OR))
 			*prev = tokens;
 		tokens = tokens->next;
 	}
@@ -68,28 +68,33 @@ bool	create_node(t_ast_node **node, t_list *tokens)
 	*node = ft_calloc(1, sizeof(t_ast_node));
 	if (!*node)
 		return (false);
-	tree_blossom(*node, tokens);
+	if (tree_blossom(*node, tokens) == ENOMEM)
+		return (false);
 	return (true);
 }
 
-bool	get_operator(t_ast_node *tree
+int	get_operator(t_ast_node *tree
 			, t_list *tokens
 			, void getter(t_list **, t_list *))
 {
 	t_list	*prev;
+	t_list	*oper;
 
 	prev = NULL;
 	getter(&prev, tokens);
 	if (!prev)
-		return (false);
+		return (UNFIND);
 	else
 	{
 		tree->token = (t_token *)prev->next->content;
-		if (!create_node(&(tree->right), prev->next->next))
-			return (false);
+		oper = prev->next;
+		prev->next = prev->next->next;
+		free(oper);
+		if (!create_node(&(tree->right), prev->next))
+			return (ft_lstclear(&tokens, token_free), ENOMEM);
 		prev->next = NULL;
 		if (!create_node(&(tree->left), tokens))
-			return (false);
+			return (ft_lstclear(&tokens, token_free), ENOMEM);
 	}
-	return (true);
+	return (FINDED);
 }

@@ -12,62 +12,83 @@
 
 #include "tree.h"
 
-static bool	get_subshell(t_ast_node *tree, t_list *tokens)
+void	tree_felling(t_ast_node **tree)
+{
+	token_free((*tree)->token);
+	if ((*tree)->left)
+		tree_felling(&(*tree)->left);
+	(*tree)->left = NULL;
+	if ((*tree)->right)
+		tree_felling(&(*tree)->right);
+	(*tree)->right = NULL;
+	if ((*tree)->cmd)
+		ft_lstclear(&(*tree)->cmd, token_free);
+	(*tree)->cmd = NULL;
+	free(*tree);
+	*tree = NULL;
+}
+
+static t_list	*get_sub_content(t_ast_node *tree, t_list **tokens)
 {
 	t_list	*temp;
-	t_list	*temp2;
-	int	counter;
+	int		counter;
 
-	temp = NULL;
+	counter = 1;
+	tree->token = (t_token *)(*tokens)->content;
+	temp = *tokens;
+	*tokens = (*tokens)->next;
+	free(temp);
+	temp = *tokens;
+	while ((*tokens)->next)
+	{
+		if (((t_token *)(*tokens)->next->content)->o_type
+			== OP_SUBSHELL_OPEN)
+			++counter;
+		else if (((t_token *)(*tokens)->next->content)->o_type
+			== OP_SUBSHELL_CLOSE)
+			--counter;
+		if (!counter)
+			break ;
+		*tokens = (*tokens)->next;
+	}
+	return (temp);
+}
+
+static int	get_subshell(t_ast_node *tree, t_list *tokens)
+{
+	t_list	*sub_content;
+
 	if (((t_token *)tokens->content)->o_type == OP_SUBSHELL_OPEN)
 	{
-		counter = 1;
-		tree->token = (t_token *)tokens->content;
-		temp = tokens;
-		tokens = tokens->next;
-		free(temp);
-		temp = tokens;
-		while (tokens->next)
-		{
-			if (((t_token *)tokens->next->content)->o_type
-				== OP_SUBSHELL_OPEN)
-				++counter;
-			else if (((t_token *)tokens->next->content)->o_type
-				== OP_SUBSHELL_CLOSE)
-				--counter;
-			if (!counter)
-				break ;
-			else
-				tokens = tokens->next;
-		}
-		temp2 = tokens->next;
-		tokens->next = tokens->next->next;
-		temp2->next = NULL;
-		ft_lstclear(&temp2, token_free);
-		//tokens->next = NULL;
-		if (!create_node(&(tree->left), temp))
-			return (false);
-		return (true);
+		sub_content = get_sub_content(tree, &tokens);
+		if (!create_node(&(tree->left), sub_content))
+			return (ENOMEM);
+		return (FINDED);
 	}
 	else
-		return (false);
+		return (UNFIND);
 }
-	
 
-void	tree_blossom(t_ast_node *tree, t_list *tokens)
+int	tree_blossom(t_ast_node *tree, t_list *tokens)
 {
-	if (get_operator(tree, tokens, get_logic))
-		return ;
-	else if (get_operator(tree, tokens, get_pipe))
-		return ;
-	else if (get_subshell(tree, tokens))
-		return ;
+	int	status;
+
+	status = get_operator(tree, tokens, get_logic);
+	if (status)
+		return (status);
+	status = get_operator(tree, tokens, get_pipe);
+	if (status)
+		return (status);
+	status = get_subshell(tree, tokens);
+	if (status)
+		return (status);
 	else
 	{
 		tree->token = ft_calloc(1, sizeof(t_token));
 		if (!tree->token)
-			return ;
+			return (ENOMEM);
 		tree->token->t_type = WORD;
 		tree->cmd = tokens;
 	}
+	return (FINDED);
 }
