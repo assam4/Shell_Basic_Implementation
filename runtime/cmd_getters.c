@@ -12,37 +12,34 @@
 
 #include "executor.h"
 
-static char	*ft_join_with_sep(char const *s1, char const *s2, char sep)
+static char	*ft_join_with_sep(char const *s1, char const *s2, int sep)
 {
 	char	*str;
-	int		i;
-	int		index;
+	int		len[2];
 
 	if (!s1 || !s2)
 		return (NULL);
-	str = ft_calloc((ft_strlen(s1) + ft_strlen(s2) + 2),
-			sizeof(char));
+	len[0] = ft_strlen(s1);
+	len[1] = ft_strlen(s2);
+	str = ft_calloc(len[0] + len[1] + 2, sizeof(char));
 	if (!str)
 		return (NULL);
-	i = -1;
-	index = -1;
-	while (s1[++i])
-		str[++index] = s1[i];
-	str[++index] = sep;
-	i = -1;
-	while (s2[++i])
-		str[++index] = s2[i];
+	ft_strlcpy(str, s1, len[0] + 1);
+	str[len[0]] = sep;
+	ft_strlcpy(str + len[0] + 1, s2, len[1] + 1);
 	return (str);
 }
 
 char	*get_env_value(char **env, char *key)
 {
-	int	i;
+	size_t	key_len;
+	int		i;
 
 	i = -1;
+	key_len = ft_strlen(key);
 	while (env[++i])
-		if (ft_strncmp(env[i], key, ft_strlen(key)) == 0)
-			return (ft_strdup(env[i] + ft_strlen(key)));
+		if (!ft_strncmp(env[i], key, key_len))
+			return (ft_strdup(env[i] + key_len));
 	return (NULL);
 }
 
@@ -58,14 +55,13 @@ char	*ret_command(char *command, char **env)
 	free(path);
 	if (ft_strchr(command, '/'))
 		return (ft_strdup(command));
-	i = 0;
-	while (splited_path[i])
+	i = -1;
+	while (splited_path[++i])
 	{
 		command_path = ft_join_with_sep(splited_path[i], command, '/');
-		if (access(command_path, F_OK | X_OK) == 0)
+		if (access(command_path, F_OK | X_OK) == EXIT_SUCCESS)
 			return (ft_split_free(splited_path), command_path);
 		free(command_path);
-		i++;
 	}
 	ft_split_free(splited_path);
 	return (NULL);

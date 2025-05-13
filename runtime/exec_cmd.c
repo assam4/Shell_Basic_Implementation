@@ -16,11 +16,11 @@ void	ft_split_free(char **arr)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	if (!arr)
 		return ;
-	while (arr[i])
-		free(arr[i++]);
+	while (arr[++i])
+		free(arr[i]);
 	free(arr);
 }
 
@@ -42,8 +42,7 @@ static bool	init_cmds(char **cmd, char ***splited_cmd,
 
 static void	print_error(char *cmd, char *mess)
 {
-	if (cmd)
-		ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putstr_fd(cmd, STDERR_FILENO);
 	ft_putstr_fd(mess, STDERR_FILENO);
 }
 
