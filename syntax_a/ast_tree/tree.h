@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:46:33 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/09 23:11:10 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/13 18:06:14 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,6 @@
 
 # include <errno.h>
 # include "syntax.h"
-
-typedef struct s_redir
-{
-	t_redirection_type	type;
-	char				*filename;
-	struct s_redir		*next;
-}	t_redir;
 
 typedef struct s_ast_node
 {

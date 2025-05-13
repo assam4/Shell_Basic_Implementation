@@ -35,7 +35,6 @@ SRCS		=	$(SRCS_DIR)/ft_isalpha.c \
 				$(SRCS_DIR)/ft_putstr_fd.c \
 				$(SRCS_DIR)/ft_putendl_fd.c \
 				$(SRCS_DIR)/ft_strncmp.c \
-				$(SRCS_DIR)/ft_strncmp.c \
 				$(SRCS_DIR)/ft_isprint.c \
 				$(SRCS_DIR)/ft_toupper.c \
 				$(SRCS_DIR)/ft_isalnum.c \
@@ -75,7 +74,7 @@ $(BUILD):
 	@mkdir -p $(BUILD)
 
 clean:
-	@rm -rf $(OBJS)
+	@rm -rf $(BUILD)
 
 fclean:	clean
 	@rm -rf $(NAME)

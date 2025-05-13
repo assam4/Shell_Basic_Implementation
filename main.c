@@ -6,13 +6,14 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:08:23 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/10 00:31:17 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/13 19:37:59 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <string.h>
 #include "tree.h"
+#include "executor.h"
 
 // ------------------------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ -------------------------
 
@@ -103,41 +104,41 @@ void	print_ast(t_ast_node *node, int depth)
 
 // ------------------------------ ТЕСТ ------------------------------
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
-    t_list *tokens;
-    tokens = NULL;
-	
-    (void)argc;
-    if (!get_tokens(argv[1], &tokens)) {
-        ft_putstr_fd("❌ Tokenization error\n", STDERR_FILENO);
-        return (1);
-    }
+	t_list *tokens = NULL;
 
-    // Syntax analysis
-    if (!syntax_analyse(tokens)) {
-        ft_putstr_fd("❌ Syntax error\n", STDERR_FILENO);
+	if (argc < 2)
+	{
+		ft_putstr_fd("Usage: ./test \"your command\"\n", STDERR_FILENO);
+		return (1);
+	}
+
+	if (!get_tokens(argv[1], &tokens)) {
+		ft_putstr_fd("❌ Tokenization error\n", STDERR_FILENO);
+		return (1);
+	}
+
+	if (!syntax_analyse(tokens)) {
+		ft_putstr_fd("❌ Syntax error\n", STDERR_FILENO);
 		ft_lstclear(&tokens, token_free);
 		return (1);
-    } else {
-        ft_putstr_fd("✅ Syntax is correct\n", STDOUT_FILENO);
-    }
+	}
+	else {
+		ft_putstr_fd("✅ Syntax is correct\n", STDOUT_FILENO);
+	}
 
-/*
-	// Пример: echo hello && ls | wc
-	tokens = add_token(tokens, WORD, OP_NONE, "echo");
-	tokens = add_token(tokens, WORD, OP_NONE, "hello");
-	tokens = add_token(tokens, OPERATION, OP_AND, NULL);
-	tokens = add_token(tokens, WORD, OP_NONE, "ls");
-	tokens = add_token(tokens, OPERATION, OP_PIPE, NULL);
-	tokens = add_token(tokens, WORD, OP_NONE, "wc");
-*/
 	t_ast_node *tree = ft_calloc(1, sizeof(t_ast_node));
 	tree_blossom(tree, tokens);
 
 	printf("===== AST Tree =====\n");
 	print_ast(tree, 0);
+	printf("====================\n\n");
+
+	// ✅ Вызов execute_node
+	execute_node(tree, envp);
+
 	tree_felling(&tree);
-//	free(tokens);
 	return (0);
 }
+
