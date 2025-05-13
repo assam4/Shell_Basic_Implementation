@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 17:39:03 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/13 20:40:57 by aadyan           ###   ########.fr       */
+/*   Created: 2025/05/13 21:32:03 by saslanya          #+#    #+#             */
+/*   Updated: 2025/05/13 21:54:02 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ bool	execute_node(t_ast_node *node, char **env)
 	else if (node->token->o_type == OP_OR)
 		return (execute_node(node->left, env)
 			|| execute_node(node->right, env));
+	else if (node->token->o_type == OP_PIPE)
+		return (execute_pipe(node->left, node->right, env));
 	else if (node->token->o_type == OP_SUBSHELL_OPEN)
 		return (execute_subshell(node, env));
 	else

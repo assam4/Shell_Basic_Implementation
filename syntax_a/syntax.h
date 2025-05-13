@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 12:28:41 by saslanya          #+#    #+#             */
-/*   Updated: 2025/04/19 12:28:43 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/13 21:24:00 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define SYNTAX_H
 
 # include "token.h"
+# include "tree.h"
 
 # define ERR_MESSAGE "minishell: syntax error near unexpected token `"
 
