@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/13 20:41:46 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/14 02:36:21 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ bool	execute_cmd(t_ast_node *node, char **env)
 	char	*cmd;
 	int		status;
 
+	set_redirs(node);
 	if (!init_cmds(&cmd, &splited_cmd, node, env))
 		return (false);
 	pid = fork();
