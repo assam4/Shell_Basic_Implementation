@@ -5,6 +5,6 @@
 # include <sys/types.h>
 # include "syntax.h"
 
-bool	execute_node(t_ast_node	*node);
+bool	execute_node(t_ast_node	*node, char **env);
 
 #endif

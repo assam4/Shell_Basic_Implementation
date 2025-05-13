@@ -1,6 +1,6 @@
 #include "executor.h"
 
-static bool	execute_subshell(t_ast_node *node)
+static bool	execute_subshell(t_ast_node *node, char **env)
 {
 	pid_t	process_id;
 	int		status;
@@ -8,7 +8,7 @@ static bool	execute_subshell(t_ast_node *node)
 	process_id = fork();
 	if (!process_id)
 	{
-		if (execute_node(node->left))
+		if (execute_node(node->left, env))
 			exit(EXIT_SUCCESS);
 		else
 			exit(EXIT_FAILURE);
@@ -22,18 +22,20 @@ static bool	execute_subshell(t_ast_node *node)
 		return (false);
 }
 
-bool	execute_node(t_ast_node *node)
+bool	execute_node(t_ast_node *node, char **env)
 {
 	if (!node)
 		return (true);
 	else if (node->token->o_type == OP_AND)
-		return (execute_node(node->left) && execute_node(node->right));
+		return (execute_node(node->left, env)
+			&& execute_node(node->right, env));
 	else if (node->token->o_type == OP_OR)
-		return (execute_node(node->left) || execute_node(node->right));
+		return (execute_node(node->left, env)
+			|| execute_node(node->right, env));
 	else if (node->token->o_type == OP_PIPE)
-		return (execute_pipe(node->left, node->right));
+		return (execute_pipe(node->left, node->right, env));
 	else if (node->token->o_type == OP_SUBSHELL_OPEN)
-		return (execute_subshell(node));
+		return (execute_subshell(node, env));
 	else
-		return (execute_cmd(node));
+		return (execute_cmd(node, env));
 }
