@@ -13,7 +13,7 @@
 #ifndef TOKEN_H
 # define TOKEN_H
 
-# include "libft.h"
+# include "get_next_line.h"
 # include <stdbool.h>
 
 typedef enum e_token_type

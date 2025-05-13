@@ -14,7 +14,7 @@ OBJ =			$(SRC:%.c=$(BUILD_DIR)/%.o)
 
 FLAGS			= -Wall -Wextra -Werror -g3 -fsanitize=address
 
-LIBFT_DIR		= ./libft
+LIBFT_DIR		= ./library/libft
 
 LIBFT			= -L$(LIBFT_DIR) -lft
 
