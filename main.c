@@ -48,6 +48,11 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 			break ;
 		}
+		else if (*line == NEWLINE)
+		{
+			free(line);
+			continue ;
+		}
 		if (!get_tokens(line, &tokens))
 		return (free(line), ft_putstr_fd("❌ Tokenization error\n", STDERR_FILENO), ENOMEM);
 		free(line);
