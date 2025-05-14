@@ -32,6 +32,11 @@ static bool	init_cmds(char **cmd, char ***splited_cmd,
 	full_cmd = get_cmd(node->cmd);
 	if (!full_cmd)
 		return (false);
+	if (!*full_cmd)
+	{
+		*splited_cmd = NULL;
+		return (free(full_cmd), true);
+	}
 	*splited_cmd = ft_split(full_cmd, ' ');
 	free(full_cmd);
 	if (!*splited_cmd)
@@ -60,7 +65,8 @@ bool	execute_cmd(t_ast_node *node, char **env)
 	if (pid == 0)
 	{
 		execve(cmd, splited_cmd, env);
-		print_error(splited_cmd[0], ": command not found");
+		if (splited_cmd)
+			print_error(splited_cmd[0], ": command not found\n");
 		free(cmd);
 		ft_split_free(splited_cmd);
 		exit(EXIT_FAILURE);

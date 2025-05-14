@@ -72,21 +72,25 @@ static char	*get_full_cmd(t_list *cmd, int size)
 	char	*str_cmd;
 	t_list	*iter;
 	size_t	len;
+	int		i;
 
-	str_cmd = ft_calloc(size, sizeof(char));
+	str_cmd = ft_calloc(size + 1, sizeof(char));
 	if (!str_cmd)
 		return (NULL);
 	iter = cmd;
 	while (iter)
 	{
 		len = ft_strlen(str_cmd);
-		size = -1;
-		while (((t_token *)iter->content)->word[++size])
-			str_cmd[len + size] = ((t_token *)iter->content)->word[size];
+		i = 0;
+		while (((t_token *)iter->content)->word[i])
+		{
+			str_cmd[len + i] = ((t_token *)iter->content)->word[i];
+			++i;
+		}
 		if (iter->next)
-			str_cmd[len + size] = ' ';
+			str_cmd[len + i] = ' ';
 		else
-			str_cmd[len + size] = '\0';
+			str_cmd[len + i] = '\0';
 		iter = iter->next;
 	}
 	return (str_cmd);
@@ -104,5 +108,5 @@ char	*get_cmd(t_list *cmd)
 		size += ft_strlen(((t_token *)iter->content)->word) + 1;
 		iter = iter->next;
 	}
-	return (get_full_cmd(cmd, size));
+	return (get_full_cmd(cmd, size + 1));
 }

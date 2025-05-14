@@ -43,8 +43,8 @@ static bool	check_redirections(const t_list *tokens)
 	if (!tokens->next)
 		return (false);
 	next = (t_token *)tokens->next->content;
-	if (next->t_type != WORD
-		|| (!next->word || (*(next->word) == '\0' || *(next->word) == '\n')))
+	if (!next || next->t_type != WORD
+		|| !next->word || *(next->word) == '\0' || *(next->word) == '\n')
 		return (false);
 	else
 		return (true);

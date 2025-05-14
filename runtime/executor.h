@@ -20,7 +20,7 @@
 # include "syntax.h"
 # include "tree.h"
 
-#define TMP_FILE "/tmp/minishell.tmp"
+# define TMP_FILE "/tmp/minishell.tmp"
 
 bool	execute_node(t_ast_node	*node, char **env);
 bool	execute_cmd(t_ast_node *node, char **env);

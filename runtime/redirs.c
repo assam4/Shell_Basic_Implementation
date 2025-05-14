@@ -12,22 +12,6 @@
 
 #include "executor.h"
 
-int	ft_strcmp(char *s1, char *s2)
-{
-	unsigned int	i;
-
-	i = 0;
-	if (!s1 || !s2)
-		return (0);
-	while ((s1[i] || s2[i]))
-	{
-		if (s1[i] != s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		++i;
-	}
-	return (0);
-}
-
 static void	here_doc_input(char *limiter)
 {
 	char	*str;
@@ -35,19 +19,24 @@ static void	here_doc_input(char *limiter)
 	char	*lim;
 
 	fd = open(TMP_FILE, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+	if (fd == -1)
+		return ;
 	lim = ft_strjoin(limiter, "\n");
+	if (!lim)
+	{
+		close(fd);
+		return ;
+	}
 	while (1)
 	{
-		ft_putstr_fd("> ", 1);
-		str = get_next_line(0);
-		if (!str || ft_strcmp(str, lim) == 0)
-		{
-			free(str);
+		ft_putstr_fd("> ", STDOUT_FILENO);
+		str = get_next_line(STDIN_FILENO);
+		if (!str || !ft_strncmp(str, lim, ft_strlen(lim) + 1))
 			break ;
-		}
 		ft_putstr_fd(str, fd);
 		free(str);
 	}
+	free(str);
 	free(lim);
 	close(fd);
 }
@@ -71,25 +60,24 @@ static bool	open_redir(t_token *redir)
 {
 	int	fd;
 
-	fd = open_file(redir);
-	if (fd == -1)
-		return (false);
-	if (redir->r_type == REDIR_IN)
-		dup2(fd, STDIN_FILENO);
-	else if (redir->r_type == REDIR_OUT)
-		dup2(fd, STDOUT_FILENO);
-	else if (redir->r_type == REDIR_APPEND)
-		dup2(fd, STDOUT_FILENO);
-	else if (redir->r_type == REDIR_HERE_DOC)
+	if (redir->r_type == REDIR_HERE_DOC)
 	{
 		here_doc_input(redir->word);
 		fd = open(TMP_FILE, O_RDONLY);
 		if (fd == -1)
 			return (false);
-		dup2(fd, STDIN_FILENO);
 	}
+	else
+		fd = open_file(redir);
+	if (fd == -1)
+		return (false);
+	if (redir->r_type == REDIR_IN || redir->r_type == REDIR_HERE_DOC)
+		dup2(fd, STDIN_FILENO);
+	else if (redir->r_type == REDIR_OUT || redir->r_type == REDIR_APPEND)
+		dup2(fd, STDOUT_FILENO);
 	close(fd);
-	unlink(TMP_FILE);
+	if (redir->r_type == REDIR_HERE_DOC)
+		unlink(TMP_FILE);
 	return (true);
 }
 
