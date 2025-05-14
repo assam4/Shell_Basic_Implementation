@@ -58,7 +58,10 @@ bool	execute_cmd(t_ast_node *node, char **env)
 	char	*cmd;
 	int		status;
 
-	set_redirs(node);
+	if (!set_redirs(node))
+		return (false);
+	else if (!node->cmd)
+		return (true);
 	if (!init_cmds(&cmd, &splited_cmd, node, env))
 		return (false);
 	pid = fork();

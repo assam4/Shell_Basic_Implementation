@@ -59,18 +59,20 @@ static int	open_file(t_token *redir)
 static bool	open_redir(t_token *redir)
 {
 	int	fd;
+	int	stdin_cpy;
 
+	stdin_cpy = dup(STDIN_FILENO);
 	if (redir->r_type == REDIR_HERE_DOC)
 	{
 		here_doc_input(redir->word);
 		fd = open(TMP_FILE, O_RDONLY);
 		if (fd == -1)
-			return (false);
+			return (close(stdin_cpy), false);
 	}
 	else
 		fd = open_file(redir);
 	if (fd == -1)
-		return (false);
+		return (close(stdin_cpy), false);
 	if (redir->r_type == REDIR_IN || redir->r_type == REDIR_HERE_DOC)
 		dup2(fd, STDIN_FILENO);
 	else if (redir->r_type == REDIR_OUT || redir->r_type == REDIR_APPEND)
@@ -78,6 +80,8 @@ static bool	open_redir(t_token *redir)
 	close(fd);
 	if (redir->r_type == REDIR_HERE_DOC)
 		unlink(TMP_FILE);
+	dup2(stdin_cpy, STDIN_FILENO);
+	close(stdin_cpy);
 	return (true);
 }
 
@@ -86,7 +90,7 @@ bool	set_redirs(t_ast_node *node)
 	t_list	*iter;
 
 	if (!node->redir)
-		return (false);
+		return (true);
 	iter = node->redir;
 	while (iter)
 	{
