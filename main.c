@@ -69,6 +69,8 @@ int	main(int argc, char **argv, char **envp)
 		if (!get_tokens(line, &tokens))
 			return (free(line)
 				, ft_putstr_fd("Tokenization error\n", STDERR_FILENO), ENOMEM);
+		if (!tokens)
+			continue ;
 		free(line);
 		run_shell(&tokens, envp);
 	}

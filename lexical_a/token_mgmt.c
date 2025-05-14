@@ -40,6 +40,8 @@ void	token_free(void *data)
 	t_token	*token;
 
 	token = (t_token *)data;
+	if (token->is_tmp)
+		unlink(token->word);
 	if (token->t_type == WORD)
 		free(token->word);
 	free(token);

@@ -50,6 +50,7 @@ typedef struct s_token
 	t_operator_type		o_type;
 	t_redirection_type	r_type;
 	char				*word;
+	bool				is_tmp;
 }	t_token;
 
 void	token_free(void *data);

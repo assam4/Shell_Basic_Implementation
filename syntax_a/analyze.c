@@ -36,7 +36,7 @@ static bool	check_operations(const t_list *prev_l, const t_list *tokens)
 		return (true);
 }
 
-static bool	check_redirections(const t_list *tokens)
+static bool	check_redirections(t_list *tokens, int i)
 {
 	t_token	*next;
 
@@ -47,7 +47,12 @@ static bool	check_redirections(const t_list *tokens)
 		|| !next->word || *(next->word) == '\0' || *(next->word) == '\n')
 		return (false);
 	else
-		return (true);
+	{
+		if (heredoc_exec(tokens, i))
+			return (true);
+		else
+			return (false);
+	}
 }
 
 bool	check_subshell(const t_list *prev, const t_list *tokens, int *count)
@@ -76,14 +81,16 @@ bool	check_subshell(const t_list *prev, const t_list *tokens, int *count)
 	return (false);
 }
 
-bool	syntax_analyse(const t_list *tokens)
+bool	syntax_analyse(t_list *tokens)
 {
 	const t_list	*prev;
 	t_token			*t;
 	int				sub_count;
+	int				i;
 
 	prev = NULL;
 	sub_count = 0;
+	i = 0;
 	while (tokens)
 	{
 		t = (t_token *)tokens->content;
@@ -93,7 +100,7 @@ bool	syntax_analyse(const t_list *tokens)
 				return (false);
 		}
 		else if ((t->t_type == OPERATION && !(check_operations(prev, tokens)))
-			|| (t->t_type == REDIRECTION && !check_redirections(tokens)))
+			|| (t->t_type == REDIRECTION && !check_redirections(tokens, i++)))
 			return (error_message(prev, tokens), false);
 		prev = tokens;
 		tokens = tokens->next;
