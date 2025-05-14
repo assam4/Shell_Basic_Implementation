@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 01:08:23 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/14 01:08:23 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:20:09 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	*fd_getline(void)
 
 	while (1)
 	{
-		ft_putstr_fd("minishel: ", STDOUT_FILENO);
+		ft_putstr_fd("minishel> ", STDOUT_FILENO);
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			line = get_next_line(STDIN_FILENO);

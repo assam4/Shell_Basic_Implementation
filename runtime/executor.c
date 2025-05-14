@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 21:32:03 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/13 21:54:02 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/14 20:49:15 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static bool	execute_subshell(t_ast_node *node, char **env)
 		return (false);
 }
 
-static bool	stream_change(pid_t *process_id, t_ast_node *left
-			, t_ast_node *right, char **env)
+static bool	stream_change(pid_t *process_id, t_ast_node *left,
+			t_ast_node *right, char **env)
 {
 	int	fd[2];
 
@@ -68,11 +68,15 @@ static bool	execute_pipe(t_ast_node *left, t_ast_node *right, char **env)
 {
 	pid_t	process_id[2];
 	int		status[2];
+	int		stdout_cpy;
 
+	stdout_cpy = dup(STDOUT_FILENO);
 	if (!stream_change(process_id, left, right, env))
 		return (false);
 	waitpid(process_id[0], status, 0);
 	waitpid(process_id[1], status + 1, 0);
+	dup2(STDOUT_FILENO, stdout_cpy);
+	close(stdout_cpy);
 	return ((WIFEXITED(status[0]) && !WEXITSTATUS(status[0]))
 		&& (WIFEXITED(status[1]) && !WEXITSTATUS(status[1])));
 }

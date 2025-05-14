@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/14 02:36:21 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/14 18:03:51 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,13 @@ static void	print_error(char *cmd, char *mess)
 	ft_putstr_fd(mess, STDERR_FILENO);
 }
 
-bool	execute_cmd(t_ast_node *node, char **env)
+static int	create_fork(t_ast_node *node, char **env)
 {
-	pid_t	pid;
-	char	**splited_cmd;
 	char	*cmd;
+	char	**splited_cmd;
 	int		status;
+	pid_t	pid;
 
-	if (!set_redirs(node))
-		return (false);
-	else if (!node->cmd)
-		return (true);
 	if (!init_cmds(&cmd, &splited_cmd, node, env))
 		return (false);
 	pid = fork();
@@ -78,4 +74,24 @@ bool	execute_cmd(t_ast_node *node, char **env)
 	ft_split_free(splited_cmd);
 	waitpid(pid, &status, 0);
 	return (WIFEXITED(status) && !(WEXITSTATUS(status)));
+}
+
+bool	execute_cmd(t_ast_node *node, char **env)
+{
+	int		status;
+	int		stdin_cpy;
+	int		stdout_cpy;
+
+	stdin_cpy = dup(STDIN_FILENO);
+	stdout_cpy = dup(STDOUT_FILENO);
+	if (!set_redirs(node))
+		return (false);
+	if (!node->cmd)
+		return (true);
+	status = create_fork(node, env);
+	dup2(stdin_cpy, STDIN_FILENO);
+	dup2(stdout_cpy, STDOUT_FILENO);
+	close(stdin_cpy);
+	close(stdout_cpy);
+	return (status);
 }

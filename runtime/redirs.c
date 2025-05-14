@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 01:00:58 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/14 02:35:31 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/14 20:57:53 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,20 @@ static void	here_doc_input(char *limiter)
 	close(fd);
 }
 
+static int	here_doc_fork(t_token *redir)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == -1)
+		return (-1);
+	if (pid == 0)
+		here_doc_input(redir->word);
+	waitpid(pid, &status, 0);
+	return (WIFEXITED(status) && !(WEXITSTATUS(status)));
+}
+
 static int	open_file(t_token *redir)
 {
 	int	fd;
@@ -51,37 +65,33 @@ static int	open_file(t_token *redir)
 		fd = open(redir->word, O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	else if (redir->r_type == REDIR_APPEND)
 		fd = open(redir->word, O_CREAT | O_WRONLY | O_APPEND, 0664);
+	else if(redir->r_type == REDIR_HERE_DOC)
+		fd = open(TMP_FILE, O_RDONLY);
 	if (fd == -1)
 		return (-1);
 	return (fd);
 }
 
-static bool	open_redir(t_token *redir)
+static bool	open_redir(t_token *redir, t_ast_node *node)
 {
 	int	fd;
-	int	stdin_cpy;
 
-	stdin_cpy = dup(STDIN_FILENO);
-	if (redir->r_type == REDIR_HERE_DOC)
-	{
-		here_doc_input(redir->word);
-		fd = open(TMP_FILE, O_RDONLY);
-		if (fd == -1)
-			return (close(stdin_cpy), false);
-	}
-	else
-		fd = open_file(redir);
+	if (redir->r_type == REDIR_HERE_DOC && here_doc_fork(redir) != 1)
+		return (false);
+	if (!node->cmd)
+		return (true);
+	fd = open_file(redir);
 	if (fd == -1)
-		return (close(stdin_cpy), false);
-	if (redir->r_type == REDIR_IN || redir->r_type == REDIR_HERE_DOC)
-		dup2(fd, STDIN_FILENO);
-	else if (redir->r_type == REDIR_OUT || redir->r_type == REDIR_APPEND)
-		dup2(fd, STDOUT_FILENO);
+		return (false);
+	if ((redir->r_type == REDIR_IN || redir->r_type == REDIR_HERE_DOC)
+		&& dup2(fd, STDIN_FILENO) == -1)
+		return (close(fd), unlink(TMP_FILE), false);
+	else if ((redir->r_type == REDIR_OUT || redir->r_type == REDIR_APPEND)
+		&& dup2(fd, STDOUT_FILENO) == -1)
+			return (close(fd), false);
 	close(fd);
 	if (redir->r_type == REDIR_HERE_DOC)
 		unlink(TMP_FILE);
-	dup2(stdin_cpy, STDIN_FILENO);
-	close(stdin_cpy);
 	return (true);
 }
 
@@ -94,7 +104,7 @@ bool	set_redirs(t_ast_node *node)
 	iter = node->redir;
 	while (iter)
 	{
-		if (!open_redir(iter->content))
+		if (!open_redir(iter->content, node))
 			return (false);
 		iter = iter->next;
 	}
