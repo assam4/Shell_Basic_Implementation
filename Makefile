@@ -12,7 +12,7 @@ BUILD_DIR		= ./.build
 
 OBJ =			$(SRC:%.c=$(BUILD_DIR)/%.o)
 
-FLAGS			= -Wall -Wextra -Werror -g3 -fsanitize=address
+FLAGS			= -Wall -Wextra -Werror -lreadline -g3 -fsanitize=address
 
 LIBFT_DIR		= ./library/libft
 
