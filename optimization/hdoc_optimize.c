@@ -75,7 +75,10 @@ void	optimize_loop(t_list *tokens)
 				if (arr[2]->t_type == WORD && !arr[2]->is_tmp)
 					content_swap(tokens->next, tokens->next->next);
 				else if (arr[2]->t_type == WORD && arr[2]->is_tmp)
+				{
 					hdoc_destroy(tokens);
+					continue ;
+				}
 			}
 			else
 				ft_lstclear(&tokens->next, token_free);

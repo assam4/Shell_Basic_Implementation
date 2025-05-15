@@ -36,11 +36,12 @@ static bool	check_operations(const t_list *prev_l, const t_list *tokens)
 		return (true);
 }
 
-static bool	check_redirections(t_list *tokens, int i)
+static bool	check_redirections(const t_list *prev, t_list *tokens, int i)
 {
 	t_token	*next;
 
-	if (!tokens->next)
+	if ((!prev || ((t_token *)prev->content)->is_tmp)
+		&& ((t_token *)tokens->content)->r_type == REDIR_IN)
 		return (false);
 	next = (t_token *)tokens->next->content;
 	if (!next || next->t_type != WORD
@@ -100,7 +101,8 @@ bool	syntax_analyse(t_list *tokens)
 				return (false);
 		}
 		else if ((t->t_type == OPERATION && !(check_operations(prev, tokens)))
-			|| (t->t_type == REDIRECTION && !check_redirections(tokens, i++)))
+			|| (t->t_type == REDIRECTION
+				&& !check_redirections(prev, tokens, i++)))
 			return (error_message(prev, tokens), false);
 		prev = tokens;
 		tokens = tokens->next;
