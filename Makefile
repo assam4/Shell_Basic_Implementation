@@ -2,7 +2,7 @@ MAKEFLAGS		= --no-print-directory
 
 NAME			= minishell
 
-SRC				= $(shell find . -path "./libft" -prune -o -name "*.c" ! -name "test.c" -print)
+SRC				= $(shell find . -path "./library/libft" -prune -o -name "*.c" ! -name "test.c" -print)
 
 INC				= $(shell find . \( -name ".git" -o -name ".vscode" \) -prune -o -type d -print | sed 's|^|-I |')
 

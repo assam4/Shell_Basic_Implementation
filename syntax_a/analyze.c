@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyze.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 12:28:41 by saslanya          #+#    #+#             */
-/*   Updated: 2025/04/19 12:28:43 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/15 18:06:20 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,20 @@ static bool	check_operations(const t_list *prev_l, const t_list *tokens)
 		return (true);
 }
 
-static bool	check_redirections(const t_list *prev, t_list *tokens, int i)
+static bool	check_redirections(t_list *tokens, int i)
 {
 	t_token	*next;
 
-	if ((!prev || ((t_token *)prev->content)->is_tmp)
-		&& ((t_token *)tokens->content)->r_type == REDIR_IN)
-		return (false);
 	next = (t_token *)tokens->next->content;
 	if (!next || next->t_type != WORD
 		|| !next->word || *(next->word) == '\0' || *(next->word) == '\n')
 		return (false);
 	else
 	{
-		if (heredoc_exec(tokens, i))
-			return (true);
+		if (((t_token *)tokens->content)->r_type == REDIR_HERE_DOC)
+			return (heredoc_exec(tokens, i));
 		else
-			return (false);
+			return (true);
 	}
 }
 
@@ -102,7 +99,7 @@ bool	syntax_analyse(t_list *tokens)
 		}
 		else if ((t->t_type == OPERATION && !(check_operations(prev, tokens)))
 			|| (t->t_type == REDIRECTION
-				&& !check_redirections(prev, tokens, i++)))
+				&& !check_redirections(tokens, i++)))
 			return (error_message(prev, tokens), false);
 		prev = tokens;
 		tokens = tokens->next;
