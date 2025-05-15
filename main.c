@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 01:08:23 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/15 21:27:57 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/16 00:38:07 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ static int	exec_line(char **envp)
 	t_list	*tokens;
 	char	*prompt;
 
-	prompt = get_prompt_line(envp);
 	while (1)
 	{
+		prompt = get_prompt_line(envp);
 		tokens = NULL;
 		line = readline(prompt);
 		if (line && *line)
@@ -79,8 +79,8 @@ static int	exec_line(char **envp)
 			continue ;
 		free(line);
 		run_shell(&tokens, envp);
+		free(prompt);
 	}
-	free(prompt);
 	return (1);
 }
 
