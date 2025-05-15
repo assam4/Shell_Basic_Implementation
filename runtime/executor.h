@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 23:46:44 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/14 02:27:18 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/15 18:28:07 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ char	*get_env_value(char **env, char *key);
 char	*get_cmd(t_list *cmd);
 void	ft_split_free(char **arr);
 bool	set_redirs(t_ast_node *node);
+void	print_error(char *mess1, char *mess2, bool flag);
 
 #endif

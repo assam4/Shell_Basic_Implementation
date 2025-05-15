@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/14 18:03:51 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/15 20:49:19 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,17 @@ static bool	init_cmds(char **cmd, char ***splited_cmd,
 	return (true);
 }
 
-static void	print_error(char *cmd, char *mess)
+void	print_error(char *mess1, char *mess2, bool flag)
 {
-	ft_putstr_fd(cmd, STDERR_FILENO);
-	ft_putstr_fd(mess, STDERR_FILENO);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(mess1, STDERR_FILENO);
+	if (mess2)
+		ft_putstr_fd(mess2, STDERR_FILENO);
+	if (flag)
+	{
+		ft_putstr_fd(": ", STDERR_FILENO);
+		perror("");
+	}
 }
 
 static int	create_fork(t_ast_node *node, char **env)
@@ -64,8 +71,12 @@ static int	create_fork(t_ast_node *node, char **env)
 	if (pid == 0)
 	{
 		execve(cmd, splited_cmd, env);
-		if (splited_cmd)
-			print_error(splited_cmd[0], ": command not found\n");
+		free(cmd);
+		cmd = get_env_value(env, "PATH:");
+		if (!cmd)
+			print_error(splited_cmd[0], ": no such file or directory\n", false);
+		else if (splited_cmd)
+			print_error(splited_cmd[0], ": command not found\n", false);
 		free(cmd);
 		ft_split_free(splited_cmd);
 		exit(EXIT_FAILURE);
@@ -84,9 +95,7 @@ bool	execute_cmd(t_ast_node *node, char **env)
 
 	stdin_cpy = dup(STDIN_FILENO);
 	stdout_cpy = dup(STDOUT_FILENO);
-	if (!node->cmd)
-		return (true);
-	if (node->token->t_type == WORD
+	if (node->token->t_type == WORD && node->cmd
 		&& ((t_token *)node->cmd->content)->is_tmp)
 		return (true);
 	if (!set_redirs(node))

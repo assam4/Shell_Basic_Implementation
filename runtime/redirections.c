@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirs.c                                           :+:      :+:    :+:   */
+/*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 01:00:58 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/15 20:57:53 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/15 20:32:18 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,16 @@ static int	open_file(t_token *redir)
 		fd = open(redir->word, O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	else if (redir->r_type == REDIR_APPEND)
 		fd = open(redir->word, O_CREAT | O_WRONLY | O_APPEND, 0664);
-	if (fd == -1)
-		return (-1);
 	return (fd);
 }
 
-static bool	open_redir(t_token *redir, t_ast_node *node)
+static bool	open_redir(t_token *redir)
 {
 	int	fd;
 
-	if (!node->cmd)
-		return (true);
 	fd = open_file(redir);
 	if (fd == -1)
-		return (false);
+		return (print_error(redir->word, NULL, true), false);
 	if ((redir->r_type == REDIR_IN)
 		&& dup2(fd, STDIN_FILENO) == -1)
 		return (close(fd), unlink(TMP_FILE), false);
@@ -55,7 +51,7 @@ bool	set_redirs(t_ast_node *node)
 	iter = node->redir;
 	while (iter)
 	{
-		if (!open_redir(iter->content, node))
+		if (!open_redir(iter->content))
 			return (false);
 		iter = iter->next;
 	}

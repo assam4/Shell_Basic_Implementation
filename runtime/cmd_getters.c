@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 17:36:54 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/13 22:01:40 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/15 20:44:10 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,12 @@ char	*ret_command(char *command, char **env)
 
 	path = get_env_value(env, "PATH=");
 	splited_path = ft_split(path, ':');
-	free(path);
 	if (ft_strchr(command, '/'))
 		return (ft_strdup(command));
 	i = -1;
+	if (!path)
+		return (NULL);
+	free(path);
 	while (splited_path[++i])
 	{
 		command_path = ft_join_with_sep(splited_path[i], command, '/');
