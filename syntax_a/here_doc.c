@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   here_doc.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/15 14:23:37 by saslanya          #+#    #+#             */
+/*   Updated: 2025/05/15 14:33:09 by saslanya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "syntax.h"
 
-void	token_swap(t_list *left, t_list *right)
+void	content_swap(t_list *first, t_list *second)
 {
-	void	*temp;
+	void	*tmp;
 
-	temp = left->content;
-	left->content = right->content;
-	right->content = temp;
+	tmp = first->content;
+	first->content = second->content;
+	second->content = tmp;
 }
 
 static bool	input_here_doc(char *tmp_file, char *limiter)

@@ -25,6 +25,7 @@ typedef struct s_ast_node
 	struct s_ast_node	*left;
 }	t_ast_node;
 
+void	optimize_heredoc(t_list **tokens);
 void	tree_felling(t_ast_node **tree);
 void	get_logic(t_list **prev, t_list *tokens);
 void	get_pipe(t_list **prev, t_list *tokens);

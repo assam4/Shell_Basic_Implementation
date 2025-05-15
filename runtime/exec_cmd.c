@@ -84,10 +84,13 @@ bool	execute_cmd(t_ast_node *node, char **env)
 
 	stdin_cpy = dup(STDIN_FILENO);
 	stdout_cpy = dup(STDOUT_FILENO);
-	if (!set_redirs(node))
-		return (false);
 	if (!node->cmd)
 		return (true);
+	if (node->token->t_type == WORD
+		&& ((t_token *)node->cmd->content)->is_tmp)
+		return (true);
+	if (!set_redirs(node))
+		return (false);
 	status = create_fork(node, env);
 	dup2(stdin_cpy, STDIN_FILENO);
 	dup2(stdout_cpy, STDOUT_FILENO);

@@ -38,43 +38,6 @@ static void	redirection_spliter(t_ast_node *tree, t_list **tokens)
 	free(temp);
 }
 
-static void	pair_setter(t_token **current, t_token **next, t_list *tokens)
-{
-	*current = (t_token *)(tokens)->content;
-	if (tokens->next)
-		*next = (t_token *)(tokens)->next->content;
-	else
-		*next = NULL;
-}
-
-static void	optimize_heredoc(t_list **tokens)
-{
-	t_token	*current;
-	t_token	*next;
-	t_list	*start;
-
-	start = *tokens;
-	while (*tokens)
-	{
-		pair_setter(&current, &next, *tokens);
-		if (current->is_tmp)
-		{
-			if (!next || next->is_tmp || next->t_type != WORD)
-			{
-				ft_lstclear(tokens, token_free);
-				return ;
-			}
-			else
-			{
-				token_swap(*tokens, (*tokens)->next);
-				*tokens = (*tokens)->next;
-			}
-		}
-		*tokens = (*tokens)->next;
-	}
-	*tokens = start;
-}
-
 void	token_spliter(t_ast_node *tree, t_list *tokens)
 {
 	t_list	*temp;
