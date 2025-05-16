@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/15 20:49:19 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/17 00:14:04 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,17 @@ void	print_error(char *mess1, char *mess2, bool flag)
 	}
 }
 
-static int	create_fork(t_ast_node *node, char **env)
+static int	create_fork(t_ast_node *node, char **env, int status)
 {
 	char	*cmd;
 	char	**splited_cmd;
-	int		status;
 	pid_t	pid;
 
 	if (!init_cmds(&cmd, &splited_cmd, node, env))
-		return (false);
+		return (0);
+	status = is_builtin(node->cmd);
+	if (status)
+		return (free(cmd), ft_split_free(splited_cmd), exec_builtin(node->cmd));
 	pid = fork();
 	if (pid == 0)
 	{
@@ -81,10 +83,8 @@ static int	create_fork(t_ast_node *node, char **env)
 		ft_split_free(splited_cmd);
 		exit(EXIT_FAILURE);
 	}
-	free(cmd);
-	ft_split_free(splited_cmd);
-	waitpid(pid, &status, 0);
-	return (WIFEXITED(status) && !(WEXITSTATUS(status)));
+	return (free(cmd), ft_split_free(splited_cmd), waitpid(pid, &status, 0)
+		, WIFEXITED(status) && !(WEXITSTATUS(status)));
 }
 
 bool	execute_cmd(t_ast_node *node, char **env)
@@ -100,7 +100,7 @@ bool	execute_cmd(t_ast_node *node, char **env)
 		return (true);
 	if (!set_redirs(node))
 		return (false);
-	status = create_fork(node, env);
+	status = create_fork(node, env, EXIT_SUCCESS);
 	dup2(stdin_cpy, STDIN_FILENO);
 	dup2(stdout_cpy, STDOUT_FILENO);
 	close(stdin_cpy);

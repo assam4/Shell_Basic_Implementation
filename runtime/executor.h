@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:44:43 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/16 09:44:52 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/16 23:48:47 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include "syntax.h"
 # include "tree.h"
+# include "builtin.h"
 
 # define TMP_FILE "/tmp/minishell.tmp"
 

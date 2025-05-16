@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:47:20 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/16 10:19:04 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/17 00:20:13 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*get_prompt_line(char **env)
 	int		total_len;
 
 	user = get_env_value(env, "USER=");
-	pwd = get_env_value(env, "PWD=");
+	pwd = getcwd(NULL, 0);
 	if (!user)
 		user = "unknown";
 	total_len = ft_strlen(GREEN) + ft_strlen(user) + ft_strlen(BLUE)
