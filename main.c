@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:47:20 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/16 09:47:22 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/16 10:19:04 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,11 @@ static int	run_shell(t_list **tokens, char **envp)
 		return (ft_lstclear(tokens, token_free), EX_USAGE);
 	tree = ft_calloc(1, sizeof(t_ast_node));
 	if (!tree)
-		return (ft_putstr_fd("Allocation error\n", STDERR_FILENO), ENOMEM);
+	{
+		ft_putstr_fd(strerror(ENOMEM), STDERR_FILENO);
+		ft_putchar_fd('\n', STDERR_FILENO);
+		return (ENOMEM);
+	}
 	if (tree_blossom(tree, *tokens))
 		execute_node(tree, envp);
 	tree_felling(&tree);
@@ -41,7 +45,7 @@ static char	*get_prompt_line(char **env)
 		user = "unknown";
 	total_len = ft_strlen(GREEN) + ft_strlen(user) + ft_strlen(BLUE)
 		+ ft_strlen(pwd) + ft_strlen(RESET) + 13;
-	prompt = malloc(total_len);
+	prompt = ft_calloc(total_len, sizeof(char));
 	if (!prompt)
 		return (NULL);
 	ft_strlcpy(prompt, GREEN, total_len);
@@ -70,25 +74,30 @@ static int	exec_line(char **envp)
 		line = readline(prompt);
 		if (line && *line)
 			add_history(line);
-		if (!line)
+		if (!line || !strncmp(line, EXIT, ft_strlen(line)))
 			break ;
 		if (!get_tokens(line, &tokens))
 			return (free(line), free(prompt),
-				ft_putstr_fd("Tokenization error\n", STDERR_FILENO), ENOMEM);
+				ft_putstr_fd(strerror(ENOMEM), STDERR_FILENO),
+				ft_putchar_fd('\n', STDERR_FILENO), ENOMEM);
 		if (!tokens)
 			continue ;
 		free(line);
 		run_shell(&tokens, envp);
 		free(prompt);
 	}
-	return (1);
+	return (free(line), free(prompt), EXIT_SUCCESS);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argv;
 	if (argc != 1)
-		return (ft_putstr_fd("WRONG ARGS", STDERR_FILENO), EXIT_FAILURE);
+	{
+		ft_putstr_fd(strerror(EINVAL), STDERR_FILENO);
+		ft_putchar_fd('\n', STDERR_FILENO);
+		return (EINVAL);
+	}
 	exec_line(envp);
 	return (EXIT_SUCCESS);
 }
