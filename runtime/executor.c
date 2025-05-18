@@ -6,13 +6,13 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:45:27 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/16 09:45:30 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/19 00:34:39 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-static bool	execute_subshell(t_ast_node *node, char **env)
+static bool	execute_subshell(t_ast_node *node, t_env *vars)
 {
 	pid_t	process_id;
 	int		status;
@@ -20,7 +20,7 @@ static bool	execute_subshell(t_ast_node *node, char **env)
 	process_id = fork();
 	if (!process_id)
 	{
-		if (execute_node(node->left, env))
+		if (execute_node(node->left, vars))
 			exit(EXIT_SUCCESS);
 		else
 			exit(EXIT_FAILURE);
@@ -35,7 +35,7 @@ static bool	execute_subshell(t_ast_node *node, char **env)
 }
 
 static bool	stream_change(pid_t *process_id, t_ast_node *left,
-			t_ast_node *right, char **env)
+			t_ast_node *right, t_env *vars)
 {
 	int	fd[2];
 
@@ -49,7 +49,7 @@ static bool	stream_change(pid_t *process_id, t_ast_node *left,
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[0]);
 		close(fd[1]);
-		exit(!execute_node(left, env));
+		exit(!execute_node(left, vars));
 	}
 	process_id[1] = fork();
 	if (process_id[1] == -1)
@@ -59,19 +59,19 @@ static bool	stream_change(pid_t *process_id, t_ast_node *left,
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
 		close(fd[1]);
-		exit(!execute_node(right, env));
+		exit(!execute_node(right, vars));
 	}
 	return (close(fd[0]), close(fd[1]), true);
 }
 
-static bool	execute_pipe(t_ast_node *left, t_ast_node *right, char **env)
+static bool	execute_pipe(t_ast_node *left, t_ast_node *right, t_env *vars)
 {
 	pid_t	process_id[2];
 	int		status[2];
 	int		stdout_cpy;
 
 	stdout_cpy = dup(STDOUT_FILENO);
-	if (!stream_change(process_id, left, right, env))
+	if (!stream_change(process_id, left, right, vars))
 		return (false);
 	waitpid(process_id[0], status, 0);
 	waitpid(process_id[1], status + 1, 0);
@@ -81,20 +81,20 @@ static bool	execute_pipe(t_ast_node *left, t_ast_node *right, char **env)
 		&& (WIFEXITED(status[1]) && !WEXITSTATUS(status[1])));
 }
 
-bool	execute_node(t_ast_node *node, char **env)
+bool	execute_node(t_ast_node *node, t_env *vars)
 {
 	if (!node)
 		return (true);
 	else if (node->token->o_type == OP_AND)
-		return (execute_node(node->left, env)
-			&& execute_node(node->right, env));
+		return (execute_node(node->left, vars)
+			&& execute_node(node->right, vars));
 	else if (node->token->o_type == OP_OR)
-		return (execute_node(node->left, env)
-			|| execute_node(node->right, env));
+		return (execute_node(node->left, vars)
+			|| execute_node(node->right, vars));
 	else if (node->token->o_type == OP_PIPE)
-		return (execute_pipe(node->left, node->right, env));
+		return (execute_pipe(node->left, node->right, vars));
 	else if (node->token->o_type == OP_SUBSHELL_OPEN)
-		return (execute_subshell(node, env));
+		return (execute_subshell(node, vars));
 	else
-		return (execute_cmd(node, env));
+		return (execute_cmd(node, vars));
 }

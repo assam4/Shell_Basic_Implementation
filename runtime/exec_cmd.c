@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/17 00:14:04 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/19 00:36:46 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ void	print_error(char *mess1, char *mess2, bool flag)
 	}
 }
 
-static int	create_fork(t_ast_node *node, char **env, int status)
+static int	create_fork(t_ast_node *node, t_env *vars, int status)
 {
 	char	*cmd;
 	char	**splited_cmd;
 	pid_t	pid;
 
-	if (!init_cmds(&cmd, &splited_cmd, node, env))
+	if (!init_cmds(&cmd, &splited_cmd, node, vars->env))
 		return (0);
 	status = is_builtin(node->cmd);
 	if (status)
@@ -72,9 +72,9 @@ static int	create_fork(t_ast_node *node, char **env, int status)
 	pid = fork();
 	if (pid == 0)
 	{
-		execve(cmd, splited_cmd, env);
+		execve(cmd, splited_cmd, vars->env);
 		free(cmd);
-		cmd = get_env_value(env, "PATH:");
+		cmd = get_env_value("PATH:", vars->env);
 		if (!cmd)
 			print_error(splited_cmd[0], ": no such file or directory\n", false);
 		else if (splited_cmd)
@@ -87,7 +87,7 @@ static int	create_fork(t_ast_node *node, char **env, int status)
 		, WIFEXITED(status) && !(WEXITSTATUS(status)));
 }
 
-bool	execute_cmd(t_ast_node *node, char **env)
+bool	execute_cmd(t_ast_node *node, t_env *vars)
 {
 	int		status;
 	int		stdin_cpy;
@@ -100,7 +100,7 @@ bool	execute_cmd(t_ast_node *node, char **env)
 		return (true);
 	if (!set_redirs(node))
 		return (false);
-	status = create_fork(node, env, EXIT_SUCCESS);
+	status = create_fork(node, vars, EXIT_SUCCESS);
 	dup2(stdin_cpy, STDIN_FILENO);
 	dup2(stdout_cpy, STDOUT_FILENO);
 	close(stdin_cpy);

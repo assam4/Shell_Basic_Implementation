@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 17:36:54 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/15 20:44:10 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/19 00:35:22 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	*ft_join_with_sep(char const *s1, char const *s2, int sep)
 	return (str);
 }
 
-char	*get_env_value(char **env, char *key)
+char	*get_env_value(char *key, char **env)
 {
 	size_t	key_len;
 	int		i;
@@ -50,7 +50,7 @@ char	*ret_command(char *command, char **env)
 	char	*path;
 	char	**splited_path;
 
-	path = get_env_value(env, "PATH=");
+	path = get_env_value("PATH=", env);
 	splited_path = ft_split(path, ':');
 	if (ft_strchr(command, '/'))
 		return (ft_strdup(command));

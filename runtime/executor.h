@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:44:43 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/16 23:48:47 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/19 00:30:07 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@
 # include <fcntl.h>
 # include "syntax.h"
 # include "tree.h"
+# include "environment.h"
 # include "builtin.h"
 
 # define TMP_FILE "/tmp/minishell.tmp"
 
-bool	execute_node(t_ast_node	*node, char **env);
-bool	execute_cmd(t_ast_node *node, char **env);
+bool	execute_node(t_ast_node	*node, t_env *vars);
+bool	execute_cmd(t_ast_node *node, t_env *vars);
 char	*ret_command(char *command, char **env);
-char	*get_env_value(char **env, char *key);
+char	*get_env_value(char *key, char **env);
 char	*get_cmd(t_list *cmd);
 void	ft_split_free(char **arr);
 bool	set_redirs(t_ast_node *node);

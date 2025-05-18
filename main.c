@@ -6,13 +6,13 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:47:20 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/17 00:20:13 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/19 00:38:20 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static int	run_shell(t_list **tokens, char **envp)
+static int	run_shell(t_list **tokens, t_env *vars)
 {
 	t_ast_node	*tree;
 
@@ -27,19 +27,19 @@ static int	run_shell(t_list **tokens, char **envp)
 		return (ENOMEM);
 	}
 	if (tree_blossom(tree, *tokens))
-		execute_node(tree, envp);
+		execute_node(tree, vars);
 	tree_felling(&tree);
 	return (EXIT_SUCCESS);
 }
 
-static char	*get_prompt_line(char **env)
+static char	*get_prompt_line(t_env *vars)
 {
 	char	*user;
 	char	*pwd;
 	char	*prompt;
 	int		total_len;
 
-	user = get_env_value(env, "USER=");
+	user = get_env_value("USER=", vars->env);
 	pwd = getcwd(NULL, 0);
 	if (!user)
 		user = "unknown";
@@ -61,7 +61,7 @@ static char	*get_prompt_line(char **env)
 	return (prompt);
 }
 
-static int	exec_line(char **envp)
+static int	exec_line(t_env *vars)
 {
 	char	*line;
 	t_list	*tokens;
@@ -69,7 +69,7 @@ static int	exec_line(char **envp)
 
 	while (1)
 	{
-		prompt = get_prompt_line(envp);
+		prompt = get_prompt_line(vars);
 		tokens = NULL;
 		line = readline(prompt);
 		if (line && *line)
@@ -83,7 +83,7 @@ static int	exec_line(char **envp)
 		if (!tokens)
 			continue ;
 		free(line);
-		run_shell(&tokens, envp);
+		run_shell(&tokens, vars);
 		free(prompt);
 	}
 	return (free(line), free(prompt), EXIT_SUCCESS);
@@ -91,6 +91,8 @@ static int	exec_line(char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
+	t_env	*vars;
+
 	(void)argv;
 	if (argc != 1)
 	{
@@ -98,6 +100,10 @@ int	main(int argc, char **argv, char **envp)
 		ft_putchar_fd('\n', STDERR_FILENO);
 		return (EINVAL);
 	}
-	exec_line(envp);
+	vars = get_env(envp);
+	if (!vars)
+		return (ENOMEM);
+	exec_line(vars);
+	destroy_env(&vars);
 	return (EXIT_SUCCESS);
 }
