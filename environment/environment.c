@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 00:37:07 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/19 00:06:07 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/20 00:13:01 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static bool	find_env(t_env *var, char *str)
 {
 	int		i;
 	size_t	len;
-	char	*temp;
 
 	i = 0;
 	len = 0;
@@ -26,9 +25,9 @@ static bool	find_env(t_env *var, char *str)
 	{
 		if (!ft_strncmp(var->env[i], str, len))
 		{
-			temp = var->env[i];
+			free(var->env[i]);
 			var->env[i] = str;
-			return (free(temp), true);
+			return (true);
 		}
 		++i;
 	}
