@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:25:10 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/19 20:59:08 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/19 21:38:51 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ bool	pwd(t_list *cmd);
 bool	cd(t_list *cmd, t_env *var);
 bool	env(t_list *cmd, t_env *var);
 bool	unset(t_list *cmd, t_env *var);
+bool	export(t_list *cmd, t_env *var);
 
 #endif
