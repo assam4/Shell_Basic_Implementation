@@ -1,27 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.h                                          :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/16 14:25:10 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/19 19:22:28 by aadyan           ###   ########.fr       */
+/*   Created: 2025/05/19 19:15:02 by aadyan            #+#    #+#             */
+/*   Updated: 2025/05/19 19:52:24 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTIN_H
-# define BUILTIN_H
+#include "builtin.h"
 
-# include "tree.h"
-# include "executor.h"
-# include "environment.h"
-
-bool	is_builtin(t_list *cmd);
-bool	exec_builtin(t_list *cmd, t_env *var);
-bool	echo(t_list *cmd);
-bool	pwd(t_list *cmd);
-bool	cd(t_list *cmd, t_env *var);
-bool	env(t_list *cmd, t_env *var);
-
-#endif
+bool	env(t_list *cmd, t_env *var)
+{
+	if (cmd->next)
+		return (print_error("env", "too many arguments", 0), 1);
+	print_env(var);
+	return (0);
+}

@@ -6,14 +6,46 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 20:11:57 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/16 20:54:24 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/19 19:57:02 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-bool	cd(t_list *cmd)
+static bool	update_oldpwd(t_env *var, char *oldpwd)
 {
+	char	*full_pwd;
+
+	full_pwd = ft_strjoin("OLDPWD=", oldpwd);
+	free(oldpwd);
+	if (!full_pwd)
+		return (false);
+	if (!add_var(var, full_pwd))
+		return (free(full_pwd), false);
+	return (free(full_pwd), true);
+}
+
+static bool	update_pwd(t_env *var)
+{
+	char	*pwd;
+	char	*full_pwd;
+
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		return (false);
+	full_pwd = ft_strjoin("PWD=", pwd);
+	free(pwd);
+	if (!full_pwd)
+		return (false);
+	if (!add_var(var, full_pwd))
+		return (free(full_pwd), false);
+	return (free(full_pwd), true);
+}
+
+bool	cd(t_list *cmd, t_env *var)
+{
+	char	*tmp;
+
 	if (!cmd->next)
 		return (true);
 	if (cmd->next->next)
@@ -21,11 +53,14 @@ bool	cd(t_list *cmd)
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 		return (false);
 	}
-	if (chdir(((t_token *)cmd->next->content)->word) == -1)
-	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		perror(((t_token *)cmd->next->content)->word);
+	tmp = get_env_value("PWD=", var->env);
+	if (!tmp)
 		return (false);
-	}
+	if (chdir(((t_token *)cmd->next->content)->word) == -1)
+		return (print_error("cd: ", NULL, 1), false);
+	if (!update_oldpwd(var, tmp))
+		return (print_error("cd: ", NULL, 1), false);
+	if (!update_pwd(var))
+		return (print_error("cd: ", NULL, 1), false);
 	return (true);
 }

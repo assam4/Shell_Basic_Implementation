@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:46:27 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/16 20:45:43 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/19 19:21:50 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ bool	is_builtin(t_list *cmd)
 	return (false);
 }
 
-bool	exec_builtin(t_list *cmd)
+bool	exec_builtin(t_list *cmd, t_env *var)
 {
 	char	*word;
 
@@ -52,9 +52,9 @@ bool	exec_builtin(t_list *cmd)
 	if (ft_strncmp(word, "exit", ft_strlen(word) + 1) == 0)
 		return (true);
 	if (ft_strncmp(word, "env", ft_strlen(word) + 1) == 0)
-		return (true);
+		return (env(cmd, var));
 	if (ft_strncmp(word, "cd", ft_strlen(word) + 1) == 0)
-		return (cd(cmd));
+		return (cd(cmd, var));
 	if (ft_strncmp(word, "pwd", ft_strlen(word) + 1) == 0)
 		return (pwd(cmd));
 	return (false);

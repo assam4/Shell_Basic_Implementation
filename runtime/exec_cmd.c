@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/19 00:36:46 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/19 19:14:08 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	create_fork(t_ast_node *node, t_env *vars, int status)
 		return (0);
 	status = is_builtin(node->cmd);
 	if (status)
-		return (free(cmd), ft_split_free(splited_cmd), exec_builtin(node->cmd));
+		return (free(cmd), ft_split_free(splited_cmd), exec_builtin(node->cmd, vars));
 	pid = fork();
 	if (pid == 0)
 	{
