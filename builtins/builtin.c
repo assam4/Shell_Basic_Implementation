@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:46:27 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/19 19:21:50 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/19 20:59:21 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ bool	exec_builtin(t_list *cmd, t_env *var)
 	if (ft_strncmp(word, "echo", ft_strlen(word) + 1) == 0)
 		return (echo(cmd));
 	if (ft_strncmp(word, "unset", ft_strlen(word) + 1) == 0)
-		return (true);
+		return (unset(cmd, var));
 	if (ft_strncmp(word, "export", ft_strlen(word) + 1) == 0)
 		return (true);
 	if (ft_strncmp(word, "exit", ft_strlen(word) + 1) == 0)

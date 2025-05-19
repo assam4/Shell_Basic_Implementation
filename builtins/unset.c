@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.h                                          :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/16 14:25:10 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/19 20:59:08 by aadyan           ###   ########.fr       */
+/*   Created: 2025/05/19 20:54:04 by aadyan            #+#    #+#             */
+/*   Updated: 2025/05/19 20:58:56 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTIN_H
-# define BUILTIN_H
+#include "builtin.h"
 
-# include "tree.h"
-# include "executor.h"
-# include "environment.h"
-
-bool	is_builtin(t_list *cmd);
-bool	exec_builtin(t_list *cmd, t_env *var);
-bool	echo(t_list *cmd);
-bool	pwd(t_list *cmd);
-bool	cd(t_list *cmd, t_env *var);
-bool	env(t_list *cmd, t_env *var);
-bool	unset(t_list *cmd, t_env *var);
-
-#endif
+bool	unset(t_list *cmd, t_env *var)
+{
+	cmd = cmd->next;
+	while (cmd)
+	{
+		del_var(var, ((t_token *)cmd->content)->word);
+		cmd = cmd->next;
+	}
+	return (true);
+}

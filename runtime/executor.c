@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:45:27 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/19 00:34:39 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/19 21:06:34 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
+
+void	print_error(char *mess1, char *mess2, bool flag)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(mess1, STDERR_FILENO);
+	if (mess2)
+		ft_putstr_fd(mess2, STDERR_FILENO);
+	if (flag)
+	{
+		ft_putstr_fd(": ", STDERR_FILENO);
+		perror("");
+	}
+}
 
 static bool	execute_subshell(t_ast_node *node, t_env *vars)
 {

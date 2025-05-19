@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/19 19:14:08 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/19 21:10:43 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,18 @@ static bool	init_cmds(char **cmd, char ***splited_cmd,
 	return (true);
 }
 
-void	print_error(char *mess1, char *mess2, bool flag)
+static void	execution(char *cmd, char **splited_cmd, char **env)
 {
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(mess1, STDERR_FILENO);
-	if (mess2)
-		ft_putstr_fd(mess2, STDERR_FILENO);
-	if (flag)
-	{
-		ft_putstr_fd(": ", STDERR_FILENO);
-		perror("");
-	}
+	execve(cmd, splited_cmd, env);
+	free(cmd);
+	cmd = get_env_value("PATH:", env);
+	if (!cmd)
+		print_error(splited_cmd[0], ": no such file or directory\n", false);
+	else if (splited_cmd)
+		print_error(splited_cmd[0], ": command not found\n", false);
+	free(cmd);
+	ft_split_free(splited_cmd);
+	exit(EXIT_FAILURE);
 }
 
 static int	create_fork(t_ast_node *node, t_env *vars, int status)
@@ -68,21 +69,11 @@ static int	create_fork(t_ast_node *node, t_env *vars, int status)
 		return (0);
 	status = is_builtin(node->cmd);
 	if (status)
-		return (free(cmd), ft_split_free(splited_cmd), exec_builtin(node->cmd, vars));
+		return (free(cmd), ft_split_free(splited_cmd),
+			exec_builtin(node->cmd, vars));
 	pid = fork();
 	if (pid == 0)
-	{
-		execve(cmd, splited_cmd, vars->env);
-		free(cmd);
-		cmd = get_env_value("PATH:", vars->env);
-		if (!cmd)
-			print_error(splited_cmd[0], ": no such file or directory\n", false);
-		else if (splited_cmd)
-			print_error(splited_cmd[0], ": command not found\n", false);
-		free(cmd);
-		ft_split_free(splited_cmd);
-		exit(EXIT_FAILURE);
-	}
+		execution(cmd, splited_cmd, vars->env);
 	return (free(cmd), ft_split_free(splited_cmd), waitpid(pid, &status, 0)
 		, WIFEXITED(status) && !(WEXITSTATUS(status)));
 }

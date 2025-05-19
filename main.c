@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:47:20 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/19 00:38:20 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/19 21:01:51 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static char	*get_prompt_line(t_env *vars)
 	user = get_env_value("USER=", vars->env);
 	pwd = getcwd(NULL, 0);
 	if (!user)
-		user = "unknown";
+		user = ft_strdup("unknown");
 	total_len = ft_strlen(GREEN) + ft_strlen(user) + ft_strlen(BLUE)
 		+ ft_strlen(pwd) + ft_strlen(RESET) + 13;
 	prompt = ft_calloc(total_len, sizeof(char));
