@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:41:02 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/16 09:42:18 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/21 01:31:02 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,15 @@ void	content_swap(t_list *first, t_list *second)
 	second->content = tmp;
 }
 
-static bool	input_here_doc(char *tmp_file, char *limiter)
+static int	here_doc_loop(const char *tmp_file, const char *limiter)
 {
 	int		fd;
 	char	*line;
 
-	if (!limiter)
-		return (false);
 	fd = open(tmp_file, O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	if (fd == -1)
-		return (free(tmp_file), free(limiter), false);
-	while (1)
+		return (EXIT_FAILURE);
+	while (true)
 	{
 		ft_putstr_fd("> ", STDOUT_FILENO);
 		line = get_next_line(STDIN_FILENO);
@@ -46,7 +44,31 @@ static bool	input_here_doc(char *tmp_file, char *limiter)
 		free(line);
 	}
 	close(fd);
-	return (free(limiter), true);
+	exit(EXIT_SUCCESS);
+}
+
+static bool	input_here_doc(char *tmp_file, char *limiter)
+{
+	pid_t	process_id;
+	int		status;
+
+	process_id = fork();
+	if (process_id == -1)
+		return (false);
+	if (!process_id)
+	{
+		signal(SIGINT, SIG_DFL);
+		here_doc_loop(tmp_file, limiter);
+	}
+	else
+	{
+		waitpid(process_id, &status, 0);
+		if (WIFSIGNALED(status))
+			return (g_exit_status = 128 + WTERMSIG(status), false);
+		else if (WIFEXITED(status) && !(WEXITSTATUS(status)))
+			return (g_exit_status = EXIT_SUCCESS, true);
+	}
+	return (false);
 }
 
 static void	tokens_update(t_list *tokens, char *fd_name)
@@ -85,8 +107,8 @@ bool	heredoc_exec(t_list *tokens, int i)
 	if (input_here_doc(fullname, limiter))
 	{
 		tokens_update(tokens, fullname);
-		return (true);
+		return (free(limiter), true);
 	}
 	else
-		return (free(fullname), false);
+		return (free(fullname), free(limiter), false);
 }

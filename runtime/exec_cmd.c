@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/19 21:10:43 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/21 01:43:18 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ bool	execute_cmd(t_ast_node *node, t_env *vars)
 
 	stdin_cpy = dup(STDIN_FILENO);
 	stdout_cpy = dup(STDOUT_FILENO);
+	if (!node || !node->cmd)
+		return (true);
 	if (node->token->t_type == WORD && node->cmd
 		&& ((t_token *)node->cmd->content)->is_tmp)
 		return (true);

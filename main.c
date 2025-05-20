@@ -6,11 +6,13 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:47:20 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/19 21:01:51 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/21 01:32:24 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+
+int	g_exit_status = EXIT_SUCCESS;
 
 static int	run_shell(t_list **tokens, t_env *vars)
 {

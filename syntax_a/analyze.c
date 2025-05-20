@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:40:46 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/16 09:40:48 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/21 01:39:31 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static bool	check_redirections(t_list *tokens, int i)
 {
 	t_token	*next;
 
+	if (!tokens || !tokens->next)
+		return (false);
 	next = (t_token *)tokens->next->content;
 	if (!next || next->t_type != WORD
 		|| !next->word || *(next->word) == '\0' || *(next->word) == '\n')

@@ -6,17 +6,13 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:44:43 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/19 00:30:07 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/21 00:44:44 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
-# include <sys/wait.h>
-# include <sys/types.h>
-# include <stdio.h>
-# include <fcntl.h>
 # include "syntax.h"
 # include "tree.h"
 # include "environment.h"
