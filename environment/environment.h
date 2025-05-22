@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 00:32:48 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/19 00:11:24 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/22 12:54:47 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ typedef struct s_env
 {
 	char	**env;
 	int		var_count;
+	int		exit_status;
+	int		line_count;
 }	t_env;
 
 bool	del_var(t_env *var, const char *key);

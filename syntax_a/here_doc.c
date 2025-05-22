@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:41:02 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/21 01:31:02 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/22 12:56:22 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ static bool	input_here_doc(char *tmp_file, char *limiter)
 	{
 		waitpid(process_id, &status, 0);
 		if (WIFSIGNALED(status))
-			return (g_exit_status = 128 + WTERMSIG(status), false);
+			return (false);
 		else if (WIFEXITED(status) && !(WEXITSTATUS(status)))
-			return (g_exit_status = EXIT_SUCCESS, true);
+			return (true);
 	}
 	return (false);
 }
