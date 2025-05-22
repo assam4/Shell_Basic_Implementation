@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:46:05 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/22 18:11:06 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/22 18:33:34 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static int	run_shell(t_list **tokens, t_env *vars)
 		if (!command_loop(tokens, vars))
 			return (ft_lstclear(tokens, token_free), EXIT_FAILURE);
 		if (!syntax_analyse(*tokens))
+			return (ft_lstclear(tokens, token_free), EXIT_FAILURE);
+		if (g_signal)
 			return (ft_lstclear(tokens, token_free), EXIT_FAILURE);
 	}
 	tree = ft_calloc(1, sizeof(t_ast_node));
@@ -99,6 +101,7 @@ static int	execute_line(t_env *vars)
 
 	while (g_signal != -1)
 	{
+		g_signal = 0;
 		prompt = get_prompt_line(vars);
 		if (!prompt)
 			return (print_err(ENOMEM));

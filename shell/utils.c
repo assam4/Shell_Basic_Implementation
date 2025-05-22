@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:39:35 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/22 17:38:32 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/22 18:29:57 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	handler(int signal)
 	write(STDOUT_FILENO, "\n", sizeof(char));
 	rl_replace_line("", 0);
 	rl_on_new_line();
-	rl_redisplay();
+//	rl_redisplay();
 }
 
 void	sig_config(void)

@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:41:02 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/22 12:56:22 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/22 18:22:40 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	here_doc_loop(const char *tmp_file, const char *limiter)
 
 	fd = open(tmp_file, O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	if (fd == -1)
-		return (EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	while (true)
 	{
 		ft_putstr_fd("> ", STDOUT_FILENO);

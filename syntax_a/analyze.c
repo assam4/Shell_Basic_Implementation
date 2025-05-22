@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:40:46 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/22 17:42:50 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/22 18:29:06 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static bool	check_redirections(t_list *tokens, int i)
 	else
 	{
 		if (((t_token *)tokens->content)->r_type == REDIR_HERE_DOC)
-			return (heredoc_exec(tokens, i));
+			return (heredoc_exec(tokens, i) || g_signal);
 		else
 			return (true);
 	}
