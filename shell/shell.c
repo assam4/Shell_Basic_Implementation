@@ -1,33 +1,61 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/16 09:47:20 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/22 12:55:18 by aadyan           ###   ########.fr       */
+/*   Created: 2025/05/22 14:46:05 by saslanya          #+#    #+#             */
+/*   Updated: 2025/05/22 18:11:06 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int	g_signal = EXIT_SUCCESS;
+static bool	complete_command(t_list *tokens)
+{
+	t_token		*current;
+	t_token		*last;
+	int			count;
+
+	last = NULL;
+	count = 0;
+	while (tokens)
+	{
+		current = (t_token *)tokens->content;
+		if (current->o_type == OP_SUBSHELL_OPEN)
+			++count;
+		if (current->o_type == OP_SUBSHELL_CLOSE)
+			--count;
+		last = current;
+		tokens = tokens->next;
+	}
+	if (count != 0)
+		return (false);
+	if (!last)
+		return (true);
+	if (last->o_type == OP_AND || last->o_type == OP_OR
+		|| last->o_type == OP_PIPE)
+		return (false);
+	return (true);
+}
 
 static int	run_shell(t_list **tokens, t_env *vars)
 {
 	t_ast_node	*tree;
 
-	tree = NULL;
 	if (!syntax_analyse(*tokens))
-		return (ft_lstclear(tokens, token_free), EX_USAGE);
+		return (ft_lstclear(tokens, token_free), EXIT_FAILURE);
+	while (!complete_command(*tokens))
+	{
+		if (!command_loop(tokens, vars))
+			return (ft_lstclear(tokens, token_free), EXIT_FAILURE);
+		if (!syntax_analyse(*tokens))
+			return (ft_lstclear(tokens, token_free), EXIT_FAILURE);
+	}
 	tree = ft_calloc(1, sizeof(t_ast_node));
 	if (!tree)
-	{
-		ft_putstr_fd(strerror(ENOMEM), STDERR_FILENO);
-		ft_putchar_fd('\n', STDERR_FILENO);
-		return (ENOMEM);
-	}
+		return (ft_lstclear(tokens, token_free), EXIT_FAILURE);
 	if (tree_blossom(tree, *tokens))
 		execute_node(tree, vars);
 	tree_felling(&tree);
@@ -63,27 +91,27 @@ static char	*get_prompt_line(t_env *vars)
 	return (prompt);
 }
 
-static int	exec_line(t_env *vars)
+static int	execute_line(t_env *vars)
 {
 	char	*line;
 	t_list	*tokens;
 	char	*prompt;
 
-	while (1)
+	while (g_signal != -1)
 	{
 		prompt = get_prompt_line(vars);
+		if (!prompt)
+			return (print_err(ENOMEM));
 		tokens = NULL;
 		line = readline(prompt);
-		if (line && *line)
+		if (line && *line && *line != '\n')
 			add_history(line);
-		if (!line || !strncmp(line, EXIT, ft_strlen(line)))
-			break ;
+		if (!line)
+			return (ft_putstr_fd(EXIT, STDOUT_FILENO)
+				, free(prompt), EXIT_SUCCESS);
+		++(vars->line_count);
 		if (!get_tokens(line, &tokens))
-			return (free(line), free(prompt),
-				ft_putstr_fd(strerror(ENOMEM), STDERR_FILENO),
-				ft_putchar_fd('\n', STDERR_FILENO), ENOMEM);
-		if (!tokens)
-			continue ;
+			return (free(line), free(prompt), print_err(ENOMEM));
 		free(line);
 		run_shell(&tokens, vars);
 		free(prompt);
@@ -97,15 +125,12 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argv;
 	if (argc != 1)
-	{
-		ft_putstr_fd(strerror(EINVAL), STDERR_FILENO);
-		ft_putchar_fd('\n', STDERR_FILENO);
-		return (EINVAL);
-	}
+		return (print_err(EINVAL));
 	vars = get_env(envp);
 	if (!vars)
-		return (ENOMEM);
-	exec_line(vars);
+		return (print_err(ENOMEM));
+	sig_config();
+	execute_line(vars);
 	destroy_env(&vars);
 	return (EXIT_SUCCESS);
 }

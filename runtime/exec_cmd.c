@@ -49,7 +49,7 @@ static void	execution(char *cmd, char **splited_cmd, char **env)
 {
 	execve(cmd, splited_cmd, env);
 	free(cmd);
-	cmd = get_env_value("PATH:", env);
+	cmd = get_env_value("PATH=", env);
 	if (!cmd)
 		print_error(splited_cmd[0], ": no such file or directory\n", false);
 	else if (splited_cmd)

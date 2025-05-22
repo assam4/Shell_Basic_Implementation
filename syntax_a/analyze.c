@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:40:46 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/22 14:23:07 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/22 17:42:50 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static bool	check_operations(const t_list *prev_l, const t_list *tokens)
 		prev = (t_token *)prev_l->content;
 	if (tokens->next)
 		next = (t_token *)tokens->next->content;
-	if ((!prev || !next)
+	if ((!prev)
 		|| ((t_token *)prev_l->next->content)->o_type == OP_END
 		|| ((t_token *)prev_l->next->content)->o_type == OP_BACKGROUND
 		|| (next && next->t_type == OPERATION
@@ -128,5 +128,5 @@ bool	syntax_analyse(t_list *tokens)
 		prev = tokens;
 		tokens = tokens->next;
 	}
-	return (!sub_count);
+	return (sub_count >= 0);
 }

@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:31:05 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/21 16:01:44 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/22 18:06:02 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,9 @@
 # include <readline/history.h>
 # include <sysexits.h>
 # include "executor.h"
+
+void	sig_config(void);
+int		print_err(int error);
+bool	command_loop(t_list **tokens, t_env *vars);
 
 #endif
