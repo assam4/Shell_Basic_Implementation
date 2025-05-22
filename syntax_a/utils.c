@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:41:19 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/16 09:41:24 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:21:39 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ void	error_message(const t_list *prev, const t_list *tokens)
 
 	current = (t_token *)tokens->content;
 	ft_putstr_fd((char *)ERR_MESSAGE, STDERR_FILENO);
-	if (prev && current->t_type == OPERATION && tokens->next
+	if (prev && ((t_token *)prev->content)->t_type != REDIRECTION
+		&& current->t_type == OPERATION && tokens->next
 		&& ((t_token *)tokens->next->content)->t_type == OPERATION)
 		print_token((t_token *)tokens->next->content);
 	else if (current->t_type == OPERATION

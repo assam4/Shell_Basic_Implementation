@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:40:46 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/21 01:39:31 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:23:07 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,28 @@ static bool	check_operations(const t_list *prev_l, const t_list *tokens)
 		return (false);
 	else
 		return (true);
+}
+
+static bool	operations_check_loop(const t_list *tokens)
+{
+	const t_list	*prev;
+	t_token			*token;
+
+	prev = NULL;
+	while (tokens)
+	{
+		token = (t_token *)tokens->content;
+		if (token->t_type == OPERATION)
+		{
+			if (token->o_type != OP_SUBSHELL_OPEN
+				&& token->o_type != OP_SUBSHELL_CLOSE)
+				if (!check_operations(prev, tokens))
+					return (error_message(prev, tokens), false);
+		}
+		prev = tokens;
+		tokens = tokens->next;
+	}
+	return (true);
 }
 
 static bool	check_redirections(t_list *tokens, int i)
@@ -91,6 +113,8 @@ bool	syntax_analyse(t_list *tokens)
 	prev = NULL;
 	sub_count = 0;
 	i = 0;
+	if (!operations_check_loop(tokens))
+		return (false);
 	while (tokens)
 	{
 		t = (t_token *)tokens->content;
@@ -99,10 +123,8 @@ bool	syntax_analyse(t_list *tokens)
 			if (!check_subshell(prev, tokens, &sub_count))
 				return (false);
 		}
-		else if ((t->t_type == OPERATION && !(check_operations(prev, tokens)))
-			|| (t->t_type == REDIRECTION
-				&& !check_redirections(tokens, i++)))
-			return (error_message(prev, tokens), false);
+		else if (t->t_type == REDIRECTION && !check_redirections(tokens, i++))
+			return (error_message(tokens, tokens), false);
 		prev = tokens;
 		tokens = tokens->next;
 	}
