@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:39:35 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/24 02:10:11 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/24 02:41:23 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,21 @@ volatile sig_atomic_t	g_signal = 0;
 
 static int	sigint_incontinution(void)
 {
+	if (g_signal != -40 && g_signal != SIGINT && g_signal != -20)
+		return (EXIT_SUCCESS);
 	if (g_signal == -40)
 	{
 		rl_replace_line("", 0);
 		rl_done = 1;
 		g_signal = 0;
+		return (EXIT_SUCCESS);
+	}
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	if (g_signal == -20)
+	{
+		rl_redisplay();
+		g_signal = -42;
 	}
 	return (EXIT_SUCCESS);
 }
@@ -32,11 +42,9 @@ static void	handler(int signal)
 		g_signal = -40;
 		return ;
 	}
-	rl_replace_line("", 0);
 	write(STDOUT_FILENO, "\n", sizeof(char));
-	rl_on_new_line();
 	if (g_signal == -42)
-		rl_redisplay();
+		g_signal = -20;
 	else
 		g_signal = signal;
 }
