@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:39:35 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/23 13:10:54 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/24 00:29:21 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,23 @@ volatile sig_atomic_t	g_signal = 0;
 
 static void	handler(int signal)
 {
-	g_signal = signal;
-	write(STDOUT_FILENO, "\n", sizeof(char));
 	rl_replace_line("", 0);
+	write(STDOUT_FILENO, "\n", sizeof(char));
 	rl_on_new_line();
+	if (g_signal == -42)
+		rl_redisplay();
+	else
+		g_signal = signal;
 }
 
 void	sig_config(void)
 {
-	signal(SIGINT, handler);
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = handler;
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
 }
 

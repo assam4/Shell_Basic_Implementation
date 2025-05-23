@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:46:05 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/23 16:33:42 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/24 00:29:42 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,23 +101,23 @@ static int	execute_line(t_env *vars)
 
 	while (g_signal != -1)
 	{
-		g_signal = 0;
 		prompt = get_prompt_line(vars);
 		if (!prompt)
 			return (print_err(ENOMEM));
 		tokens = NULL;
+		g_signal = -42;
 		line = readline(prompt);
-		if (line && *line && *line != '\n')
-			add_history(line);
+		free(prompt);
 		if (!line)
 			return (ft_putstr_fd(EXIT, STDOUT_FILENO)
-				, free(prompt), vars->exit_status);
+				, vars->exit_status);
+		g_signal = 0;
+		add_history(line);
 		++(vars->line_count);
 		if (!get_tokens(line, &tokens))
-			return (free(line), free(prompt), print_err(ENOMEM));
+			return (free(line), print_err(ENOMEM));
 		free(line);
 		run_shell(&tokens, vars);
-		free(prompt);
 	}
 	return (vars->exit_status);
 }
