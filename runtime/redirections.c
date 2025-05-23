@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 01:00:58 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/16 09:45:42 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/23 13:33:48 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,15 @@ bool	set_redirs(t_ast_node *node)
 		iter = iter->next;
 	}
 	return (true);
+}
+
+void	child_process(int *fd, int stream)
+{
+	signal(SIGINT, SIG_DFL);
+	if (stream == STDIN_FILENO)
+		dup2(fd[0], STDIN_FILENO);
+	else
+		dup2(fd[1], STDOUT_FILENO);
+	close(fd[0]);
+	close(fd[1]);
 }

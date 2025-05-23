@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:45:27 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/19 21:06:34 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/23 13:34:02 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static bool	execute_subshell(t_ast_node *node, t_env *vars)
 	process_id = fork();
 	if (!process_id)
 	{
+		signal(SIGINT, SIG_DFL);
 		if (execute_node(node->left, vars))
 			exit(EXIT_SUCCESS);
 		else
@@ -41,6 +42,8 @@ static bool	execute_subshell(t_ast_node *node, t_env *vars)
 	else if (process_id > 0)
 	{
 		waitpid(process_id, &status, 0);
+		if (g_signal)
+			return (false);
 		return (WIFEXITED(status) && !(WEXITSTATUS(status)));
 	}
 	else
@@ -59,9 +62,7 @@ static bool	stream_change(pid_t *process_id, t_ast_node *left,
 		return (close(fd[0]), close(fd[1]), false);
 	if (!process_id[0])
 	{
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[0]);
-		close(fd[1]);
+		child_process(fd, STDOUT_FILENO);
 		exit(!execute_node(left, vars));
 	}
 	process_id[1] = fork();
@@ -69,9 +70,7 @@ static bool	stream_change(pid_t *process_id, t_ast_node *left,
 		return (close(fd[0]), close(fd[1]), false);
 	if (!process_id[1])
 	{
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-		close(fd[1]);
+		child_process(fd, STDIN_FILENO);
 		exit(!execute_node(right, vars));
 	}
 	return (close(fd[0]), close(fd[1]), true);
@@ -90,6 +89,8 @@ static bool	execute_pipe(t_ast_node *left, t_ast_node *right, t_env *vars)
 	waitpid(process_id[1], status + 1, 0);
 	dup2(STDOUT_FILENO, stdout_cpy);
 	close(stdout_cpy);
+	if (g_signal)
+		return (false);
 	return ((WIFEXITED(status[0]) && !WEXITSTATUS(status[0]))
 		&& (WIFEXITED(status[1]) && !WEXITSTATUS(status[1])));
 }
@@ -99,10 +100,10 @@ bool	execute_node(t_ast_node *node, t_env *vars)
 	if (!node)
 		return (true);
 	else if (node->token->o_type == OP_AND)
-		return (execute_node(node->left, vars)
+		return (execute_node(node->left, vars) && !g_signal
 			&& execute_node(node->right, vars));
 	else if (node->token->o_type == OP_OR)
-		return (execute_node(node->left, vars)
+		return (execute_node(node->left, vars) || g_signal
 			|| execute_node(node->right, vars));
 	else if (node->token->o_type == OP_PIPE)
 		return (execute_pipe(node->left, node->right, vars));

@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:46:05 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/22 18:33:34 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/23 13:17:21 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	run_shell(t_list **tokens, t_env *vars)
 	tree = ft_calloc(1, sizeof(t_ast_node));
 	if (!tree)
 		return (ft_lstclear(tokens, token_free), EXIT_FAILURE);
-	if (tree_blossom(tree, *tokens))
+	if (*tokens && tree_blossom(tree, *tokens))
 		execute_node(tree, vars);
 	tree_felling(&tree);
 	return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:39:52 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/16 09:39:57 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/23 13:18:59 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	token_free(void *data)
 {
 	t_token	*token;
 
+	if (!data)
+		return ;
 	token = (t_token *)data;
 	if (token->is_tmp)
 		unlink(token->word);
