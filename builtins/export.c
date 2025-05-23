@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 21:16:09 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/20 16:15:08 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/23 16:55:36 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,42 @@ static bool	append_value(t_list *cmd, t_env *var)
 	return (free(key), free(full_value), free(value), true);
 }
 
+static void	print_export(t_env *var)
+{
+	int		i;
+	char	**value;
+
+	i = 0;
+	if (!var || !var->env)
+	{
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		return ;
+	}
+	while (var->env[i])
+	{
+		value = ft_split(var->env[i], '=');
+		ft_putstr_fd("declare -x ", STDOUT_FILENO);
+		ft_putstr_fd(value[0], STDOUT_FILENO);
+		ft_putstr_fd("=\"", STDOUT_FILENO);
+		if (value[1])
+			ft_putstr_fd(value[1], STDOUT_FILENO);
+		ft_putstr_fd("\"\n", STDOUT_FILENO);
+		ft_split_free(value);
+		++i;
+	}
+}
+
 bool	export(t_list *cmd, t_env *var)
 {
 	char	*eval;
 	char	*plus;
 	char	*word;
 
+	if (!cmd->next)
+	{
+		print_export(var);
+		return (true);
+	}
 	cmd = cmd->next;
 	while (cmd)
 	{
