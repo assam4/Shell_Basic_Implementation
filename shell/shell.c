@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:46:05 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/23 13:17:21 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:33:42 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ static int	execute_line(t_env *vars)
 			add_history(line);
 		if (!line)
 			return (ft_putstr_fd(EXIT, STDOUT_FILENO)
-				, free(prompt), EXIT_SUCCESS);
+				, free(prompt), vars->exit_status);
 		++(vars->line_count);
 		if (!get_tokens(line, &tokens))
 			return (free(line), free(prompt), print_err(ENOMEM));
@@ -119,12 +119,13 @@ static int	execute_line(t_env *vars)
 		run_shell(&tokens, vars);
 		free(prompt);
 	}
-	return (free(line), free(prompt), EXIT_SUCCESS);
+	return (vars->exit_status);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*vars;
+	int		exit_status;
 
 	(void)argv;
 	if (argc != 1)
@@ -133,7 +134,7 @@ int	main(int argc, char **argv, char **envp)
 	if (!vars)
 		return (print_err(ENOMEM));
 	sig_config();
-	execute_line(vars);
+	exit_status = execute_line(vars);
 	destroy_env(&vars);
-	return (EXIT_SUCCESS);
+	return (exit_status);
 }

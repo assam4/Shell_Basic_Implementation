@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 16:47:34 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/22 13:29:59 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/23 16:37:51 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static bool	check_number(char *word, int64_t *num)
 
 	i = 0;
 	while (word[i])
-		if (!ft_isdigit(word[i++]))
+		if (!ft_isdigit(word[i++]) && word[i] == '-')
 			return (false);
 	if (ft_strlen(word) > 19)
 		return (false);
@@ -60,21 +60,24 @@ bool	builtin_exit(t_list *cmd, t_env *var)
 {
 	int64_t	num;
 
+	if (!cmd->next)
+		return (g_signal = -1, true);
 	cmd = cmd->next;
 	if (cmd->next)
 	{
 		var->exit_status = 1;
-		return (print_error("exit: ", "too many arguments", 0), false);
+		return (print_error("exit\nexit: ", "too many arguments\n", 0), true);
 	}
 	if (!check_number(((t_token *)cmd->content)->word, &num))
 	{
 		g_signal = -1;
 		var->exit_status = 2;
-		return (ft_putstr_fd("minishell: exit: ", 2),
+		return (ft_putstr_fd("exit\nminishell: exit: ", 2),
 			ft_putstr_fd(((t_token *)cmd->content)->word, 2),
-			ft_putstr_fd(": numeric argument required\n", 2), false);
+			ft_putstr_fd(": numeric argument required\n", 2), true);
 	}
 	g_signal = -1;
 	var->exit_status = (int)(unsigned char)num;
+	ft_putstr_fd("exit\n", 1);
 	return (true);
 }
