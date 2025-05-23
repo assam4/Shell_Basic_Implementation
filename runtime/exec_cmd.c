@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/23 13:06:51 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/23 14:08:47 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,10 @@ static int	create_fork(t_ast_node *node, t_env *vars, int status)
 			exec_builtin(node->cmd, vars));
 	pid = fork();
 	if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
 		execution(cmd, splited_cmd, vars->env);
+	}
 	return (free(cmd), ft_split_free(splited_cmd), waitpid(pid, &status, 0)
 		, WIFEXITED(status) && !(WEXITSTATUS(status)));
 }
