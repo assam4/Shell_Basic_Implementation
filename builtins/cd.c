@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 20:11:57 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/19 19:57:02 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/24 19:16:58 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static bool	update_oldpwd(t_env *var, char *oldpwd)
 	if (!full_pwd)
 		return (false);
 	if (!add_var(var, full_pwd))
-		return (free(full_pwd), false);
-	return (free(full_pwd), true);
+		return (false);
+	return (true);
 }
 
 static bool	update_pwd(t_env *var)
@@ -38,8 +38,8 @@ static bool	update_pwd(t_env *var)
 	if (!full_pwd)
 		return (false);
 	if (!add_var(var, full_pwd))
-		return (free(full_pwd), false);
-	return (free(full_pwd), true);
+		return (false);
+	return (true);
 }
 
 bool	cd(t_list *cmd, t_env *var)

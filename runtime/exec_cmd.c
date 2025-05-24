@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/23 14:08:47 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/24 19:12:34 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,25 @@ static bool	init_cmds(char **cmd, char ***splited_cmd,
 		t_ast_node *node, char **env)
 {
 	char	*full_cmd;
+	char	*expanded;
 
 	full_cmd = get_cmd(node->cmd);
 	if (!full_cmd)
 		return (false);
-	if (!*full_cmd)
+	if (ft_strchr(full_cmd, '*'))
+		expanded = expand_wildcard(full_cmd);
+	else
+		expanded = ft_strdup(full_cmd);
+	free(full_cmd);
+	if (!expanded)
+		return (false);
+	if (!*expanded)
 	{
 		*splited_cmd = NULL;
-		return (free(full_cmd), true);
+		return (free(expanded), true);
 	}
-	*splited_cmd = ft_split(full_cmd, ' ');
-	free(full_cmd);
+	*splited_cmd = ft_split(expanded, ' ');
+	free(expanded);
 	if (!*splited_cmd)
 		return (false);
 	*cmd = ret_command((*splited_cmd)[0], env);

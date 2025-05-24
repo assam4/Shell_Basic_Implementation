@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 21:16:09 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/23 16:55:36 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/24 19:21:30 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,7 @@ bool	export(t_list *cmd, t_env *var)
 	char	*word;
 
 	if (!cmd->next)
-	{
-		print_export(var);
-		return (true);
-	}
+		return (print_export(var), true);
 	cmd = cmd->next;
 	while (cmd)
 	{

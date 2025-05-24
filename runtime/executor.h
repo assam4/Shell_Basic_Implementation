@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:44:43 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/23 13:34:26 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/24 19:18:47 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "tree.h"
 # include "environment.h"
 # include "builtin.h"
+# include "dirent.h"
 
 # define TMP_FILE "/tmp/minishell.tmp"
 
@@ -29,5 +30,9 @@ void	ft_split_free(char **arr);
 bool	set_redirs(t_ast_node *node);
 void	child_process(int *fd, int stream);
 void	print_error(char *mess1, char *mess2, bool flag);
+char	*get_expanded(DIR *dir, char *cmd, ssize_t size);
+
+char	*expand_wildcard(char *cmd);
+ssize_t	ret_size(DIR *dir, char *cmd);
 
 #endif
