@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:41:19 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/22 14:21:39 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/25 03:20:35 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,16 @@ static void	print_operation(t_token *current)
 		ft_putstr_fd("(", STDERR_FILENO);
 }
 
-static void	print_redirection(t_token *current)
+void	print_warning(char *limiter, t_env *vars)
 {
-	if (current->r_type == REDIR_IN)
-		ft_putstr_fd("<", STDERR_FILENO);
-	else if (current->r_type == REDIR_OUT)
-		ft_putstr_fd(">", STDERR_FILENO);
-	else if (current->r_type == REDIR_APPEND)
-		ft_putstr_fd(">>", STDERR_FILENO);
-	else if (current->r_type == REDIR_HERE_DOC)
-		ft_putstr_fd("<<", STDERR_FILENO);
+	ft_putstr_fd("minishell: warning: here-document at line ",
+		STDERR_FILENO);
+	ft_putnbr_fd(vars->line_count, STDERR_FILENO);
+	ft_putstr_fd(" delimited by end-of-file (wanted `",
+		STDERR_FILENO);
+	write(STDERR_FILENO, limiter, ft_strlen(limiter) - 1);
+	ft_putstr_fd("')\n", STDERR_FILENO);
+	vars->exit_status = 0;
 }
 
 static void	print_token(t_token *current)
@@ -47,7 +47,16 @@ static void	print_token(t_token *current)
 	if (current->t_type == OPERATION)
 		print_operation(current);
 	else if (current->t_type == REDIRECTION)
-		print_redirection(current);
+	{
+		if (current->r_type == REDIR_IN)
+			ft_putstr_fd("<", STDERR_FILENO);
+		else if (current->r_type == REDIR_OUT)
+			ft_putstr_fd(">", STDERR_FILENO);
+		else if (current->r_type == REDIR_APPEND)
+			ft_putstr_fd(">>", STDERR_FILENO);
+		else if (current->r_type == REDIR_HERE_DOC)
+			ft_putstr_fd("<<", STDERR_FILENO);
+	}
 	else if (current->t_type == WORD)
 		ft_putstr_fd(current->word, STDERR_FILENO);
 	ft_putstr_fd("'\n", STDERR_FILENO);

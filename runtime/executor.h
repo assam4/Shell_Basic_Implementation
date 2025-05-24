@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:44:43 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/24 19:18:47 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/25 03:08:47 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "syntax.h"
 # include "tree.h"
-# include "environment.h"
 # include "builtin.h"
 # include "dirent.h"
 

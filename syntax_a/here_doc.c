@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:41:02 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/22 18:22:40 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/25 03:21:48 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	content_swap(t_list *first, t_list *second)
 	second->content = tmp;
 }
 
-static int	here_doc_loop(const char *tmp_file, const char *limiter)
+static int	here_doc_loop(const char *tmp_file
+		, const char *limiter, t_env *vars)
 {
 	int		fd;
 	char	*line;
@@ -34,7 +35,10 @@ static int	here_doc_loop(const char *tmp_file, const char *limiter)
 		ft_putstr_fd("> ", STDOUT_FILENO);
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
+		{
+			print_warning((char *)limiter, vars);
 			break ;
+		}
 		if (!ft_strncmp(line, limiter, ft_strlen(limiter) + 1))
 		{
 			free(line);
@@ -47,7 +51,7 @@ static int	here_doc_loop(const char *tmp_file, const char *limiter)
 	exit(EXIT_SUCCESS);
 }
 
-static bool	input_here_doc(char *tmp_file, char *limiter)
+static bool	input_here_doc(char *tmp_file, char *limiter, t_env *vars)
 {
 	pid_t	process_id;
 	int		status;
@@ -58,7 +62,7 @@ static bool	input_here_doc(char *tmp_file, char *limiter)
 	if (!process_id)
 	{
 		signal(SIGINT, SIG_DFL);
-		here_doc_loop(tmp_file, limiter);
+		here_doc_loop(tmp_file, limiter, vars);
 	}
 	else
 	{
@@ -88,7 +92,7 @@ static void	tokens_update(t_list *tokens, char *fd_name)
 	((t_token *)tokens->content)->r_type = REDIR_NONE;
 }
 
-bool	heredoc_exec(t_list *tokens, int i)
+bool	heredoc_exec(t_list *tokens, int i, t_env *vars)
 {
 	char	*fullname;
 	char	*i_str;
@@ -104,7 +108,7 @@ bool	heredoc_exec(t_list *tokens, int i)
 	limiter = ft_strjoin(((t_token *)tokens->next->content)->word, "\n");
 	if (!limiter)
 		return (free(fullname), false);
-	if (input_here_doc(fullname, limiter))
+	if (input_here_doc(fullname, limiter, vars))
 	{
 		tokens_update(tokens, fullname);
 		return (free(limiter), true);

@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:46:05 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/24 00:29:42 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/25 02:59:30 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ static int	run_shell(t_list **tokens, t_env *vars)
 {
 	t_ast_node	*tree;
 
-	if (!syntax_analyse(*tokens))
+	if (!syntax_analyse(*tokens, vars))
 		return (ft_lstclear(tokens, token_free), EXIT_FAILURE);
 	while (!complete_command(*tokens))
 	{
 		if (!command_loop(tokens, vars))
 			return (ft_lstclear(tokens, token_free), EXIT_FAILURE);
-		if (!syntax_analyse(*tokens))
+		if (!syntax_analyse(*tokens, vars))
 			return (ft_lstclear(tokens, token_free), EXIT_FAILURE);
 		if (g_signal)
 			return (ft_lstclear(tokens, token_free), EXIT_FAILURE);

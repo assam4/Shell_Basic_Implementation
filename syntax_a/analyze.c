@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:40:46 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/22 18:29:06 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/25 03:21:20 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static bool	operations_check_loop(const t_list *tokens)
 	return (true);
 }
 
-static bool	check_redirections(t_list *tokens, int i)
+static bool	check_redirections(t_list *tokens, int i, t_env *vars)
 {
 	t_token	*next;
 
@@ -71,7 +71,7 @@ static bool	check_redirections(t_list *tokens, int i)
 	else
 	{
 		if (((t_token *)tokens->content)->r_type == REDIR_HERE_DOC)
-			return (heredoc_exec(tokens, i) || g_signal);
+			return (heredoc_exec(tokens, i, vars) || g_signal);
 		else
 			return (true);
 	}
@@ -103,7 +103,7 @@ bool	check_subshell(const t_list *prev, const t_list *tokens, int *count)
 	return (false);
 }
 
-bool	syntax_analyse(t_list *tokens)
+bool	syntax_analyse(t_list *tokens, t_env *vars)
 {
 	const t_list	*prev;
 	t_token			*t;
@@ -123,7 +123,8 @@ bool	syntax_analyse(t_list *tokens)
 			if (!check_subshell(prev, tokens, &sub_count))
 				return (false);
 		}
-		else if (t->t_type == REDIRECTION && !check_redirections(tokens, i++))
+		else if (t->t_type == REDIRECTION
+			&& !check_redirections(tokens, i++, vars))
 			return (error_message(tokens, tokens), false);
 		prev = tokens;
 		tokens = tokens->next;

@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:40:32 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/22 18:12:52 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/25 03:20:53 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,17 @@
 # include <fcntl.h>
 # include <errno.h>
 # include "token.h"
+# include "environment.h"
 
 # define ERR_MESSAGE "minishell: syntax error near unexpected token `"
 # define TMP_DIR "/tmp/"
 
 extern volatile sig_atomic_t	g_signal;
 
+void	print_warning(char *limiter, t_env *vars);
 void	error_message(const t_list *prev, const t_list *tokens);
 void	content_swap(t_list *left, t_list *right);
-bool	heredoc_exec(t_list *tokens, int i);
-bool	syntax_analyse(t_list *tokens);
+bool	heredoc_exec(t_list *tokens, int i, t_env *vars);
+bool	syntax_analyse(t_list *tokens, t_env *vars);
 
 #endif
