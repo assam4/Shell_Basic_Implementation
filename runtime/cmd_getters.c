@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 17:36:54 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/26 15:06:21 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:13:10 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static char	*get_full_cmd(t_list *iter, int size)
 	{
 		ft_strlcpy(str_cmd + len, ((t_token *)iter->content)->word,
 			ft_strlen(((t_token *)iter->content)->word) + 1);
-		len += ft_strlen(str_cmd);
+		len = ft_strlen(str_cmd);
 		if (iter->next)
 			str_cmd[len++] = ' ';
 		iter = iter->next;
@@ -94,11 +94,15 @@ static char	*get_full_cmd(t_list *iter, int size)
 	return (str_cmd);
 }
 
-char	*get_cmd(t_list *iter)
+char	*get_cmd(t_list *cmd)
 {
+	t_list	*iter;
 	size_t	size;
 
+	if (!cmd)
+		return (NULL);
 	size = 0;
+	iter = cmd;
 	while (iter)
 	{
 		size += ft_strlen(((t_token *)iter->content)->word) + 1;
