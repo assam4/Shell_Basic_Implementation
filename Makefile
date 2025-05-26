@@ -12,7 +12,9 @@ BUILD_DIR		= ./.build
 
 OBJ =			$(SRC:%.c=$(BUILD_DIR)/%.o)
 
-FLAGS			= -Wall -Wextra -Werror -lreadline -g3 -fsanitize=address
+FLAGS			= -Wall -Wextra -Werror -g3 -fsanitize=address
+
+RLFLAGS			= -lreadline
 
 LIBFT_DIR		= ./library/libft
 
@@ -31,7 +33,7 @@ $(BUILD_DIR)/%.o: %.c $(HEADERS) Makefile
 	@echo "  ✅ ${GREEN}./$<${RESET}"
 
 $(NAME): $(OBJ) $(LIBFT_DIR)/libft.a
-	@cc $(FLAGS) $(INC) $(OBJ) -o $(NAME) $(LIBFT_DIR)/libft.a
+	@cc $(FLAGS) $(INC) $(OBJ) $(RLFLAGS) -o $(NAME) $(LIBFT_DIR)/libft.a
 	@echo "${YELLOW}Minishell Done!${RESET}\n"
 
 build:

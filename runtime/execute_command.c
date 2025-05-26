@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cmd.c                                         :+:      :+:    :+:   */
+/*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/26 15:25:14 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/26 21:04:05 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static bool	init_cmds(char **cmd, char ***splited_cmd,
 	if (!*expanded)
 	{
 		*splited_cmd = NULL;
-		return (free(full_cmd), true);
+		return (true);
 	}
 	*splited_cmd = ft_split(expanded, ' ');
 	free(expanded);

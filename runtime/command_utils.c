@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_getters.c                                      :+:      :+:    :+:   */
+/*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 17:36:54 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/26 15:13:10 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/27 21:45:53 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*ret_command(char *command, char **env)
 	while (splited_path[++i])
 	{
 		command_path = ft_join_with_sep(splited_path[i], command, '/');
-		if (access(command_path, F_OK | X_OK) == EXIT_SUCCESS)
+		if (command_path && access(command_path, F_OK | X_OK) == EXIT_SUCCESS)
 			return (ft_split_free(splited_path), command_path);
 		free(command_path);
 	}
