@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/26 15:01:29 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:25:14 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,16 @@ static bool	init_cmds(char **cmd, char ***splited_cmd,
 	if (!full_cmd)
 		return (false);
 	if (ft_strchr(full_cmd, '*'))
+	{
 		expanded = expand_wildcard(full_cmd);
+		free(full_cmd);
+	}
 	else
 		expanded = full_cmd;
 	if (!*expanded)
 	{
 		*splited_cmd = NULL;
-		return (free(expanded), true);
+		return (free(full_cmd), true);
 	}
 	*splited_cmd = ft_split(expanded, ' ');
 	free(expanded);
