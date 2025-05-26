@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 17:36:54 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/25 02:52:02 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:06:21 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,46 +71,38 @@ char	*ret_command(char *command, char **env)
 	return (NULL);
 }
 
-static char	*get_full_cmd(t_list *cmd, int size)
+static char	*get_full_cmd(t_list *iter, int size)
 {
 	char	*str_cmd;
-	t_list	*iter;
 	size_t	len;
-	int		i;
 
+	if (!iter)
+		return (NULL);
 	str_cmd = ft_calloc(size + 1, sizeof(char));
 	if (!str_cmd)
 		return (NULL);
-	iter = cmd;
+	len = 0;
 	while (iter)
 	{
-		len = ft_strlen(str_cmd);
-		i = 0;
-		while (((t_token *)iter->content)->word[i])
-		{
-			str_cmd[len + i] = ((t_token *)iter->content)->word[i];
-			++i;
-		}
+		ft_strlcpy(str_cmd + len, ((t_token *)iter->content)->word,
+			ft_strlen(((t_token *)iter->content)->word) + 1);
+		len += ft_strlen(str_cmd);
 		if (iter->next)
-			str_cmd[len + i] = ' ';
-		else
-			str_cmd[len + i] = '\0';
+			str_cmd[len++] = ' ';
 		iter = iter->next;
 	}
 	return (str_cmd);
 }
 
-char	*get_cmd(t_list *cmd)
+char	*get_cmd(t_list *iter)
 {
-	t_list	*iter;
 	size_t	size;
 
 	size = 0;
-	iter = cmd;
 	while (iter)
 	{
 		size += ft_strlen(((t_token *)iter->content)->word) + 1;
 		iter = iter->next;
 	}
-	return (get_full_cmd(cmd, size + 1));
+	return (get_full_cmd(cmd, size));
 }

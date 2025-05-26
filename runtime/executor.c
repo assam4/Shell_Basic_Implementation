@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:45:27 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/23 13:34:02 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/26 14:51:55 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	print_error(char *mess1, char *mess2, bool flag)
 {
-	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(mess1, STDERR_FILENO);
 	if (mess2)
 		ft_putstr_fd(mess2, STDERR_FILENO);
