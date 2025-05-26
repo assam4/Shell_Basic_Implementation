@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 12:30:40 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/24 23:51:35 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/26 20:53:29 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,17 +112,15 @@ static bool	create_expanded(DIR *dir, ssize_t size, char *expanded, char *cmd)
 char	*get_expanded(DIR *dir, char *cmd, ssize_t size)
 {
 	char	*expanded;
-	char	*tmp;
 
 	expanded = ft_calloc(size, sizeof(char));
-	tmp = ft_strdup(expanded);
-	if (!tmp)
-		return (free(expanded), NULL);
+	if (!expanded)
+		return (NULL);
 	create_expanded(dir, size, expanded, cmd);
-	if (ft_strncmp(expanded, tmp, ft_strlen(tmp) + 1) == 0)
+	if (!*expanded)
 	{
 		free(expanded);
-		expanded = ft_strdup(cmd);
+		return (ft_strdup(cmd));
 	}
-	return (free(tmp), expanded);
+	return (expanded);
 }
