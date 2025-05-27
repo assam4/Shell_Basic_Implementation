@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:45:27 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/26 14:51:55 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/28 00:21:53 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,10 @@ static bool	execute_pipe(t_ast_node *left, t_ast_node *right, t_env *vars)
 	int		stdout_cpy;
 
 	stdout_cpy = dup(STDOUT_FILENO);
-	if (!stream_change(process_id, left, right, vars))
+	if (stdout_cpy < 0)
 		return (false);
+	if (!stream_change(process_id, left, right, vars))
+		return (close(stdout_cpy), false);
 	waitpid(process_id[0], status, 0);
 	waitpid(process_id[1], status + 1, 0);
 	dup2(STDOUT_FILENO, stdout_cpy);

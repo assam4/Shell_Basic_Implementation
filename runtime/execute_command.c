@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/26 21:04:05 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/28 00:32:08 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,12 @@ static bool	init_cmds(char **cmd, char ***splited_cmd,
 
 static void	execution(char *cmd, char **splited_cmd, char **env)
 {
+	if (!splited_cmd)
+		exit(EXIT_FAILURE);
 	execve(cmd, splited_cmd, env);
 	free(cmd);
 	cmd = get_env_value("PATH=", env);
-	if (!cmd)
+	if (!cmd && splited_cmd)
 		print_error(splited_cmd[0], ": no such file or directory\n", false);
 	else if (splited_cmd)
 		print_error(splited_cmd[0], ": command not found\n", false);
@@ -98,14 +100,18 @@ bool	execute_cmd(t_ast_node *node, t_env *vars)
 	if (g_signal)
 		return (false);
 	stdin_cpy = dup(STDIN_FILENO);
+	if (stdin_cpy < 0)
+		return (false);
 	stdout_cpy = dup(STDOUT_FILENO);
+	if (stdout_cpy < 0)
+		return (close(stdin_cpy), false);
 	if (!node || !node->cmd)
-		return (true);
+		return (close(stdin_cpy), close(stdout_cpy), true);
 	if (node->token->t_type == WORD && node->cmd
 		&& ((t_token *)node->cmd->content)->is_tmp)
-		return (true);
+		return (close(stdin_cpy), close(stdout_cpy), true);
 	if (!set_redirs(node))
-		return (false);
+		return (close(stdin_cpy), close(stdout_cpy), false);
 	status = create_fork(node, vars, EXIT_SUCCESS);
 	dup2(stdin_cpy, STDIN_FILENO);
 	dup2(stdout_cpy, STDOUT_FILENO);
