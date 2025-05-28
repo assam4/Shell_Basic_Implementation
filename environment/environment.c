@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 00:37:07 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/20 00:13:01 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/28 20:32:57 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,6 @@ static void	env_update(t_env *var)
 	i = 0;
 	while (var->env[i + 1])
 	{
-		if (!var->env[i] && var->env[var->var_count - 2])
-		{
-			var->env[i] = var->env[var->var_count - 2];
-			var->env[var->var_count - 2] = NULL;
-			free(var->env + var->var_count);
-			--var->var_count;
-		}
 		if (var->env[i + 1] && ft_strncmp(var->env[i], var->env[i + 1],
 				ft_strlen(var->env[i])) > 0)
 		{
@@ -71,10 +64,17 @@ bool	del_var(t_env *var, const char *key)
 		return (false);
 	while (var->env[i])
 	{
-		if (!ft_strncmp(var->env[i], key, ft_strlen(key)))
+		if (!ft_strncmp(var->env[i], key, ft_strlen(key))
+			&& var->env[i][ft_strlen(key)] == '=')
 		{
 			free(var->env[i]);
 			var->env[i] = NULL;
+			if (var->var_count != 1)
+			{
+				var->env[i] = var->env[var->var_count - 1];
+				var->env[var->var_count - 1] = NULL;
+				--var->var_count;
+			}
 			env_update(var);
 			return (true);
 		}
@@ -119,7 +119,6 @@ t_env	*get_env(char **def)
 	counter = 0;
 	while (def[counter])
 		++counter;
-	var->var_count = counter;
 	var->env = (char **)ft_calloc(counter + 1, sizeof(char *));
 	if (!var->env)
 		return (free(var), NULL);
