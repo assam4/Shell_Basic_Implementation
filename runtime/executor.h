@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:44:43 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/25 03:08:47 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:16:22 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ bool	set_redirs(t_ast_node *node);
 void	child_process(int *fd, int stream);
 void	print_error(char *mess1, char *mess2, bool flag);
 char	*get_expanded(DIR *dir, char *cmd, ssize_t size);
+char	*ft_join_with_sep(char const *s1, char const *s2, int sep);
 
 char	*expand_wildcard(char *cmd);
 ssize_t	ret_size(DIR *dir, char *cmd);

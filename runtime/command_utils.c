@@ -6,13 +6,13 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 17:36:54 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/27 21:45:53 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/28 19:16:15 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-static char	*ft_join_with_sep(char const *s1, char const *s2, int sep)
+char	*ft_join_with_sep(char const *s1, char const *s2, int sep)
 {
 	char	*str;
 	int		len[2];
