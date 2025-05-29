@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 20:11:57 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/29 16:11:15 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/29 16:40:34 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static bool	update_pwd(t_env *var, char *dir)
 	return (true);
 }
 
-static bool cd_home(t_env *var)
+static bool	cd_home(t_env *var)
 {
 	char	*tmp;
 

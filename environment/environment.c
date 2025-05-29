@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 00:37:07 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/29 16:05:51 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:42:34 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static bool	find_env(t_env *var, char *str)
 		{
 			free(var->env[i]);
 			var->env[i] = str;
+			if (!ft_strncmp(var->env[i], PWD, ft_strlen(PWD)))
+				var->secret_pwd = var->env[i];
 			return (true);
 		}
 		++i;
@@ -68,7 +70,8 @@ bool	del_var(t_env *var, const char *key)
 		if (!ft_strncmp(var->env[i], key, ft_strlen(key))
 			&& var->env[i][ft_strlen(key)] == '=')
 		{
-			free(var->env[i]);
+			if (ft_strncmp(var->env[i], PWD, ft_strlen(PWD)))
+				free(var->env[i]);
 			var->env[i] = NULL;
 			if (var->var_count != 1)
 			{
@@ -76,8 +79,7 @@ bool	del_var(t_env *var, const char *key)
 				var->env[var->var_count - 1] = NULL;
 				--var->var_count;
 			}
-			env_update(var);
-			return (true);
+			return (env_update(var), true);
 		}
 		else
 			++i;
@@ -101,12 +103,13 @@ bool	add_var(t_env *var, char *str_cpy)
 		while (var->env[++i])
 			new_env[i] = var->env[i];
 		new_env[i] = str_cpy;
+		if (!ft_strncmp(str_cpy, PWD, ft_strlen(PWD)))
+			var->secret_pwd = str_cpy;
 		free(var->env);
 		var->env = new_env;
 		++(var->var_count);
 	}
-	env_update(var);
-	return (true);
+	return (env_update(var), true);
 }
 
 t_env	*get_env(char **def)
