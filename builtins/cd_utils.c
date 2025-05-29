@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 19:37:52 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/29 20:01:35 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/29 22:45:09 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ bool	env_value_exists(char *key, t_env *var)
 	int		i;
 
 	i = -1;
-	key_len = ft_strlen(key) + 1;
+	key_len = ft_strlen(key);
 	while (var->env[++i])
 		if (ft_strncmp(var->env[i], key, key_len) == 0)
 			return (true);
@@ -40,19 +40,17 @@ bool	update_oldpwd(t_env *var, char *oldpwd)
 
 bool	update_pwd_helper(t_env *var, char *dir)
 {
-	char	*pwd;
 	char	*full_pwd;
-	char	*env_val;
 
-	pwd = get_env_value("PWD=", var->env);
-	full_pwd = ft_join_with_sep(pwd, dir, '/');
-	env_val = ft_strjoin("PWD=", full_pwd);
-	if (pwd && !add_var(var, env_val))
-		return (free(full_pwd), false);
+	full_pwd = ft_join_with_sep(var->secret_pwd, dir, '/');
+	if (env_value_exists("PWD=", var))
+	{
+		if (!add_var(var, full_pwd))
+			return (free(full_pwd), false);
+	}
 	else
-		change_sword(var, env_val);
-	return (free(pwd), free(full_pwd),
-		print_error("cd: error retrieving current directory: ", NULL, 0),
+		change_sword(var, full_pwd);
+	return (print_error("cd: error retrieving current directory: ", NULL, 0),
 		ft_putstr_fd("getcwd: cannot access parent directories: ", 2),
 		ft_putstr_fd("No such file or directory\n", 2), true);
 }

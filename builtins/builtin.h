@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:25:10 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/29 20:05:33 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/29 22:40:55 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 bool	is_builtin(t_list *cmd);
 bool	exec_builtin(t_list *cmd, t_env *var);
 bool	echo(t_list *cmd);
-bool	pwd(t_list *cmd);
+bool	pwd(t_list *cmd, t_env *var);
 bool	cd(t_list *cmd, t_env *var);
 bool	env(t_list *cmd, t_env *var);
 bool	unset(t_list *cmd, t_env *var);

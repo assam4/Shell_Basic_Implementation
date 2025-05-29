@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:46:27 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/22 13:29:22 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/29 22:41:23 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,6 @@ bool	exec_builtin(t_list *cmd, t_env *var)
 	if (ft_strncmp(word, "cd", ft_strlen(word) + 1) == 0)
 		return (cd(cmd, var));
 	if (ft_strncmp(word, "pwd", ft_strlen(word) + 1) == 0)
-		return (pwd(cmd));
+		return (pwd(cmd, var));
 	return (false);
 }

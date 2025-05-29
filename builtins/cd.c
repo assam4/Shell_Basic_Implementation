@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 20:11:57 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/29 19:38:19 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/29 22:37:28 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@ bool	cd(t_list *cmd, t_env *var)
 	if (cmd->next->next)
 		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2),
 			false);
-	tmp = ft_strdup(var->secret_pwd + 4);
 	if (chdir(((t_token *)cmd->next->content)->word) == -1)
 		return (print_error("cd: ", NULL, 1), false);
+	tmp = ft_strdup(var->secret_pwd + 4);
+	if (!tmp)
+		return (perror("minishell:"), false);
 	if (!update_oldpwd(var, tmp))
 		return (print_error("cd: ", NULL, 1), false);
 	if (update_pwd(var, ((t_token *)cmd->next->content)->word) == 0)

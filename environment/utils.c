@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:50:04 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/29 17:23:01 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/29 22:00:32 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	destroy_env(t_env **var)
 
 void	change_sword(t_env *var, char *str)
 {
-	if (str)
+	if (str && str != var->secret_pwd)
 	{
 		free(var->secret_pwd);
 		var->secret_pwd = str;
