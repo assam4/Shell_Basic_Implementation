@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 20:11:57 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/28 19:33:10 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/29 16:11:15 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,31 @@ static bool	update_pwd(t_env *var, char *dir)
 	return (true);
 }
 
+static bool cd_home(t_env *var)
+{
+	char	*tmp;
+
+	tmp = get_env_value("HOME=", var->env);
+	if (!tmp)
+		return (print_error("cd: ", "HOME not set", false), false);
+	if (chdir(tmp) == -1)
+		return (print_error("cd: ", NULL, 1), free(tmp), false);
+	if (!update_oldpwd(var, tmp))
+		return (print_error("cd: ", NULL, 1), false);
+	if (update_pwd(var, tmp) == 0)
+		return (print_error("cd: ", NULL, 1), false);
+	return (true);
+}
+
 bool	cd(t_list *cmd, t_env *var)
 {
 	char	*tmp;
 
 	if (!cmd->next)
-		return (true);
+		return (cd_home(var));
 	if (cmd->next->next)
-	{
-		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
-		return (false);
-	}
+		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2),
+			false);
 	tmp = get_env_value("PWD=", var->env);
 	if (!tmp)
 		return (false);
