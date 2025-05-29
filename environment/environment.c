@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 00:37:07 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/29 16:42:34 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:16:28 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,15 @@ bool	add_var(t_env *var, char *str_cpy)
 		i = -1;
 		new_env = ft_calloc(var->var_count + 2, sizeof(char *));
 		if (!new_env)
-			return (false);
+			return (free(str_cpy), false);
 		while (var->env[++i])
 			new_env[i] = var->env[i];
 		new_env[i] = str_cpy;
 		if (!ft_strncmp(str_cpy, PWD, ft_strlen(PWD)))
+		{
+			free(var->secret_pwd);
 			var->secret_pwd = str_cpy;
+		}
 		free(var->env);
 		var->env = new_env;
 		++(var->var_count);

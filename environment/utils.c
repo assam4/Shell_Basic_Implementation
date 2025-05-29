@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:50:04 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/29 16:41:09 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:23:01 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ void	destroy_env(t_env **var)
 	{
 		while (i <= (*var)->var_count)
 		{
-			free((*var)->env[i]);
+			if ((*var)->env[i]
+				&& ft_strncmp((*var)->env[i], PWD, ft_strlen(PWD)))
+				free((*var)->env[i]);
 			++i;
 		}
 	}
