@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:46:05 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/29 16:56:54 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/29 19:54:25 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,8 @@ static char	*get_prompt_line(t_env *vars)
 	int		total_len;
 
 	user = get_env_value("USER=", vars->env);
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-		pwd = get_env_value("PWD=", vars->env);
-	if (!pwd)
+	pwd = ft_strdup(vars->secret_pwd + 4);
+	if (!pwd || !*pwd)
 		pwd = ft_strdup(".");
 	if (!user)
 		user = ft_strdup("unknown");
@@ -83,7 +81,7 @@ static char	*get_prompt_line(t_env *vars)
 		+ ft_strlen(pwd) + ft_strlen(RESET) + 13;
 	prompt = ft_calloc(total_len, sizeof(char));
 	if (!prompt)
-		return (NULL);
+		return (free(pwd), NULL);
 	ft_strlcat(prompt, GREEN"minishell@", total_len);
 	ft_strlcat(prompt, user, total_len);
 	ft_strlcat(prompt, ":"BLUE, total_len);
@@ -134,6 +132,6 @@ int	main(int argc, char **argv, char **envp)
 		return (print_err(ENOMEM));
 	sig_config();
 	exit_status = execute_line(vars);
-	destroy_env(&vars);
+		destroy_env(&vars);
 	return (exit_status);
 }

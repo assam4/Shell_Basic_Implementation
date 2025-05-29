@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:25:10 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/22 13:26:14 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/29 20:05:33 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,9 @@ bool	env(t_list *cmd, t_env *var);
 bool	unset(t_list *cmd, t_env *var);
 bool	export(t_list *cmd, t_env *var);
 bool	builtin_exit(t_list *cmd, t_env *var);
+bool	env_value_exists(char *key, t_env *var);
+bool	update_oldpwd(t_env *var, char *oldpwd);
+bool	update_pwd_helper(t_env *var, char *dir);
+bool	update_pwd(t_env *var, char *dir);
 
 #endif
