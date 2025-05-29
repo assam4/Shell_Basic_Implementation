@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:46:05 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/28 17:51:40 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/29 16:56:54 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,11 @@ static char	*get_prompt_line(t_env *vars)
 	int		total_len;
 
 	user = get_env_value("USER=", vars->env);
-	pwd = get_env_value("PWD=", vars->env);
+	pwd = getcwd(NULL, 0);
 	if (!pwd)
-		pwd = ft_strdup("anywhere");
+		pwd = get_env_value("PWD=", vars->env);
+	if (!pwd)
+		pwd = ft_strdup(".");
 	if (!user)
 		user = ft_strdup("unknown");
 	total_len = ft_strlen(GREEN) + ft_strlen(user) + ft_strlen(BLUE)
@@ -82,14 +84,11 @@ static char	*get_prompt_line(t_env *vars)
 	prompt = ft_calloc(total_len, sizeof(char));
 	if (!prompt)
 		return (NULL);
-	ft_strlcpy(prompt, GREEN, total_len);
-	ft_strlcat(prompt, "minishell@", total_len);
+	ft_strlcat(prompt, GREEN"minishell@", total_len);
 	ft_strlcat(prompt, user, total_len);
-	ft_strlcat(prompt, ":", total_len);
-	ft_strlcat(prompt, BLUE, total_len);
+	ft_strlcat(prompt, ":"BLUE, total_len);
 	ft_strlcat(prompt, pwd, total_len);
-	ft_strlcat(prompt, "$ ", total_len);
-	ft_strlcat(prompt, RESET, total_len);
+	ft_strlcat(prompt, "$ "RESET, total_len);
 	return (free(user), free(pwd), prompt);
 }
 
