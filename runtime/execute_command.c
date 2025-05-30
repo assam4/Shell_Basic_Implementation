@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/28 00:32:08 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/31 00:58:44 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static bool	init_cmds(char **cmd, char ***splited_cmd,
 	char	*full_cmd;
 	char	*expanded;
 
-	full_cmd = get_cmd(node->cmd);
+	full_cmd = get_cmd(node->cmd, env);
 	if (!full_cmd)
 		return (false);
 	if (ft_strchr(full_cmd, '*'))

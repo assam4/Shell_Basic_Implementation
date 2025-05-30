@@ -6,11 +6,28 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:50:04 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/29 22:00:32 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/31 02:16:52 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment.h"
+
+char	*get_value(char **env, const char *s, size_t len)
+{
+	int	i;
+
+	i = 0;
+	if (!s || !*s || !len)
+		return (NULL);
+	while (env[i])
+	{
+		if (!ft_strncmp(env[i], s, len)
+			&& env[i][len] == '=')
+			return (ft_strchr(env[i], '=') + 1);
+		++i;
+	}
+	return (NULL);
+}
 
 void	print_env(t_env *var)
 {
@@ -70,7 +87,7 @@ void	bump_shlvl(t_env *var)
 	{
 		if (!ft_strncmp(var->env[i], SHLVL, LEN))
 		{
-			lvl_str = ft_itoa(ft_atoi(var->env[i] + LEN + 1) + 1);
+			lvl_str = ft_itoa(ft_atoi(var->env[i] + LEN) + 1);
 			if (!lvl_str)
 				return ;
 			free(var->env[i]);
@@ -78,7 +95,7 @@ void	bump_shlvl(t_env *var)
 			if (!var->env[i])
 				return ;
 			ft_strlcpy(var->env[i], SHLVL, LEN + 1);
-			ft_strlcpy(var->env[i] + LEN + 1, lvl_str, ft_strlen(lvl_str) + 1);
+			ft_strlcpy(var->env[i] + LEN, lvl_str, ft_strlen(lvl_str) + 1);
 			free(lvl_str);
 			return ;
 		}
