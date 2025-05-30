@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:46:05 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/29 22:35:25 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/05/30 14:06:11 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,6 @@ int	main(int argc, char **argv, char **envp)
 		return (print_err(ENOMEM));
 	sig_config();
 	exit_status = execute_line(vars);
-		destroy_env(&vars);
+	destroy_env(&vars);
 	return (exit_status);
 }
