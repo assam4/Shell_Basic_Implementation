@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 00:25:02 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/31 02:04:11 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/31 02:25:48 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	expand_env(char **s, size_t *i, char **var)
 	char	*value;
 	char	*new_word;
 
-
 	len = calc_length(*s, *i);
 	value = get_value(var, *s + *i, len);
 	if (value)
@@ -49,15 +48,13 @@ void	expand_env(char **s, size_t *i, char **var)
 	new_word = ft_calloc(ft_strlen(*s) - len + value_len + 1, sizeof(char));
 	if (!new_word)
 		return ;
-
-//	if (*i > 1)
-//		ft_strlcpy(new_word, *s, *i);
-	printf("%s\n", value);
+	if (*i - 1 > 0)
+		ft_strlcpy(new_word, *s, *i);
 	if (value_len)
-		ft_strlcpy(new_word, value, value_len + 1);
-//	if ((*s)[*i + len - 1])
-//		ft_strlcpy(new_word + ft_strlen(new_word), *s + *i + len - 1,
-//			ft_strlen(*s) - *i - len + 1); 
+		ft_strlcpy(new_word + ft_strlen(new_word), value, value_len + 1);
+	if ((*s)[*i + len])
+		ft_strlcpy(new_word + ft_strlen(new_word), *s + *i + len,
+			ft_strlen(*s) - *i - len + 1);
 	*i += value_len;
 	free(*s);
 	*s = new_word;
