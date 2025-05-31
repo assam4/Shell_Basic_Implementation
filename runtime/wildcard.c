@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 12:30:40 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/26 20:53:29 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/31 19:58:51 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ char	*get_expanded(DIR *dir, char *cmd, ssize_t size)
 	if (!*expanded)
 	{
 		free(expanded);
-		return (ft_strdup(cmd));
+		return (cmd);
 	}
 	return (expanded);
 }

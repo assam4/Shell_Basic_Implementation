@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:44:43 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/31 00:56:38 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/05/31 19:29:00 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	print_error(char *mess1, char *mess2, bool flag);
 char	*get_expanded(DIR *dir, char *cmd, ssize_t size);
 char	*ft_join_with_sep(char const *s1, char const *s2, int sep);
 void	process_env_expansion(char **s, char **var);
-char	*expand_wildcard(char *cmd);
+bool	expand_wildcard(char **cmd);
 ssize_t	ret_size(DIR *dir, char *cmd);
 
 #endif
