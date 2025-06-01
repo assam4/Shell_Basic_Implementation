@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/31 19:30:59 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/01 19:45:53 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,16 @@ static bool	init_cmds(char **cmd, char ***splited_cmd,
 
 static void	execution(char *cmd, char **splited_cmd, char **env)
 {
+	int	i;
+
 	if (!splited_cmd)
 		exit(EXIT_FAILURE);
+	i = 0;
+	while (splited_cmd[i])
+	{
+		replace_chars(splited_cmd[i], 1, ' ');
+		++i;
+	}
 	execve(cmd, splited_cmd, env);
 	free(cmd);
 	cmd = get_env_value("PATH=", env);

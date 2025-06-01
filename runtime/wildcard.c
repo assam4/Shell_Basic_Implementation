@@ -6,40 +6,31 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 12:30:40 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/31 19:58:51 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/01 19:28:31 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-static char	*get_pattern(char *cmd)
+void	replace_chars(char *str, char first, char second)
 {
-	int		i;
-	int		start;
-	int		end;
+	int	index;
 
-	i = 0;
-	while (cmd[i])
+	index = 0;
+	while (str[index])
 	{
-		if (cmd[i] == '*')
-		{
-			start = i;
-			while (start > 0 && cmd[start - 1] != ' ')
-				start--;
-			end = i;
-			while (cmd[end] && cmd[end] != ' ')
-				end++;
-			return (ft_substr(cmd, start, end - start));
-		}
-		i++;
+		if (str[index] == first)
+			str[index] = second;
+		++index;
 	}
-	return (NULL);
 }
 
 static bool	check_pattern(char *word, char *pattern, int w_i, int p_i)
 {
 	if (!pattern[p_i])
 		return (!word[w_i]);
+	if (pattern[p_i] == '"' || pattern[p_i] == '\'')
+		return (check_pattern(word, pattern, w_i, p_i + 1));
 	if (pattern[p_i] == '*')
 	{
 		while (word[w_i])
@@ -50,21 +41,17 @@ static bool	check_pattern(char *word, char *pattern, int w_i, int p_i)
 		}
 		return (check_pattern(word, pattern, w_i, p_i + 1));
 	}
-	else if (word[w_i] == pattern[p_i])
+	else if (word[w_i] == pattern[p_i] || pattern[p_i] == '?')
 		return (check_pattern(word, pattern, w_i + 1, p_i + 1));
 	else
 		return (false);
 }
 
-ssize_t	ret_size(DIR *dir, char *cmd)
+ssize_t	ret_size(DIR *dir, char *pattern)
 {
 	ssize_t			size;
 	struct dirent	*entry;
-	char			*pattern;
 
-	pattern = get_pattern(cmd);
-	if (!pattern)
-		return (-1);
 	size = 0;
 	while (true)
 	{
@@ -79,17 +66,14 @@ ssize_t	ret_size(DIR *dir, char *cmd)
 		if (check_pattern(entry->d_name, pattern, 0, 0))
 			size += ft_strlen(entry->d_name) + 1;
 	}
-	return (free(pattern), size);
+	return (size);
 }
 
-static bool	create_expanded(DIR *dir, ssize_t size, char *expanded, char *cmd)
+static bool	create_expanded(DIR *dir, ssize_t size,
+	char *expanded, char *pattern)
 {
 	struct dirent	*entry;
-	char			*pattern;
 
-	pattern = get_pattern(cmd);
-	if (!pattern)
-		return (false);
 	while (true)
 	{
 		entry = readdir(dir);
@@ -106,7 +90,7 @@ static bool	create_expanded(DIR *dir, ssize_t size, char *expanded, char *cmd)
 			ft_strlcat(expanded, " ", size);
 		}
 	}
-	return (free(pattern), true);
+	return (true);
 }
 
 char	*get_expanded(DIR *dir, char *cmd, ssize_t size)

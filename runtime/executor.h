@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:44:43 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/31 19:29:00 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/01 19:26:32 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ char	*ft_join_with_sep(char const *s1, char const *s2, int sep);
 void	process_env_expansion(char **s, char **var);
 bool	expand_wildcard(char **cmd);
 ssize_t	ret_size(DIR *dir, char *cmd);
+void	replace_chars(char *str, char first, char second);
 
 #endif
