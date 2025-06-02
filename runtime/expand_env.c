@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 00:25:02 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/31 02:25:48 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/03 00:27:41 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,57 @@ void	process_env_expansion(char **s, char **var)
 		else
 			++i;
 	}
+}
+
+static size_t	len_without_quotes(const char *s)
+{
+	size_t	len;
+	int		i;
+	bool	single_quotes;
+	bool	double_quotes;
+
+	single_quotes = false;
+	double_quotes = false;
+	len = 0;
+	i = -1;
+	if (!s || !*s)
+		return (len);
+	while (s[++i])
+	{
+		if (s[i] == '\'' && !double_quotes)
+			single_quotes = !single_quotes;
+		else if (s[i] == '"' && !single_quotes)
+			double_quotes = !double_quotes;
+		else
+			++len;
+	}
+	return (len);
+}
+
+void	erase_quotes(char **s, bool single_quotes, bool double_quotes)
+{
+	char	*new_word;
+	size_t	new_len;
+	int		oi;
+	int		ni;
+
+	new_len = len_without_quotes(*s);
+	if (new_len == ft_strlen(*s))
+		return ;
+	new_word = ft_calloc(new_len + 1, sizeof(char));
+	if (!new_word)
+		return ;
+	oi = -1;
+	ni = 0;
+	while ((*s)[++oi])
+	{
+		if ((*s)[oi] == '\'' && !double_quotes)
+			single_quotes = !single_quotes;
+		else if ((*s)[oi] == '"' && !single_quotes)
+			double_quotes = !double_quotes;
+		else
+			new_word[ni++] = (*s)[oi];
+	}
+	free(*s);
+	*s = new_word;
 }

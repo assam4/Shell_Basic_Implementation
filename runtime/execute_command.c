@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/01 19:45:53 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/03 00:33:44 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,5 @@ bool	execute_cmd(t_ast_node *node, t_env *vars)
 	dup2(stdout_cpy, STDOUT_FILENO);
 	close(stdin_cpy);
 	close(stdout_cpy);
-	return (status);
+	return (vars->exit_status = status, status);
 }
