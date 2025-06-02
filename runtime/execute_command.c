@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/03 00:53:03 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/03 01:23:36 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,12 @@ static void	execution(char *cmd, char **splited_cmd, char **env)
 	execve(cmd, splited_cmd, env);
 	free(cmd);
 	cmd = get_env_value("PATH=", env);
-	if (!cmd && splited_cmd)
+	if (errno == 14 && !cmd && splited_cmd)
 		print_error(splited_cmd[0], ": no such file or directory\n", false);
-	else if (splited_cmd)
+	else if (errno == 14 && splited_cmd)
 		print_error(splited_cmd[0], ": command not found\n", false);
+	else
+		perror("minishell");
 	free(cmd);
 	ft_split_free(splited_cmd);
 	exit(EXIT_FAILURE);
