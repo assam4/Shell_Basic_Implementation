@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 12:30:40 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/01 19:28:31 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/03 01:09:07 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ static bool	create_expanded(DIR *dir, ssize_t size,
 			continue ;
 		if (check_pattern(entry->d_name, pattern, 0, 0))
 		{
+			replace_chars(entry->d_name, ' ', 1);
 			ft_strlcat(expanded, entry->d_name, size);
 			ft_strlcat(expanded, " ", size);
 		}

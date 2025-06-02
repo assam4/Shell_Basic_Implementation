@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:24:44 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/16 16:04:10 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/03 00:50:33 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool	echo(t_list *cmd)
 	new_line = 1;
 	cmd = cmd->next;
 	if (ft_strncmp(((t_token *)cmd->content)->word, "-n",
-			ft_strlen(((t_token *)cmd->content)->word + 1)) == 0)
+			ft_strlen(((t_token *)cmd->content)->word) + 1) == 0)
 	{
 		new_line = 0;
 		cmd = cmd->next;

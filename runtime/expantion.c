@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:17:59 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/01 19:46:50 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/03 01:08:37 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,7 @@ static char	*expand_single_wildcard(char *token)
 	if (size != 0)
 		expanded = get_expanded(dir, token, size);
 	else
-	{
 		expanded = ft_strdup(token);
-		replace_chars(expanded, ' ', 1);
-	}
 	closedir(dir);
 	return (expanded);
 }
