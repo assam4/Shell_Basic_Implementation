@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 00:25:02 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/03 00:27:41 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/03 01:08:31 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static size_t	calc_length(const char *str, size_t i)
 	len = 0;
 	if (!str || !str[i])
 		return (len);
+	if (str[i] == '?')
+		return (++len);
 	while (str[i + len])
 	{
 		if (!len && (ft_isalpha(str[i + len]) || str[i + len] == '_'))
@@ -32,9 +34,8 @@ static size_t	calc_length(const char *str, size_t i)
 	return (len);
 }
 
-void	expand_env(char **s, size_t *i, char **var)
+void	expand_env(char **s, size_t *i, size_t len, t_env *var)
 {
-	size_t	len;
 	size_t	value_len;
 	char	*value;
 	char	*new_word;
@@ -55,12 +56,14 @@ void	expand_env(char **s, size_t *i, char **var)
 	if ((*s)[*i + len])
 		ft_strlcpy(new_word + ft_strlen(new_word), *s + *i + len,
 			ft_strlen(*s) - *i - len + 1);
+	if ((*s)[*i] == '?')
+		free(value);
 	*i += value_len;
 	free(*s);
 	*s = new_word;
 }
 
-void	process_env_expansion(char **s, char **var)
+void	process_env_expansion(char **s, t_env *var)
 {
 	size_t	i;
 	bool	double_quotes;
@@ -80,7 +83,7 @@ void	process_env_expansion(char **s, char **var)
 		if ((*s)[i] == '$' && !single_quotes)
 		{
 			++i;
-			expand_env(s, &i, var);
+			expand_env(s, &i, 0, var);
 		}
 		else
 			++i;

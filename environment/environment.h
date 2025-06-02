@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 00:32:48 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/31 01:01:55 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/03 00:52:46 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ void	print_env(t_env *var);
 void	destroy_env(t_env **var);
 void	bump_shlvl(t_env *var);
 void	change_sword(t_env *var, char *str);
-char	*get_value(char **var, const char *s, size_t len);
+char	*get_value(t_env *var, const char *s, size_t len);
 
 #endif

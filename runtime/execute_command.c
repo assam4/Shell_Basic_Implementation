@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/03 00:33:44 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/03 00:53:03 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ void	ft_split_free(char **arr)
 }
 
 static bool	init_cmds(char **cmd, char ***splited_cmd,
-		t_ast_node *node, char **env)
+		t_ast_node *node, t_env *var)
 {
 	char	*full_cmd;
 
-	full_cmd = get_cmd(node->cmd, env);
+	full_cmd = get_cmd(node->cmd, var);
 	if (!full_cmd)
 		return (false);
 	if (!*full_cmd)
@@ -41,7 +41,7 @@ static bool	init_cmds(char **cmd, char ***splited_cmd,
 	free(full_cmd);
 	if (!*splited_cmd)
 		return (false);
-	*cmd = ret_command((*splited_cmd)[0], env);
+	*cmd = ret_command((*splited_cmd)[0], var->env);
 	return (true);
 }
 
@@ -75,7 +75,7 @@ static int	create_fork(t_ast_node *node, t_env *vars, int status)
 	char	**splited_cmd;
 	pid_t	pid;
 
-	if (!init_cmds(&cmd, &splited_cmd, node, vars->env))
+	if (!init_cmds(&cmd, &splited_cmd, node, vars))
 		return (0);
 	status = is_builtin(node->cmd);
 	if (status)

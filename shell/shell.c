@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:46:05 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/30 14:06:11 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/03 00:58:54 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ static int	run_shell(t_list **tokens, t_env *vars)
 	if (*tokens && tree_blossom(tree, *tokens))
 		execute_node(tree, vars);
 	tree_felling(&tree);
+	if (g_signal)
+		vars->exit_status = g_signal;
 	return (EXIT_SUCCESS);
 }
 

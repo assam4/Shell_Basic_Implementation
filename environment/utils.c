@@ -6,24 +6,26 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:50:04 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/31 02:16:52 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/03 00:53:00 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment.h"
 
-char	*get_value(char **env, const char *s, size_t len)
+char	*get_value(t_env *var, const char *s, size_t len)
 {
 	int	i;
 
 	i = 0;
 	if (!s || !*s || !len)
 		return (NULL);
-	while (env[i])
+	if (s[i] == '?')
+		return (ft_itoa(var->exit_status));
+	while (var->env[i])
 	{
-		if (!ft_strncmp(env[i], s, len)
-			&& env[i][len] == '=')
-			return (ft_strchr(env[i], '=') + 1);
+		if (!ft_strncmp(var->env[i], s, len)
+			&& var->env[i][len] == '=')
+			return (ft_strchr(var->env[i], '=') + 1);
 		++i;
 	}
 	return (NULL);
