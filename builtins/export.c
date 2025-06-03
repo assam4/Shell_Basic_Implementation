@@ -6,11 +6,32 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 21:16:09 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/03 00:50:06 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/03 21:08:29 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
+
+static bool	validation(char *cmd)
+{
+	int	i;
+
+	if (!cmd || (!ft_isalpha(cmd[0]) && cmd[0] != '_'))
+		return (false);
+	i = 1;
+	while (cmd[i] && cmd[i] != '=' && !(cmd[i] == '+' && cmd[i + 1] == '='))
+	{
+		if (!ft_isalnum(cmd[i]) && cmd[i] != '_')
+			return (false);
+		i++;
+	}
+	if (cmd[i] == '+')
+	{
+		if (cmd[i + 1] != '=')
+			return (false);
+	}
+	return (true);
+}
 
 static char	*init_key(t_list *cmd, int i)
 {
@@ -96,13 +117,13 @@ bool	export(t_list *cmd, t_env *var)
 		word = ((t_token *)cmd->content)->word;
 		eval = ft_strchr(word, '=');
 		plus = ft_strchr(word, '+');
-		if (word == eval || word == plus || (plus && !eval))
+		if (!validation(word))
 			return (ft_putstr_fd("minishell: export: ", 2),
 				ft_putstr_fd(word, 2),
 				ft_putstr_fd(": not a valid identifier\n", 2), false);
-		if (!plus && eval && !add_var(var, ft_strdup(word)))
+		if (plus && eval && plus + 1 == eval && !append_value(cmd, var))
 			return (false);
-		else if (plus && eval && !append_value(cmd, var))
+		else if (eval && !add_var(var, ft_strdup(word)))
 			return (false);
 		cmd = cmd->next;
 	}
