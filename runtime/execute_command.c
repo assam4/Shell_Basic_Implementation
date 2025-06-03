@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/03 01:23:36 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/03 14:30:36 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,10 @@ static void	execution(char *cmd, char **splited_cmd, char **env)
 
 static int	create_fork(t_ast_node *node, t_env *vars, int status)
 {
-	char	*cmd;
-	char	**splited_cmd;
-	pid_t	pid;
+	char			*cmd;
+	char			**splited_cmd;
+	pid_t			pid;
+	struct termios	oldt;
 
 	if (!init_cmds(&cmd, &splited_cmd, node, vars))
 		return (0);
@@ -83,14 +84,16 @@ static int	create_fork(t_ast_node *node, t_env *vars, int status)
 	if (status)
 		return (free(cmd), ft_split_free(splited_cmd),
 			exec_builtin(node->cmd, vars));
+	tcgetattr(STDIN_FILENO, &oldt);
 	pid = fork();
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
 		execution(cmd, splited_cmd, vars->env);
 	}
-	return (free(cmd), ft_split_free(splited_cmd), waitpid(pid, &status, 0)
-		, WIFEXITED(status) && !(WEXITSTATUS(status)));
+	return (free(cmd), ft_split_free(splited_cmd), waitpid(pid, &status, 0),
+		tcsetattr(STDIN_FILENO, TCSANOW, &oldt),
+		WIFEXITED(status) && !(WEXITSTATUS(status)));
 }
 
 bool	execute_cmd(t_ast_node *node, t_env *vars)

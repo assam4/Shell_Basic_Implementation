@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:44:43 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/03 00:52:33 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/03 14:21:57 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "tree.h"
 # include "builtin.h"
 # include "dirent.h"
+# include "termios.h"
 
 # define TMP_FILE "/tmp/minishell.tmp"
 
