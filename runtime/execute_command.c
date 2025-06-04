@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+pm/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
@@ -122,5 +122,5 @@ bool	execute_cmd(t_ast_node *node, t_env *vars)
 	dup2(stdout_cpy, STDOUT_FILENO);
 	close(stdin_cpy);
 	close(stdout_cpy);
-	return (vars->exit_status = !status, !status);
+	return (vars->exit_status = !status, status);
 }
