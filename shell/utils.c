@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:39:35 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/24 02:41:23 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/04 21:14:35 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	sigint_incontinution(void)
 	return (EXIT_SUCCESS);
 }
 
-static void	handler(int signal)
+void	handler(int signal)
 {
 	if (g_signal == -41)
 	{

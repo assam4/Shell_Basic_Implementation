@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 16:47:34 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/23 16:37:51 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/04 20:34:13 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ bool	builtin_exit(t_list *cmd, t_env *var)
 			ft_putstr_fd(": numeric argument required\n", 2), true);
 	}
 	g_signal = -1;
-	var->exit_status = (int)(unsigned char)num;
+	var->exit_status = (unsigned char)num;
 	ft_putstr_fd("exit\n", 1);
 	return (true);
 }

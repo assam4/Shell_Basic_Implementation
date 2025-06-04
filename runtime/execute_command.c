@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/04 19:56:22 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/04 21:16:11 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,15 @@ static void	execution(char *cmd, char **splited_cmd, char **env)
 	execve(cmd, splited_cmd, env);
 	free(cmd);
 	cmd = get_env_value("PATH=", env);
-	if (errno == 14 && !cmd && splited_cmd)
+	if (errno == EFAULT && !cmd && splited_cmd)
 		print_error(splited_cmd[0], ": no such file or directory\n", false);
-	else if (errno == 14 && splited_cmd)
+	else if (errno == EFAULT && splited_cmd)
 		print_error(splited_cmd[0], ": command not found\n", false);
 	else
 		perror("minishell");
 	free(cmd);
 	ft_split_free(splited_cmd);
-	exit(EXIT_FAILURE);
+	exit(errno);
 }
 
 static int	create_fork(t_ast_node *node, t_env *vars, int status)
@@ -85,14 +85,18 @@ static int	create_fork(t_ast_node *node, t_env *vars, int status)
 		return (free(cmd), ft_split_free(splited_cmd),
 			exec_builtin(node->cmd, vars));
 	tcgetattr(STDIN_FILENO, &oldt);
+	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
 		execution(cmd, splited_cmd, vars->env);
 	}
-	return (free(cmd), ft_split_free(splited_cmd), waitpid(pid, &status, 0),
-		tcsetattr(STDIN_FILENO, TCSANOW, &oldt),
+	signal(SIGINT, handler);
+	waitpid(pid, &status, 0);
+	set_exit_status(vars, status);
+	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+	return (free(cmd), ft_split_free(splited_cmd),
 		WIFEXITED(status) && !(WEXITSTATUS(status)));
 }
 
@@ -122,5 +126,5 @@ bool	execute_cmd(t_ast_node *node, t_env *vars)
 	dup2(stdout_cpy, STDOUT_FILENO);
 	close(stdin_cpy);
 	close(stdout_cpy);
-	return (vars->exit_status = !status, status);
+	return (status);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:41:19 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/25 03:20:35 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:36:13 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	print_warning(char *limiter, t_env *vars)
 		STDERR_FILENO);
 	write(STDERR_FILENO, limiter, ft_strlen(limiter) - 1);
 	ft_putstr_fd("')\n", STDERR_FILENO);
-	vars->exit_status = 0;
 }
 
 static void	print_token(t_token *current)
