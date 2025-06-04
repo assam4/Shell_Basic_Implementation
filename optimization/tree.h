@@ -6,14 +6,13 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:46:33 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/13 18:06:14 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/04 23:23:59 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TREE_H
 # define TREE_H
 
-# include <errno.h>
 # include "syntax.h"
 
 typedef struct s_ast_node

@@ -6,21 +6,23 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:44:43 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/04 20:40:58 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/04 23:56:00 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
-# include "shell.h"
 # include "syntax.h"
 # include "tree.h"
 # include "builtin.h"
+# include "shell.h"
 # include "dirent.h"
 # include "termios.h"
 
 # define TMP_FILE "/tmp/minishell.tmp"
+
+typedef struct s_ast_node	t_ast_node;
 
 bool	execute_node(t_ast_node	*node, t_env *vars);
 bool	execute_cmd(t_ast_node *node, t_env *vars);

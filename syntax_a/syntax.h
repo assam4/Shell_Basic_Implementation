@@ -6,21 +6,22 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:40:32 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/25 03:20:53 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/04 23:29:24 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SYNTAX_H
 # define SYNTAX_H
 
+# include "token.h"
+# include "environment.h"
+# include "shell.h"
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <stdio.h>
 # include <signal.h>
 # include <fcntl.h>
 # include <errno.h>
-# include "token.h"
-# include "environment.h"
 
 # define ERR_MESSAGE "minishell: syntax error near unexpected token `"
 # define TMP_DIR "/tmp/"

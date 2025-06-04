@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:41:02 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/25 03:21:48 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/04 23:52:34 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static bool	input_here_doc(char *tmp_file, char *limiter, t_env *vars)
 	pid_t	process_id;
 	int		status;
 
+	signal(SIGINT, SIG_IGN);
 	process_id = fork();
 	if (process_id == -1)
 		return (false);
@@ -63,16 +64,13 @@ static bool	input_here_doc(char *tmp_file, char *limiter, t_env *vars)
 	{
 		signal(SIGINT, SIG_DFL);
 		here_doc_loop(tmp_file, limiter, vars);
+		exit(EXIT_SUCCESS);
 	}
-	else
-	{
-		waitpid(process_id, &status, 0);
-		if (WIFSIGNALED(status))
-			return (false);
-		else if (WIFEXITED(status) && !(WEXITSTATUS(status)))
-			return (true);
-	}
-	return (false);
+	signal(SIGINT, handler);
+	waitpid(process_id, &status, 0);
+	set_exit_status(vars, status);
+	return (!WIFSIGNALED(status)
+		&& WIFEXITED(status) && !(WEXITSTATUS(status)));
 }
 
 static void	tokens_update(t_list *tokens, char *fd_name)
