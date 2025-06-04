@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:46:27 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/29 22:41:23 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/05 00:34:25 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,21 @@ bool	exec_builtin(t_list *cmd, t_env *var)
 	char	*word;
 
 	if (!cmd || !cmd->content)
-		return (false);
+		return (var->exit_status = 1, false);
 	word = ((t_token *)cmd->content)->word;
 	if (ft_strncmp(word, "echo", ft_strlen(word) + 1) == 0)
-		return (echo(cmd));
+		var->exit_status = !echo(cmd);
 	if (ft_strncmp(word, "unset", ft_strlen(word) + 1) == 0)
-		return (unset(cmd, var));
+		var->exit_status = !unset(cmd, var);
 	if (ft_strncmp(word, "export", ft_strlen(word) + 1) == 0)
-		return (export(cmd, var));
+		var->exit_status = !export(cmd, var);
 	if (ft_strncmp(word, "exit", ft_strlen(word) + 1) == 0)
-		return (builtin_exit(cmd, var));
+		builtin_exit(cmd, var);
 	if (ft_strncmp(word, "env", ft_strlen(word) + 1) == 0)
-		return (env(cmd, var));
+		var->exit_status = !env(cmd, var);
 	if (ft_strncmp(word, "cd", ft_strlen(word) + 1) == 0)
-		return (cd(cmd, var));
+		var->exit_status = !cd(cmd, var);
 	if (ft_strncmp(word, "pwd", ft_strlen(word) + 1) == 0)
-		return (pwd(cmd, var));
-	return (false);
+		var->exit_status = !pwd(cmd, var);
+	return (!var->exit_status);
 }
