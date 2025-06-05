@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:44:43 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/04 23:56:00 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:56:23 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include "termios.h"
 
 # define TMP_FILE "/tmp/minishell.tmp"
+# define CORE_DUMPED "Quit (core dumped)\n"
 
 typedef struct s_ast_node	t_ast_node;
 
