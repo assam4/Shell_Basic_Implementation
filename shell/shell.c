@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:46:05 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/05 16:14:57 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:17:33 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ static int	execute_line(t_env *vars)
 		free(line);
 		run_shell(&tokens, vars);
 	}
-	return (vars->exit_status);
+	return (EXIT_FAILURE);
 }
 
 int	main(int argc, char **argv, char **envp)
