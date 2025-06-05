@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:46:05 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/04 20:32:22 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/05 16:14:57 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,12 @@ static int	execute_line(t_env *vars)
 		line = readline(prompt);
 		free(prompt);
 		if (!line)
-			return (ft_putstr_fd(EXIT, STDOUT_FILENO)
-				, vars->exit_status);
+			return (ft_putstr_fd(EXIT, STDOUT_FILENO), EXIT_SUCCESS);
+		if (g_signal == -SIGINT)
+			vars->exit_status = SIGINT + 128;
 		g_signal = 0;
 		add_history(line);
-		++(vars->line_count);
-		if (!get_tokens(line, &tokens))
+		if (++(vars->line_count) && !get_tokens(line, &tokens))
 			return (free(line), print_err(ENOMEM));
 		free(line);
 		run_shell(&tokens, vars);

@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:39:35 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/04 21:14:35 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/05 16:12:00 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	sigint_incontinution(void)
 	if (g_signal == -20)
 	{
 		rl_redisplay();
-		g_signal = -42;
+		g_signal = -2;
 	}
 	return (EXIT_SUCCESS);
 }
