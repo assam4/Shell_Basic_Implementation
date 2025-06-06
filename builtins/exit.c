@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 16:47:34 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/04 20:34:13 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/06 21:00:01 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static bool	check_number(char *word, int64_t *num)
 
 	i = 0;
 	while (word[i])
-		if (!ft_isdigit(word[i++]) && word[i] == '-')
+		if (!ft_isdigit(word[i++]) && word[i] != '-')
 			return (false);
 	if (ft_strlen(word) > 19)
 		return (false);
@@ -61,7 +61,7 @@ bool	builtin_exit(t_list *cmd, t_env *var)
 	int64_t	num;
 
 	if (!cmd->next)
-		return (g_signal = -1, true);
+		return (g_signal = -1, ft_putstr_fd("exit\n", 1), true);
 	cmd = cmd->next;
 	if (cmd->next)
 	{

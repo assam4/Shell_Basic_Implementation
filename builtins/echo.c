@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:24:44 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/03 15:32:26 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/07 16:34:52 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	check_flag(t_list **cmd, int *new_line)
 {
 	int	i;
 
-	while (ft_strncmp(((t_token *)(*cmd)->content)->word, "-n", 2) == 0)
+	if (ft_strncmp(((t_token *)(*cmd)->content)->word, "-n", 2) == 0)
 	{
 		i = 1;
 		while (((t_token *)(*cmd)->content)->word[i] &&
