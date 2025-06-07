@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:46:05 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/05 16:17:33 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/07 16:55:43 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,11 @@ static int	execute_line(t_env *vars)
 		g_signal = 0;
 		add_history(line);
 		if (++(vars->line_count) && !get_tokens(line, &tokens))
-			return (free(line), print_err(ENOMEM));
+			return (free(line), print_err(ENOMEM), vars->exit_status);
 		free(line);
 		run_shell(&tokens, vars);
 	}
-	return (EXIT_FAILURE);
+	return (vars->exit_status);
 }
 
 int	main(int argc, char **argv, char **envp)

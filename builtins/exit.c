@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 16:47:34 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/06 21:00:01 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/07 17:14:49 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,15 @@ static bool	check_number(char *word, int64_t *num)
 	int			i;
 
 	i = 0;
-	while (word[i])
-		if (!ft_isdigit(word[i++]) && word[i] != '-')
+	while (word[i] && ft_isspace(word + i))
+		i++;
+	if ((word[i] == '+' || word[i] == '-')
+		&& (word[i + 1] == '+' || word[i + 1] == '-'))
+		return (false);
+	i = -1;
+	while (word[++i])
+		if (!ft_isdigit(word[i]) && word[i] != '-'
+			&& word[i] != '+' && !ft_isspace(word + i))
 			return (false);
 	if (ft_strlen(word) > 19)
 		return (false);
@@ -63,11 +70,6 @@ bool	builtin_exit(t_list *cmd, t_env *var)
 	if (!cmd->next)
 		return (g_signal = -1, ft_putstr_fd("exit\n", 1), true);
 	cmd = cmd->next;
-	if (cmd->next)
-	{
-		var->exit_status = 1;
-		return (print_error("exit\nexit: ", "too many arguments\n", 0), true);
-	}
 	if (!check_number(((t_token *)cmd->content)->word, &num))
 	{
 		g_signal = -1;
@@ -75,6 +77,12 @@ bool	builtin_exit(t_list *cmd, t_env *var)
 		return (ft_putstr_fd("exit\nminishell: exit: ", 2),
 			ft_putstr_fd(((t_token *)cmd->content)->word, 2),
 			ft_putstr_fd(": numeric argument required\n", 2), true);
+	}
+	if (cmd->next)
+	{
+		var->exit_status = 1;
+		return (ft_putstr_fd("exit\nminishell: exit: too many arguments\n",
+				2), true);
 	}
 	g_signal = -1;
 	var->exit_status = (unsigned char)num;
