@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 21:16:09 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/03 21:08:29 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/07 17:25:31 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,13 +118,13 @@ bool	export(t_list *cmd, t_env *var)
 		eval = ft_strchr(word, '=');
 		plus = ft_strchr(word, '+');
 		if (!validation(word))
-			return (ft_putstr_fd("minishell: export: ", 2),
+			return (ft_putstr_fd("minishell: export: `", 2),
 				ft_putstr_fd(word, 2),
-				ft_putstr_fd(": not a valid identifier\n", 2), false);
-		if (plus && eval && plus + 1 == eval && !append_value(cmd, var))
-			return (false);
-		else if (eval && !add_var(var, ft_strdup(word)))
-			return (false);
+				ft_putstr_fd("': not a valid identifier\n", 2), false);
+		if (plus && eval && plus + 1 == eval)
+			return (append_value(cmd, var));
+		else if (eval)
+			return (add_var(var, ft_strdup(word)));
 		cmd = cmd->next;
 	}
 	return (true);
