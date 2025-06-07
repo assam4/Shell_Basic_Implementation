@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:39:35 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/05 16:12:00 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/07 23:27:47 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	sigint_incontinution(void)
 	rl_on_new_line();
 	if (g_signal == -20)
 	{
-		rl_redisplay();
+		rl_done = 1;
 		g_signal = -2;
 	}
 	return (EXIT_SUCCESS);
@@ -79,7 +79,8 @@ bool	command_loop(t_list **tokens, t_env *vars)
 	if (!continution)
 		return (g_signal = 0, true);
 	if (g_signal != -41)
-		return (free(continution), false);
+		return (vars->exit_status = SIGINT + 128
+			, free(continution), false);
 	g_signal = 0;
 	add_history(continution);
 	++(vars->line_count);
