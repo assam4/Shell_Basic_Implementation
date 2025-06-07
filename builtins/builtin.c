@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:46:27 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/05 00:34:25 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/07 23:49:39 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,17 @@ bool	exec_builtin(t_list *cmd, t_env *var)
 	word = ((t_token *)cmd->content)->word;
 	if (ft_strncmp(word, "echo", ft_strlen(word) + 1) == 0)
 		var->exit_status = !echo(cmd);
-	if (ft_strncmp(word, "unset", ft_strlen(word) + 1) == 0)
+	else if (ft_strncmp(word, "unset", ft_strlen(word) + 1) == 0)
 		var->exit_status = !unset(cmd, var);
-	if (ft_strncmp(word, "export", ft_strlen(word) + 1) == 0)
+	else if (ft_strncmp(word, "export", ft_strlen(word) + 1) == 0)
 		var->exit_status = !export(cmd, var);
-	if (ft_strncmp(word, "exit", ft_strlen(word) + 1) == 0)
+	else if (ft_strncmp(word, "exit", ft_strlen(word) + 1) == 0)
 		builtin_exit(cmd, var);
-	if (ft_strncmp(word, "env", ft_strlen(word) + 1) == 0)
+	else if (ft_strncmp(word, "env", ft_strlen(word) + 1) == 0)
 		var->exit_status = !env(cmd, var);
-	if (ft_strncmp(word, "cd", ft_strlen(word) + 1) == 0)
+	else if (ft_strncmp(word, "cd", ft_strlen(word) + 1) == 0)
 		var->exit_status = !cd(cmd, var);
-	if (ft_strncmp(word, "pwd", ft_strlen(word) + 1) == 0)
+	else if (ft_strncmp(word, "pwd", ft_strlen(word) + 1) == 0)
 		var->exit_status = !pwd(cmd, var);
 	return (!var->exit_status);
 }
