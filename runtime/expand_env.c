@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 00:25:02 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/03 01:08:31 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/08 15:42:22 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	expand_env(char **s, size_t *i, size_t len, t_env *var)
 			ft_strlen(*s) - *i - len + 1);
 	if ((*s)[*i] == '?')
 		free(value);
-	*i += value_len;
+	*i += value_len - 1;
 	free(*s);
 	*s = new_word;
 }
