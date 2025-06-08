@@ -1,13 +1,13 @@
-MAKEFLAGS	+= --no-print-directory -s
+MAKEFLAGS	+= --no-print-directory
 
 NAME		= libft.a
-BUILD		=	./build
-SRCS_DIR	=	./src
+BUILD		= ./build
+SRCS_DIR	= ./src
 
-RED			= \e[31m
-GREEN		= \e[32m
-YELLOW		= \e[33m
-RESET		= \e[0m
+GREEN		= \033[38;2;109;173;126m
+YELLOW		= \033[33m
+RED			= \033[31m
+RESET		= \033[0m
 
 SRCS		=	$(SRCS_DIR)/ft_isalpha.c \
 				$(SRCS_DIR)/ft_striteri.c \
@@ -42,7 +42,7 @@ SRCS		=	$(SRCS_DIR)/ft_isalpha.c \
 				$(SRCS_DIR)/ft_substr.c \
 				$(SRCS_DIR)/ft_isdigit.c \
 				$(SRCS_DIR)/ft_split.c \
-				$(SRCS_DIR)/ft_strtrim.c\
+				$(SRCS_DIR)/ft_strtrim.c \
 				$(SRCS_DIR)/ft_lstlast.c \
 				$(SRCS_DIR)/ft_lstadd_front.c \
 				$(SRCS_DIR)/ft_lstsize.c \
@@ -60,25 +60,75 @@ AR			= ar rcs
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror
 
-all:	$(BUILD) $(NAME)
+all: $(BUILD) $(NAME)
 
-$(BUILD)/%.o:	$(SRCS_DIR)/%.c $(HEADER) Makefile
-		@$(CC) $(CFLAGS) -I. -c $< -o $@
-		@echo "  ✅ ${GREEN}libft/$<${RESET}"
+$(BUILD)/%.o: $(SRCS_DIR)/%.c $(HEADER) Makefile
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -I. -c $< -o $@
+	@bash -c '\
+		cols=$$(tput cols); \
+		lines=5; \
+		chars="01"; \
+		for ((i=0; i<$$lines; i++)); do \
+			line=""; \
+			for ((j=0; j<$$cols; j++)); do \
+				if (( RANDOM % 5 == 0 )); then \
+					c=$${chars:RANDOM%$${#chars}:1}; \
+					line+="$(GREEN)$$c"; \
+				else \
+					line+=" "; \
+				fi; \
+			done; \
+			echo -e "$$line"; \
+			sleep 0.01; \
+		done'
 
-$(NAME):	$(OBJS)
+$(NAME): $(OBJS)
 	@$(AR) $(NAME) $(OBJS)
-	@echo "${YELLOW}Libft Done!${RESET}\n"
 
 $(BUILD):
 	@mkdir -p $(BUILD)
 
 clean:
 	@rm -rf $(BUILD)
+	@bash -c '\
+		cols=$$(tput cols); \
+		lines=8; \
+		chars="01"; \
+		for ((i=0; i<$$lines; i++)); do \
+			line=""; \
+			for ((j=0; j<$$cols; j++)); do \
+				if (( RANDOM % 10 == 0 )); then \
+					c=$${chars:RANDOM%$${#chars}:1}; \
+					line+="$(RED)$$c"; \
+				else \
+					line+=" "; \
+				fi; \
+			done; \
+			echo -e "$$line"; \
+			sleep 0.01; \
+		done'
 
-fclean:	clean
-	@rm -rf $(NAME)
+fclean: clean
+	@rm -f $(NAME)
+	@bash -c '\
+		cols=$$(tput cols); \
+		lines=8; \
+		chars="01"; \
+		for ((i=0; i<$$lines; i++)); do \
+			line=""; \
+			for ((j=0; j<$$cols; j++)); do \
+				if (( RANDOM % 10 == 0 )); then \
+					c=$${chars:RANDOM%$${#chars}:1}; \
+					line+="$(RED)$$c"; \
+				else \
+					line+=" "; \
+				fi; \
+			done; \
+			echo -e "$$line"; \
+			sleep 0.01; \
+		done'
 
-re:		fclean all
+re: fclean all
 
-.PHONY:	all clean fclean re
+.PHONY: all clean fclean re
