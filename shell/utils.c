@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:39:35 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/09 23:27:58 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/09 23:35:07 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,13 @@ static int	sigint_incontinution(void)
 {
 	if (g_signal >= CONT_RPOS || !g_signal)
 		return (EXIT_SUCCESS);
-	if (g_signal == CRP_HANDLE)
-	{
-		rl_replace_line("", 0);
-		rl_done = 1;
-		g_signal = DEFAULT;
-		return (EXIT_SUCCESS);
-	}
 	rl_replace_line("", 0);
-	rl_on_new_line();
-	if (g_signal == SRP_HANDLE)
+	rl_done = 1;
+	if (g_signal == CRP_HANDLE)
+		g_signal = DEFAULT;
+	else if (g_signal == SRP_HANDLE)
 	{
-		rl_done = 1;
+		rl_on_new_line();
 		g_signal = -SIGINT;
 	}
 	return (EXIT_SUCCESS);
