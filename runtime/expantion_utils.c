@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 12:30:40 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/03 01:09:07 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/10 00:33:42 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,14 @@ static bool	check_pattern(char *word, char *pattern, int w_i, int p_i)
 		}
 		return (check_pattern(word, pattern, w_i, p_i + 1));
 	}
-	else if (word[w_i] == pattern[p_i] || pattern[p_i] == '?')
+	if (word[w_i] && (word[w_i] == pattern[p_i] || pattern[p_i] == '?'))
 		return (check_pattern(word, pattern, w_i + 1, p_i + 1));
-	else
-		return (false);
+	return (false);
 }
 
-ssize_t	ret_size(DIR *dir, char *pattern)
+size_t	ret_size(DIR *dir, char *pattern)
 {
-	ssize_t			size;
+	size_t			size;
 	struct dirent	*entry;
 
 	size = 0;
@@ -69,7 +68,7 @@ ssize_t	ret_size(DIR *dir, char *pattern)
 	return (size);
 }
 
-static bool	create_expanded(DIR *dir, ssize_t size,
+static bool	create_expanded(DIR *dir, size_t size,
 	char *expanded, char *pattern)
 {
 	struct dirent	*entry;
@@ -94,7 +93,7 @@ static bool	create_expanded(DIR *dir, ssize_t size,
 	return (true);
 }
 
-char	*get_expanded(DIR *dir, char *cmd, ssize_t size)
+char	*get_expanded(DIR *dir, char *cmd, size_t size)
 {
 	char	*expanded;
 

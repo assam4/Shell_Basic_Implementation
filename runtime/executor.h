@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:44:43 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/05 16:56:23 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/10 00:27:13 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ void	ft_split_free(char **arr);
 bool	set_redirs(t_ast_node *node);
 void	child_process(int *fd, int stream);
 void	print_error(char *mess1, char *mess2, bool flag);
-char	*get_expanded(DIR *dir, char *cmd, ssize_t size);
+char	*get_expanded(DIR *dir, char *cmd, size_t size);
 char	*ft_join_with_sep(char const *s1, char const *s2, int sep);
 void	process_env_expansion(char **s, t_env *var);
 bool	expand_wildcard(char **cmd);
 void	erase_quotes(char **s, bool single_quote, bool double_quote);
-ssize_t	ret_size(DIR *dir, char *cmd);
+size_t	ret_size(DIR *dir, char *cmd);
 void	replace_chars(char *str, char first, char second);
 
 #endif
