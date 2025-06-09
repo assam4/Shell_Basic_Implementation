@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:46:05 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/07 16:55:43 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/09 23:30:20 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,14 +102,14 @@ static int	execute_line(t_env *vars)
 		if (!prompt)
 			return (print_err(ENOMEM));
 		tokens = NULL;
-		g_signal = -42;
+		g_signal = START_RPOS;
 		line = readline(prompt);
 		free(prompt);
 		if (!line)
 			return (ft_putstr_fd(EXIT, STDOUT_FILENO), EXIT_SUCCESS);
 		if (g_signal == -SIGINT)
 			vars->exit_status = SIGINT + 128;
-		g_signal = 0;
+		g_signal = DEFAULT;
 		add_history(line);
 		if (++(vars->line_count) && !get_tokens(line, &tokens))
 			return (free(line), print_err(ENOMEM), vars->exit_status);

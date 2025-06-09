@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:31:05 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/04 23:30:06 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/09 23:24:00 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@
 # define BLUE	"\001\033[0;34m\002"
 # define RESET	"\001\033[0m\002"
 # define EXIT	"exit\n"
+# define START_RPOS -10
+# define CONT_RPOS -20
+# define SRP_HANDLE -30
+# define CRP_HANDLE -40
+# define DEFAULT 0
 
 # include "libft.h"
 # include <stdbool.h>

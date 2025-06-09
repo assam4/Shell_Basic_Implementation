@@ -6,45 +6,45 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:39:35 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/07 23:27:47 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/09 23:27:58 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-volatile sig_atomic_t	g_signal = 0;
+volatile sig_atomic_t	g_signal = DEFAULT;
 
 static int	sigint_incontinution(void)
 {
-	if (g_signal != -40 && g_signal != SIGINT && g_signal != -20)
+	if (g_signal >= CONT_RPOS || !g_signal)
 		return (EXIT_SUCCESS);
-	if (g_signal == -40)
+	if (g_signal == CRP_HANDLE)
 	{
 		rl_replace_line("", 0);
 		rl_done = 1;
-		g_signal = 0;
+		g_signal = DEFAULT;
 		return (EXIT_SUCCESS);
 	}
 	rl_replace_line("", 0);
 	rl_on_new_line();
-	if (g_signal == -20)
+	if (g_signal == SRP_HANDLE)
 	{
 		rl_done = 1;
-		g_signal = -2;
+		g_signal = -SIGINT;
 	}
 	return (EXIT_SUCCESS);
 }
 
 void	handler(int signal)
 {
-	if (g_signal == -41)
+	if (g_signal == CONT_RPOS)
 	{
-		g_signal = -40;
+		g_signal = CRP_HANDLE;
 		return ;
 	}
 	write(STDOUT_FILENO, "\n", sizeof(char));
-	if (g_signal == -42)
-		g_signal = -20;
+	if (g_signal == START_RPOS)
+		g_signal = SRP_HANDLE;
 	else
 		g_signal = signal;
 }
@@ -74,14 +74,14 @@ bool	command_loop(t_list **tokens, t_env *vars)
 	t_list	*new_tokens;
 
 	new_tokens = NULL;
-	g_signal = -41;
+	g_signal = CONT_RPOS;
 	continution = readline(">");
 	if (!continution)
-		return (g_signal = 0, true);
-	if (g_signal != -41)
+		return (g_signal = DEFAULT, true);
+	if (g_signal != CONT_RPOS)
 		return (vars->exit_status = SIGINT + 128
 			, free(continution), false);
-	g_signal = 0;
+	g_signal = EXIT_SUCCESS;
 	add_history(continution);
 	++(vars->line_count);
 	if (!get_tokens(continution, &new_tokens))
