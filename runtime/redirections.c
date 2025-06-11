@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 01:00:58 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/28 01:29:32 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/11 19:45:11 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int	open_file(t_token *redir)
 {
 	int	fd;
 
+	erase_quotes(&redir->word, false, false);
 	if (redir->r_type == REDIR_IN)
 		fd = open(redir->word, O_RDONLY);
 	else if (redir->r_type == REDIR_OUT)

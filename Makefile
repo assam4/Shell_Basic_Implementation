@@ -1,4 +1,4 @@
-MAKEFLAGS		= --no-print-directory
+MAKEFLAGS		= --no-print-directory -s
 
 NAME			= minishell
 
