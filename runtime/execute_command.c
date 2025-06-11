@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/05 17:06:53 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/11 16:36:14 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ static int	create_fork(t_ast_node *node, t_env *vars, int s, char *cmd)
 	pid_t			pid;
 	struct termios	oldt;
 
-	if (!init_cmds(&cmd, &splited_cmd, node, vars))
-		return (0);
+	if (!init_cmds(&cmd, &splited_cmd, node, vars) || !set_redirs(node))
+		return (free(cmd), ft_split_free(splited_cmd), 0);
 	s = is_builtin(node->cmd);
 	if (s)
 		return (free(cmd), ft_split_free(splited_cmd),
@@ -119,8 +119,6 @@ bool	execute_cmd(t_ast_node *node, t_env *vars)
 	if (node->token->t_type == WORD && node->cmd
 		&& ((t_token *)node->cmd->content)->is_tmp)
 		return (close(stdin_cpy), close(stdout_cpy), true);
-	if (!set_redirs(node))
-		return (close(stdin_cpy), close(stdout_cpy), false);
 	status = create_fork(node, vars, EXIT_SUCCESS, NULL);
 	dup2(stdin_cpy, STDIN_FILENO);
 	dup2(stdout_cpy, STDOUT_FILENO);
