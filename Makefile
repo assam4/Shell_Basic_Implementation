@@ -13,7 +13,7 @@ SRC				=	./environment/environment.c \
 					./runtime/execute_command.c \
 					./shell/utils.c \
 					./shell/shell.c \
-					./shell/exit_status.c \
+					./shell/other_utils.c \
 					./syntax_a/here_doc.c \
 					./syntax_a/analyze.c \
 					./syntax_a/utils.c \

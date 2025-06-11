@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:40:32 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/04 23:29:24 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/11 20:14:45 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ extern volatile sig_atomic_t	g_signal;
 
 void	print_warning(char *limiter, t_env *vars);
 void	error_message(const t_list *prev, const t_list *tokens);
-void	content_swap(t_list *left, t_list *right);
 bool	heredoc_exec(t_list *tokens, int i, t_env *vars);
 bool	syntax_analyse(t_list *tokens, t_env *vars);
 

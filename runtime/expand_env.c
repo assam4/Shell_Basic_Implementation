@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 00:25:02 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/08 15:42:22 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/11 20:09:28 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	expand_env(char **s, size_t *i, size_t len, t_env *var)
 	*s = new_word;
 }
 
-void	process_env_expansion(char **s, t_env *var)
+void	process_env_expansion(char **s, t_env *var, bool expand_single)
 {
 	size_t	i;
 	bool	double_quotes;
@@ -80,7 +80,8 @@ void	process_env_expansion(char **s, t_env *var)
 			single_quotes = !single_quotes;
 		else if ((*s)[i] == '"' && !single_quotes)
 			double_quotes = !double_quotes;
-		if ((*s)[i] == '$' && !single_quotes)
+		if ((*s)[i] == '$'
+			&& (!single_quotes || (single_quotes && expand_single)))
 		{
 			++i;
 			expand_env(s, &i, 0, var);

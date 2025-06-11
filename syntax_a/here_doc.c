@@ -6,34 +6,22 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:41:02 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/04 23:52:34 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/11 20:22:28 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
-void	content_swap(t_list *first, t_list *second)
+static void	loop(const char *limiter, t_env *vars, int fd, int in_quotes)
 {
-	void	*tmp;
-
-	tmp = first->content;
-	first->content = second->content;
-	second->content = tmp;
-}
-
-static int	here_doc_loop(const char *tmp_file
-		, const char *limiter, t_env *vars)
-{
-	int		fd;
 	char	*line;
 
-	fd = open(tmp_file, O_CREAT | O_TRUNC | O_WRONLY, 0644);
-	if (fd == -1)
-		exit(EXIT_FAILURE);
 	while (true)
 	{
 		ft_putstr_fd("> ", STDOUT_FILENO);
 		line = get_next_line(STDIN_FILENO);
+		if (!in_quotes)
+			process_env_expansion(&line, vars, true);
 		if (!line)
 		{
 			print_warning((char *)limiter, vars);
@@ -47,6 +35,22 @@ static int	here_doc_loop(const char *tmp_file
 		ft_putstr_fd(line, fd);
 		free(line);
 	}
+}
+
+static int	here_doc_loop(const char *tmp_file
+		, const char *limiter, t_env *vars)
+{
+	int		fd;
+	bool	in_quotes;
+
+	in_quotes = limiter[0] == '\'' || limiter[0] == '"';
+	erase_quotes((char **)&limiter, false, false);
+	if (!limiter)
+		return (EXIT_FAILURE);
+	fd = open(tmp_file, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+	if (fd == -1)
+		exit(EXIT_FAILURE);
+	loop(limiter, vars, fd, in_quotes);
 	close(fd);
 	exit(EXIT_SUCCESS);
 }

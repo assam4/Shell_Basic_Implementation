@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 20:29:37 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/05 16:50:43 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/11 20:13:04 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,13 @@ void	set_exit_status(t_env *vars, int status)
 		else
 			vars->exit_status = WEXITSTATUS(status);
 	}
+}
+
+void	content_swap(t_list *first, t_list *second)
+{
+	void	*tmp;
+
+	tmp = first->content;
+	first->content = second->content;
+	second->content = tmp;
 }
