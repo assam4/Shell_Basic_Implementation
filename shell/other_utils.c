@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 20:29:37 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/13 00:37:04 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/13 00:48:53 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ bool	update_shlvl(char **s)
 		ft_putstr_fd("minishell: warning: shell level (", STDERR_FILENO);
 		ft_putstr_fd(lvl_str, STDERR_FILENO);
 		ft_putstr_fd(") too high, resetting to 1\n", STDERR_FILENO);
-		return (false);
+		return (free(lvl_str), false);
 	}
 	free(*s);
 	*s = ft_calloc(LEN + ft_strlen(lvl_str) + 1, sizeof(char));
@@ -58,5 +58,5 @@ bool	update_shlvl(char **s)
 		return (free(lvl_str), false);
 	ft_strlcpy(*s, SHLVL, LEN + 1);
 	ft_strlcpy(*s + LEN, lvl_str, ft_strlen(lvl_str) + 1);
-	return (true);
+	return (free(lvl_str), true);
 }
