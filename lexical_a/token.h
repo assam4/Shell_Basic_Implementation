@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:38:49 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/12 23:46:21 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/13 00:32:52 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "get_next_line.h"
 # include <stdbool.h>
+
+typedef struct s_env	t_env;
 
 typedef enum e_token_type
 {

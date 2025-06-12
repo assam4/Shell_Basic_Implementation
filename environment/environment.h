@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 00:32:48 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/03 00:52:46 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/13 00:18:09 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 # define ENVIRONMENT_H
 
 # include "libft.h"
+# include "shell.h"
 # include <stdbool.h>
 
 # define DEF_SHLVL "SHLVL=1"
 # define SHLVL "SHLVL="
 # define PWD "PWD="
 # define LEN	6
+# define MAX_LVL 999
 
 typedef struct s_env
 {

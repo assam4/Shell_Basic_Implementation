@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:31:05 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/11 20:14:30 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/13 00:29:45 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ bool	command_loop(t_list **tokens, t_env *vars);
 void	set_exit_status(t_env *vars, int status);
 void	handler(int signal);
 void	content_swap(t_list *left, t_list *right);
+bool	update_shlvl(char **lvl);
 
 #endif
