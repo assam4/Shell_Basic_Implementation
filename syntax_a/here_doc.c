@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:41:02 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/11 20:22:28 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/12 17:44:57 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ static int	here_doc_loop(const char *tmp_file
 	int		fd;
 	bool	in_quotes;
 
-	in_quotes = limiter[0] == '\'' || limiter[0] == '"';
+	in_quotes = false;
+	if (limiter[0] == '\'' || limiter[0] == '"')
+		in_quotes = true;
 	erase_quotes((char **)&limiter, false, false);
 	if (!limiter)
 		return (EXIT_FAILURE);
