@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 17:36:54 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/11 20:09:56 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/12 23:47:57 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,13 @@ char	*get_cmd(t_list *cmd, t_env *var)
 	iter = cmd;
 	while (iter)
 	{
-		process_env_expansion(&((t_token *)iter->content)->word, var, false);
-		expand_wildcard(&((t_token *)iter->content)->word);
-		erase_quotes(&((t_token *)iter->content)->word, false, false);
+		if (!((t_token *)iter->content)->is_tmp)
+		{
+			process_env_expansion(&((t_token *)iter->content)->word,
+				var, false);
+			expand_wildcard(&((t_token *)iter->content)->word);
+			erase_quotes(&((t_token *)iter->content)->word, false, false);
+		}
 		size += ft_strlen(((t_token *)iter->content)->word) + 1;
 		iter = iter->next;
 	}
