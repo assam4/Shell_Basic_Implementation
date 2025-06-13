@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   other_utils.c                                      :+:      :+:    :+:   */
+/*   global_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 20:29:37 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/13 00:48:53 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/13 11:35:53 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	set_exit_status(t_env *vars, int status)
 	{
 		if (WEXITSTATUS(status) == EACCES)
 			vars->exit_status = 126;
-		else if (WEXITSTATUS(status) == ENOENT)
+		else if (WEXITSTATUS(status) == EFAULT)
 			vars->exit_status = 127;
 		else
 			vars->exit_status = WEXITSTATUS(status);
@@ -59,4 +59,20 @@ bool	update_shlvl(char **s)
 	ft_strlcpy(*s, SHLVL, LEN + 1);
 	ft_strlcpy(*s + LEN, lvl_str, ft_strlen(lvl_str) + 1);
 	return (free(lvl_str), true);
+}
+
+void	check_secret_pwd(char **secret_pwd)
+{
+	char	*pwd;
+	char	*full_pwd;
+
+	if (!*secret_pwd)
+	{
+		pwd = getcwd(NULL, 0);
+		if (!pwd)
+			pwd = ft_strdup(".");
+		full_pwd = ft_strjoin("PWD=", pwd);
+		*secret_pwd = full_pwd;
+		free(pwd);
+	}
 }

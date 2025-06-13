@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 00:37:07 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/31 02:12:20 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/13 11:01:28 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,5 +135,6 @@ t_env	*get_env(char **def)
 		if (!add_var(var, ft_strdup(def[counter++])))
 			return (destroy_env(&var), NULL);
 	bump_shlvl(var);
+	check_secret_pwd(&var->secret_pwd);
 	return (var);
 }

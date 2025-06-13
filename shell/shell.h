@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:31:05 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/13 00:29:45 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/13 11:03:21 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,6 @@ void	set_exit_status(t_env *vars, int status);
 void	handler(int signal);
 void	content_swap(t_list *left, t_list *right);
 bool	update_shlvl(char **lvl);
+void	check_secret_pwd(char **secret_pwd);
 
 #endif

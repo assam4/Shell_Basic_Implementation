@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:46:05 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/09 23:30:20 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/13 11:31:28 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ static char	*get_prompt_line(t_env *vars)
 
 	user = get_env_value("USER=", vars->env);
 	pwd = ft_strdup(vars->secret_pwd + 4);
-	if (!pwd || !*pwd)
-		pwd = ft_strdup(".");
 	if (!user)
 		user = ft_strdup("unknown");
 	total_len = ft_strlen(GREEN) + ft_strlen(user) + ft_strlen(BLUE)

@@ -13,7 +13,7 @@ SRC				=	./environment/environment.c \
 					./runtime/execute_command.c \
 					./shell/utils.c \
 					./shell/shell.c \
-					./shell/other_utils.c \
+					./shell/global_utils.c \
 					./syntax_a/here_doc.c \
 					./syntax_a/analyze.c \
 					./syntax_a/utils.c \
@@ -59,7 +59,7 @@ HEADERS			=	./environment/environment.h \
 BUILD_DIR		= ./.build
 OBJ				= $(SRC:%.c=$(BUILD_DIR)/%.o)
 
-FLAGS			= -Wall -Wextra -Werror
+FLAGS			= -Wall -Wextra -Werror -g3 -fsanitize=address
 RLFLAGS			= -lreadline
 
 LIBFT_DIR		= ./library/libft
