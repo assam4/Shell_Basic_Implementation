@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 21:16:09 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/07 17:25:31 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/17 14:45:54 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,23 +83,25 @@ static void	print_export(t_env *var)
 	int		i;
 	char	**value;
 
-	i = 0;
+	i = -1;
 	if (!var || !var->env)
+		return (ft_putchar_fd('\n', STDOUT_FILENO));
+	while (var->env[++i])
 	{
-		ft_putchar_fd('\n', STDOUT_FILENO);
-		return ;
-	}
-	while (var->env[i])
-	{
-		value = ft_split(var->env[i], '=');
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
-		ft_putstr_fd(value[0], STDOUT_FILENO);
-		ft_putstr_fd("=\"", STDOUT_FILENO);
-		if (value[1])
-			ft_putstr_fd(value[1], STDOUT_FILENO);
-		ft_putstr_fd("\"\n", STDOUT_FILENO);
-		ft_split_free(value);
-		++i;
+		if (ft_strchr(var->env[i], '='))
+		{
+			value = ft_split(var->env[i], '=');
+			ft_putstr_fd(value[0], STDOUT_FILENO);
+			ft_putstr_fd("=\"", STDOUT_FILENO);
+			if (value[1])
+				ft_putstr_fd(value[1], STDOUT_FILENO);
+			ft_putstr_fd("\"", STDOUT_FILENO);
+			ft_split_free(value);
+		}
+		else
+			ft_putstr_fd(var->env[i], STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 	}
 }
 
@@ -123,7 +125,7 @@ bool	export(t_list *cmd, t_env *var)
 				ft_putstr_fd("': not a valid identifier\n", 2), false);
 		if (plus && eval && plus + 1 == eval)
 			return (append_value(cmd, var));
-		else if (eval)
+		else if (!plus)
 			return (add_var(var, ft_strdup(word)));
 		cmd = cmd->next;
 	}

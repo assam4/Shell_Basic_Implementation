@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:50:04 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/13 00:30:06 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/17 13:46:11 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	print_env(t_env *var)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 		return ;
 	}
-	while (var->env[i])
+	while (var->env[i] && ft_strchr(var->env[i], '='))
 	{
 		ft_putstr_fd(var->env[i], STDOUT_FILENO);
 		ft_putchar_fd('\n', STDOUT_FILENO);
