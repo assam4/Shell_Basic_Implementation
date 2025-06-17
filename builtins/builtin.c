@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:46:27 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/07 23:49:39 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/17 16:33:24 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ bool	exec_builtin(t_list *cmd, t_env *var)
 	else if (ft_strncmp(word, "exit", ft_strlen(word) + 1) == 0)
 		builtin_exit(cmd, var);
 	else if (ft_strncmp(word, "env", ft_strlen(word) + 1) == 0)
-		var->exit_status = !env(cmd, var);
+		env(cmd, var);
 	else if (ft_strncmp(word, "cd", ft_strlen(word) + 1) == 0)
 		var->exit_status = !cd(cmd, var);
 	else if (ft_strncmp(word, "pwd", ft_strlen(word) + 1) == 0)
