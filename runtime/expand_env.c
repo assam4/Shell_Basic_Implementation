@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 00:25:02 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/11 20:09:28 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/17 19:31:26 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,7 @@ void	erase_quotes(char **s, bool single_quotes, bool double_quotes)
 {
 	char	*new_word;
 	size_t	new_len;
-	int		oi;
-	int		ni;
+	int		i[2];
 
 	new_len = len_without_quotes(*s);
 	if (new_len == ft_strlen(*s))
@@ -129,16 +128,18 @@ void	erase_quotes(char **s, bool single_quotes, bool double_quotes)
 	new_word = ft_calloc(new_len + 1, sizeof(char));
 	if (!new_word)
 		return ;
-	oi = -1;
-	ni = 0;
-	while ((*s)[++oi])
+	i[0] = -1;
+	i[1] = 0;
+	while ((*s)[++i[0]])
 	{
-		if ((*s)[oi] == '\'' && !double_quotes)
+		if ((double_quotes || single_quotes) && (*s)[i[0]] == ' ')
+			(*s)[i[0]] = 2;
+		if ((*s)[i[0]] == '\'' && !double_quotes)
 			single_quotes = !single_quotes;
-		else if ((*s)[oi] == '"' && !single_quotes)
+		else if ((*s)[i[0]] == '"' && !single_quotes)
 			double_quotes = !double_quotes;
 		else
-			new_word[ni++] = (*s)[oi];
+			new_word[i[1]++] = (*s)[i[0]];
 	}
 	free(*s);
 	*s = new_word;

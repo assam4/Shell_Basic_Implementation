@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 00:32:48 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/13 00:18:09 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:29:33 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct s_env
 }	t_env;
 
 bool	del_var(t_env *var, const char *key);
-bool	add_var(t_env *var, char *str_cpy);
+bool	add_var(t_env *var, char *str_cpy, int i);
 t_env	*get_env(char **def);
 void	print_env(t_env *var);
 void	destroy_env(t_env **var);

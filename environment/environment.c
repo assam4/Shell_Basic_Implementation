@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 00:37:07 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/17 15:56:51 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:29:48 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,12 @@ bool	del_var(t_env *var, const char *key)
 	return (false);
 }
 
-bool	add_var(t_env *var, char *str_cpy)
+bool	add_var(t_env *var, char *str_cpy, int i)
 {
 	char	**new_env;
-	int		i;
 
+	erase_quotes(&str_cpy, false, false);
+	replace_chars(str_cpy, 2, ' ');
 	if (!str_cpy)
 		return (false);
 	if (!find_env(var, str_cpy))
@@ -130,7 +131,7 @@ t_env	*get_env(char **def)
 		return (free(var), NULL);
 	counter = 0;
 	while (def[counter])
-		if (!add_var(var, ft_strdup(def[counter++])))
+		if (!add_var(var, ft_strdup(def[counter++]), -1))
 			return (destroy_env(&var), NULL);
 	bump_shlvl(var);
 	check_secret_pwd(&var->secret_pwd);

@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 19:37:52 by aadyan            #+#    #+#             */
-/*   Updated: 2025/05/29 22:45:09 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/17 19:29:25 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ bool	update_oldpwd(t_env *var, char *oldpwd)
 	free(oldpwd);
 	if (!full_pwd)
 		return (false);
-	if (!add_var(var, full_pwd))
+	if (!add_var(var, full_pwd, -1))
 		return (false);
 	return (true);
 }
@@ -45,7 +45,7 @@ bool	update_pwd_helper(t_env *var, char *dir)
 	full_pwd = ft_join_with_sep(var->secret_pwd, dir, '/');
 	if (env_value_exists("PWD=", var))
 	{
-		if (!add_var(var, full_pwd))
+		if (!add_var(var, full_pwd, -1))
 			return (free(full_pwd), false);
 	}
 	else
@@ -69,7 +69,7 @@ bool	update_pwd(t_env *var, char *dir)
 		return (false);
 	if (env_value_exists("PWD=", var))
 	{
-		if (!add_var(var, full_pwd))
+		if (!add_var(var, full_pwd, -1))
 			return (false);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/11 16:36:14 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:26:16 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void	execution(char *cmd, char **splited_cmd, char **env)
 	while (splited_cmd[i])
 	{
 		replace_chars(splited_cmd[i], 1, ' ');
+		replace_chars(splited_cmd[i], 2, ' ');
 		++i;
 	}
 	execve(cmd, splited_cmd, env);

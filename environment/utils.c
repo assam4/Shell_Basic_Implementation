@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:50:04 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/17 13:46:11 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/17 19:29:55 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,5 @@ void	bump_shlvl(t_env *var)
 				break ;
 		}
 	}
-	add_var(var, ft_strdup(DEF_SHLVL));
+	add_var(var, ft_strdup(DEF_SHLVL), -1);
 }

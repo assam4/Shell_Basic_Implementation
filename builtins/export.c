@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 21:16:09 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/17 16:10:49 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:29:42 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static bool	append_value(t_list *cmd, t_env *var)
 	if (!env_val)
 		return (free(key), free(value), free(full_value), false);
 	key[ft_strlen(key) - 1] = 0;
-	if (!add_var(var, env_val))
+	if (!add_var(var, env_val, -1))
 		return (free(key), free(full_value), free(value), false);
 	return (free(key), free(full_value), free(value), true);
 }
@@ -125,7 +125,7 @@ bool	export(t_list *cmd, t_env *var)
 		if (plus && eval && plus + 1 == eval)
 			return (append_value(cmd, var));
 		else if (!plus)
-			return (add_var(var, ft_strdup(word)));
+			return (add_var(var, ft_strdup(word), -1));
 		cmd = cmd->next;
 	}
 	return (true);
