@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 19:15:02 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/17 16:33:26 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/17 17:34:14 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,8 @@ bool	env(t_list *cmd, t_env *var)
 				false), var->exit_status = 127, false);
 	if (cmd->next)
 	{
-		free(tmp);
-		ft_putstr_fd(((t_token *)cmd->content)->word, STDERR_FILENO);
-		ft_putstr_fd(": ‘", STDERR_FILENO);
-		ft_putstr_fd(((t_token *)cmd->next->content)->word, STDERR_FILENO);
-		ft_putstr_fd("’: No such file or directory\n", STDERR_FILENO);
-		var->exit_status = 127;
-		return (false);
+		print_error("env: too many arguments\n", NULL, false);
+		return (free(tmp), var->exit_status = 1, false);
 	}
 	print_env(var);
 	return (free(tmp), var->exit_status = 0, true);
