@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 21:16:09 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/17 14:45:54 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/17 16:10:49 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static bool	append_value(t_list *cmd, t_env *var)
 static void	print_export(t_env *var)
 {
 	int		i;
-	char	**value;
+	char	*ptr;
 
 	i = -1;
 	if (!var || !var->env)
@@ -89,15 +89,14 @@ static void	print_export(t_env *var)
 	while (var->env[++i])
 	{
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
-		if (ft_strchr(var->env[i], '='))
+		ptr = ft_strchr(var->env[i], '=');
+		if (ptr)
 		{
-			value = ft_split(var->env[i], '=');
-			ft_putstr_fd(value[0], STDOUT_FILENO);
+			write(STDOUT_FILENO, var->env[i], ptr - var->env[i]);
 			ft_putstr_fd("=\"", STDOUT_FILENO);
-			if (value[1])
-				ft_putstr_fd(value[1], STDOUT_FILENO);
+			if (*(ptr + 1))
+				write(STDOUT_FILENO, ptr + 1, ft_strlen(ptr + 1));
 			ft_putstr_fd("\"", STDOUT_FILENO);
-			ft_split_free(value);
 		}
 		else
 			ft_putstr_fd(var->env[i], STDOUT_FILENO);
