@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 21:16:09 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/17 19:29:42 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/17 19:42:51 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ bool	export(t_list *cmd, t_env *var)
 				ft_putstr_fd("': not a valid identifier\n", 2), false);
 		if (plus && eval && plus + 1 == eval)
 			return (append_value(cmd, var));
-		else if (!plus)
+		else
 			return (add_var(var, ft_strdup(word), -1));
 		cmd = cmd->next;
 	}
