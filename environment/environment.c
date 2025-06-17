@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 00:37:07 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/13 11:01:28 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/17 15:56:51 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,14 @@
 static bool	find_env(t_env *var, char *str)
 {
 	int		i;
-	size_t	len;
 
-	i = 0;
-	if (str)
-		len = ft_strchr(str, '=') - str;
-	else
+	i = -1;
+	if (!str)
 		return (false);
-	while (var->env[i])
+	while (var->env[++i])
 	{
-		if (!ft_strncmp(var->env[i], str, len)
-			&& var->env[i][len] == '=')
+		if (ft_strchr(str, '=')
+			&& !ft_strncmp(var->env[i], str, ft_strchr(str, '=') - str))
 		{
 			free(var->env[i]);
 			var->env[i] = str;
@@ -33,7 +30,8 @@ static bool	find_env(t_env *var, char *str)
 				var->secret_pwd = var->env[i];
 			return (true);
 		}
-		++i;
+		else if (!ft_strncmp(var->env[i], str, ft_strlen(str)))
+			return (free(str), true);
 	}
 	return (false);
 }
