@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:38:49 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/13 00:32:52 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/17 23:46:27 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_token
 	t_token_type		t_type;
 	t_operator_type		o_type;
 	t_redirection_type	r_type;
+	char				*input_file;
 	char				*word;
 	bool				is_tmp;
 }	t_token;

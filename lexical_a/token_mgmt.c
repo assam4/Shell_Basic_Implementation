@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:39:52 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/23 13:18:59 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/18 00:25:36 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	token_free(void *data)
 		unlink(token->word);
 	if (token->t_type == WORD)
 		free(token->word);
+	if (token->input_file)
+		free(token->input_file);
 	free(token);
 }
 

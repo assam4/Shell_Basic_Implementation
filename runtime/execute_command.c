@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:22 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/17 19:26:16 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/18 00:53:35 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ static int	create_fork(t_ast_node *node, t_env *vars, int s, char *cmd)
 	char			**splited_cmd;
 	pid_t			pid;
 	struct termios	oldt;
+	int				fd;
 
 	if (!init_cmds(&cmd, &splited_cmd, node, vars) || !set_redirs(node))
 		return (free(cmd), ft_split_free(splited_cmd), 0);
@@ -89,6 +90,12 @@ static int	create_fork(t_ast_node *node, t_env *vars, int s, char *cmd)
 	pid = fork();
 	if (pid == 0)
 	{
+		if (((t_token *)node->cmd->content)->input_file)
+		{
+			fd = open(((t_token *)node->cmd->content)->input_file, O_RDONLY);
+			if (fd != -1)
+				dup2(fd, STDIN_FILENO);
+		}
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, SIG_DFL);
 		execution(cmd, splited_cmd, vars->env);
