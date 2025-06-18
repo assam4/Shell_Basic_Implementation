@@ -59,7 +59,7 @@ HEADERS			=	./environment/environment.h \
 BUILD_DIR		= ./.build
 OBJ				= $(SRC:%.c=$(BUILD_DIR)/%.o)
 
-FLAGS			= -Wall -Wextra -Werror -g3 -fsanitize=address
+FLAGS			= -Wall -Wextra -Werror
 RLFLAGS			= -lreadline
 
 LIBFT_DIR		= ./library/libft
