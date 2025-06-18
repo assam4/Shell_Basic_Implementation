@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:46:05 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/17 17:15:18 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/19 00:08:30 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ static int	execute_line(t_env *vars)
 		if (g_signal == -SIGINT)
 			vars->exit_status = SIGINT + 128;
 		g_signal = DEFAULT;
-		add_history(line);
+		update_history(line);
 		if (++(vars->line_count) && !get_tokens(line, &tokens))
 			return (free(line), print_err(ENOMEM), vars->exit_status);
 		free(line);

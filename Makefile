@@ -14,6 +14,7 @@ SRC				=	./environment/environment.c \
 					./shell/utils.c \
 					./shell/shell.c \
 					./shell/global_utils.c \
+					./shell/history.c \
 					./syntax_a/here_doc.c \
 					./syntax_a/analyze.c \
 					./syntax_a/utils.c \
