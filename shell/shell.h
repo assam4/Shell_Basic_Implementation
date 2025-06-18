@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:31:05 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/13 11:03:21 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/18 12:45:34 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ void	handler(int signal);
 void	content_swap(t_list *left, t_list *right);
 bool	update_shlvl(char **lvl);
 void	check_secret_pwd(char **secret_pwd);
+void	child_do(char *cmd, char **splited_cmd, char *istream, t_env *vars);
 
 #endif

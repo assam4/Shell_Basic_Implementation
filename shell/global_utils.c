@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 20:29:37 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/18 00:51:47 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/18 12:52:09 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,22 @@ void	check_secret_pwd(char **secret_pwd)
 		*secret_pwd = full_pwd;
 		free(pwd);
 	}
+}
+
+void	child_do(char *cmd, char **splited_cmd, char *istream, t_env *vars)
+{
+	int	fd;
+
+	fd = -1;
+	if (istream)
+	{
+		fd = open(istream, O_RDONLY);
+		if (fd == -1)
+		   exit(EXIT_FAILURE);
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+	}
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
+	execution(cmd, splited_cmd, vars->env);
 }

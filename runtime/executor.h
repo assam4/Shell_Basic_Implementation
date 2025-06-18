@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:44:43 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/13 00:31:59 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/18 12:46:52 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 
 typedef struct s_ast_node	t_ast_node;
 
+void	execution(char *cmd, char **splited_cmd, char **env);
 bool	execute_node(t_ast_node	*node, t_env *vars);
 bool	execute_cmd(t_ast_node *node, t_env *vars);
 char	*ret_command(char *command, char **env);
