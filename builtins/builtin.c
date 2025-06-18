@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:46:27 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/18 21:46:12 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/18 23:57:57 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ bool	is_builtin(t_list *cmd)
 		return (true);
 	return (false);
 }
-static void replace(t_list *cmd)
+
+static void	replace(t_list *cmd)
 {
 	while (cmd)
 	{
@@ -45,9 +46,9 @@ static void replace(t_list *cmd)
 	}
 }
 
-bool exec_builtin(t_list *cmd, t_env *var)
+bool	exec_builtin(t_list *cmd, t_env *var)
 {
- char *word;
+	char	*word;
 
 	replace(cmd);
 	if (!cmd || !cmd->content)
