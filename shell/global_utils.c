@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 20:29:37 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/18 19:02:11 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/18 22:02:31 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ bool	update_shlvl(char **s)
 	lvl_str = ft_itoa(ft_atoi(*s + LEN) + 1);
 	if (!lvl_str)
 		return (false);
+	if (lvl < 0)
+		return (free(lvl_str), false);
 	if (lvl >= MAX_LVL)
 	{
 		ft_putstr_fd("minishell: warning: shell level (", STDERR_FILENO);
