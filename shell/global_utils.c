@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 20:29:37 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/18 12:52:09 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/18 19:02:11 by aadyan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	child_do(char *cmd, char **splited_cmd, char *istream, t_env *vars)
 	{
 		fd = open(istream, O_RDONLY);
 		if (fd == -1)
-		   exit(EXIT_FAILURE);
+			exit(EXIT_FAILURE);
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 	}
