@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:43:48 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/18 00:52:40 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/18 12:25:55 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,47 +62,29 @@ void	hdoc_destroy(t_list *tokens)
 static void	optimize_loop(t_list *tokens)
 {
 	t_token	*arr[3];
-	t_list	*temp;
 
 	while (tokens->next)
 	{
 		arr[0] = (t_token *)tokens->content;
 		arr[1] = (t_token *)tokens->next->content;
-		if (arr[0]->t_type == WORD && arr[1]->is_tmp)
+		arr[2] = NULL;
+		if (tokens->next->next)
+			arr[2] = (t_token *)tokens->next->next->content;
+		if (!erase_hdocs(tokens, NULL, arr))
 		{
-			arr[0]->input_file = arr[1]->word;
-			free(arr[1]);
-			temp = tokens->next;
-			tokens->next = temp->next;
-			free(temp);
-			temp = NULL;
-		}
-		else if (arr[1]->is_tmp)
-		{
-			if (tokens->next->next)
+			if (arr[1]->is_tmp)
 			{
-				arr[2] = (t_token *)tokens->next->next->content;
-				if (arr[2]->t_type == WORD && !arr[2]->is_tmp)
-				{
-					content_swap(tokens->next, tokens->next->next);
-					arr[1]->input_file = arr[2]->word;
-					free(arr[2]);
-					temp = tokens->next->next;
-					tokens->next->next = temp->next->next->next;
-					free(temp);
-					temp = NULL;
-				}
-				else if (arr[2]->t_type == WORD && arr[2]->is_tmp)
+				if (arr[2] && arr[2]->t_type == WORD && arr[2]->is_tmp)
 				{
 					hdoc_destroy(tokens);
 					continue ;
 				}
+				else
+					ft_lstclear(&tokens->next, token_free);
 			}
 			else
-				ft_lstclear(&tokens->next, token_free);
+				tokens = tokens->next;
 		}
-		else
-			tokens = tokens->next;
 	}
 }
 
