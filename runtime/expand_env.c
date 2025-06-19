@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 00:25:02 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/19 14:02:09 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/20 00:01:05 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static size_t	calc_length(const char *str, size_t i)
 	return (len);
 }
 
-void	expand_env(char **s, size_t *i, size_t len, t_env *var)
+static bool	expand_env(char **s, size_t *i, size_t len, t_env *var)
 {
 	size_t	value_len;
 	char	*value;
@@ -48,7 +48,7 @@ void	expand_env(char **s, size_t *i, size_t len, t_env *var)
 		value_len = 0;
 	new_word = ft_calloc(ft_strlen(*s) - len + value_len + 1, sizeof(char));
 	if (!new_word)
-		return ;
+		return (false);
 	if (*i - 1 > 0)
 		ft_strlcpy(new_word, *s, *i);
 	if (value_len)
@@ -60,7 +60,7 @@ void	expand_env(char **s, size_t *i, size_t len, t_env *var)
 		free(value);
 	*i += value_len - 1;
 	free(*s);
-	*s = new_word;
+	return (*s = new_word, true);
 }
 
 void	process_env_expansion(char **s, t_env *var, bool expand_single)
@@ -83,8 +83,7 @@ void	process_env_expansion(char **s, t_env *var, bool expand_single)
 			&& (!quotes[1] || (quotes[1] && expand_single)))
 		{
 			++i;
-			expand_env(s, &i, 0, var);
-			if ((*s)[i] == '$')
+			if (!expand_env(s, &i, 0, var) && (*s)[i] == '$')
 				++i;
 		}
 		else
