@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:45:27 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/28 00:21:53 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/20 00:31:27 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ static bool	execute_pipe(t_ast_node *left, t_ast_node *right, t_env *vars)
 	close(stdout_cpy);
 	if (g_signal)
 		return (false);
-	return ((WIFEXITED(status[0]) && !WEXITSTATUS(status[0]))
+	return (set_exit_status(vars, status[1]),
+		(WIFEXITED(status[0]) && !WEXITSTATUS(status[0]))
 		&& (WIFEXITED(status[1]) && !WEXITSTATUS(status[1])));
 }
 
