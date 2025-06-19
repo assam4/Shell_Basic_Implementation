@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 00:25:02 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/20 00:01:05 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/20 00:24:54 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,17 @@ static bool	expand_env(char **s, size_t *i, size_t len, t_env *var)
 	size_t	value_len;
 	char	*value;
 	char	*new_word;
+	bool	is_spec;
 
+	is_spec = false;
+	value_len = 0;
 	len = calc_length(*s, *i);
-	value = get_value(var, *s + *i, len);
+	value = get_value(var, *s + *i, len, &is_spec);
 	if (value)
 		value_len = ft_strlen(value);
-	else
-		value_len = 0;
 	new_word = ft_calloc(ft_strlen(*s) - len + value_len + 1, sizeof(char));
 	if (!new_word)
-		return (false);
+		return (is_spec);
 	if (*i - 1 > 0)
 		ft_strlcpy(new_word, *s, *i);
 	if (value_len)
@@ -58,9 +59,7 @@ static bool	expand_env(char **s, size_t *i, size_t len, t_env *var)
 			ft_strlen(*s) - *i - len + 1);
 	if ((*s)[*i] == '?')
 		free(value);
-	*i += value_len - 1;
-	free(*s);
-	return (*s = new_word, true);
+	return (*i += value_len - 1, free(*s), *s = new_word, !is_spec);
 }
 
 void	process_env_expansion(char **s, t_env *var, bool expand_single)

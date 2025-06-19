@@ -6,20 +6,20 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:50:04 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/17 19:29:55 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/20 00:17:29 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment.h"
 #include <stdio.h>
 
-char	*get_value(t_env *var, const char *s, size_t len)
+char	*get_value(t_env *var, const char *s, size_t len, bool *is_spec)
 {
 	int	i;
 
 	i = 0;
-	if (!s)
-		return (NULL);
+	if (!s || s[i] == '$')
+		return (*is_spec = true, NULL);
 	if (!s[i])
 		return ((char *)(s + i - 1));
 	if (s[i] == '?')
