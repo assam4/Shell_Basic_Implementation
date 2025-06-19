@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 00:25:02 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/17 19:31:26 by aadyan           ###   ########.fr       */
+/*   Updated: 2025/06/19 14:02:09 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,25 +66,26 @@ void	expand_env(char **s, size_t *i, size_t len, t_env *var)
 void	process_env_expansion(char **s, t_env *var, bool expand_single)
 {
 	size_t	i;
-	bool	double_quotes;
-	bool	single_quotes;
+	bool	quotes[2];
 
 	if (!*s)
 		return ;
 	i = 0;
-	double_quotes = false;
-	single_quotes = false;
+	quotes[0] = false;
+	quotes[1] = false;
 	while ((*s)[i])
 	{
-		if ((*s)[i] == '\'' && !double_quotes)
-			single_quotes = !single_quotes;
-		else if ((*s)[i] == '"' && !single_quotes)
-			double_quotes = !double_quotes;
+		if ((*s)[i] == '\'' && !quotes[0])
+			quotes[1] = !quotes[1];
+		else if ((*s)[i] == '"' && !quotes[1])
+			quotes[0] = !quotes[0];
 		if ((*s)[i] == '$'
-			&& (!single_quotes || (single_quotes && expand_single)))
+			&& (!quotes[1] || (quotes[1] && expand_single)))
 		{
 			++i;
 			expand_env(s, &i, 0, var);
+			if ((*s)[i] == '$')
+				++i;
 		}
 		else
 			++i;
