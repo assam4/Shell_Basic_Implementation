@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:41:02 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/12 23:32:58 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/19 15:20:34 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,17 @@ static void	loop(const char *limiter, t_env *vars, int fd, int in_quotes)
 }
 
 static int	here_doc_loop(const char *tmp_file
-		, const char *limiter, t_env *vars)
+		, char *limiter, t_env *vars)
 {
 	int		fd;
 	bool	in_quotes;
 
 	in_quotes = false;
-	if (limiter[0] == '\'' || limiter[0] == '"')
+	if (ft_strchr(limiter, '\'') || ft_strchr(limiter, '"'))
 		in_quotes = true;
-	erase_quotes((char **)&limiter, false, false);
+	erase_quotes(&limiter, false, false);
+	replace_chars(limiter, 1, ' ');
+	replace_chars(limiter, 2, ' ');
 	if (!limiter)
 		return (EXIT_FAILURE);
 	fd = open(tmp_file, O_CREAT | O_TRUNC | O_WRONLY, 0644);

@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:39:35 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/09 23:35:07 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/19 15:05:44 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ bool	command_loop(t_list **tokens, t_env *vars)
 
 	new_tokens = NULL;
 	g_signal = CONT_RPOS;
-	continution = readline(">");
+	continution = readline("> ");
 	if (!continution)
 		return (g_signal = DEFAULT, true);
 	if (g_signal != CONT_RPOS)
