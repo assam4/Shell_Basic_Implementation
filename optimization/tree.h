@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:46:33 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/18 12:32:22 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/20 01:12:43 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct s_ast_node
 	struct s_ast_node	*left;
 }	t_ast_node;
 
+void	redirection_spliter(t_ast_node *tree, t_list **tokens);
 bool	erase_hdocs(t_list *tokens, t_list *temp, t_token **arr);
 void	optimize_heredoc(t_list **tokens);
 void	tree_felling(t_ast_node **tree);

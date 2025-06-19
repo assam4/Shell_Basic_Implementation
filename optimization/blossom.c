@@ -6,7 +6,7 @@
 /*   By: saslanya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:42:58 by saslanya          #+#    #+#             */
-/*   Updated: 2025/05/16 09:43:00 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/20 01:17:06 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,9 @@ void	tree_felling(t_ast_node **tree)
 	*tree = NULL;
 }
 
-static t_list	*get_sub_content(t_ast_node *tree, t_list **tokens)
+static t_list	*get_sub_content(t_ast_node *tree, t_list **tokens,
+		t_list *temp, int counter)
 {
-	t_list	*temp;
-	int		counter;
-
-	counter = 1;
 	tree->token = (t_token *)(*tokens)->content;
 	temp = *tokens;
 	*tokens = (*tokens)->next;
@@ -59,7 +56,13 @@ static t_list	*get_sub_content(t_ast_node *tree, t_list **tokens)
 			++counter;
 		else if (((t_token *)(*tokens)->next->content)->o_type
 			== OP_SUBSHELL_CLOSE)
+		{
 			--counter;
+			if ((*tokens)->next->next
+				&& ((t_token *)(*tokens)->next->next->content)->t_type
+			== REDIRECTION)
+				redirection_spliter(tree, &(*tokens)->next->next);
+		}
 		if (!counter)
 			break ;
 		*tokens = (*tokens)->next;
@@ -73,7 +76,7 @@ static int	get_subshell(t_ast_node *tree, t_list *tokens)
 
 	if (((t_token *)tokens->content)->o_type == OP_SUBSHELL_OPEN)
 	{
-		sub_content = get_sub_content(tree, &tokens);
+		sub_content = get_sub_content(tree, &tokens, NULL, 1);
 		if (!create_node(&(tree->left), sub_content))
 			return (ENOMEM);
 		return (true);

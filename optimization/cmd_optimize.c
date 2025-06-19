@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 20:41:32 by aadyan            #+#    #+#             */
-/*   Updated: 2025/06/18 12:34:49 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/20 01:03:26 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	word_spliter(t_ast_node *tree, t_list **tokens)
 	ft_lstadd_back(&tree->cmd, temp);
 }
 
-static void	redirection_spliter(t_ast_node *tree, t_list **tokens)
+void	redirection_spliter(t_ast_node *tree, t_list **tokens)
 {
 	t_list	*temp;
 

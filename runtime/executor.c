@@ -6,7 +6,7 @@
 /*   By: aadyan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 09:45:27 by saslanya          #+#    #+#             */
-/*   Updated: 2025/06/20 00:31:27 by saslanya         ###   ########.fr       */
+/*   Updated: 2025/06/20 01:09:41 by saslanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static bool	execute_subshell(t_ast_node *node, t_env *vars)
 	process_id = fork();
 	if (!process_id)
 	{
+		set_redirs(node);
 		signal(SIGINT, SIG_DFL);
 		if (execute_node(node->left, vars))
 			exit(EXIT_SUCCESS);
