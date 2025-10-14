@@ -1,5 +1,3 @@
-# Minishell
-
 This project is a custom implementation of a shell, similar to `bash` or `zsh`. It is a school project that aims to create a simple yet functional command-line interpreter.
 
 ## About The Project
